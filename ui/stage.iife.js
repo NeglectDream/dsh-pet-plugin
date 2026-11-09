@@ -1993,7 +1993,6 @@ async function boot() {
 	// leaving the user with a blank page and no explanation.
 	else if (diagnostics.some((entry) => entry.status === "warn")) toggleHud(true);
 	else if (state.config?.diagnostics) toggleHud(true);
-	else showBubble("桌宠已就位：拖我、点我、右键试试", { durationMs: 4000 });
 
 	startLoop();
 	installVisibilityWatchdog();
