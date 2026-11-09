@@ -65,7 +65,12 @@ export const DEFAULT_CONFIG = Object.freeze({
 	/** Bounds of the wait between two ambient actions, in milliseconds. */
 	idleMinMs: 4000,
 	idleMaxMs: 9000,
-	sound: Object.freeze({ enabled: false, volume: 0.6 }),
+	/**
+	 * Click sound. On by default, matching the original: the click is the one piece of
+	 * feedback that makes the pet feel physical, and a pet that silently ignores a poke
+	 * reads as broken rather than as "audio is off". Volume 0.5 is the original's too.
+	 */
+	sound: Object.freeze({ enabled: true, volume: 0.5 }),
 	balance: Object.freeze({
 		/**
 		 * `"host"` reuses NarraFork's own relay-station balance (no configuration at

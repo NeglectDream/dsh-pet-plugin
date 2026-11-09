@@ -192,7 +192,7 @@ node tools/transcode.mjs     # 预算驱动转码 → anim/webp/*.webp + anim/fi
 node tools/build-index.mjs   # 从 assets/config.jsonc 推导分组 → anim/index.json
 node tools/build-ui.mjs      # 内联索引/音效 → ui/*.iife.js
 node tools/verify.mjs        # 静态校验 + 体积报告
-node tools/pack.mjs          # → ../dist/cn.mcd7.neglectdream.dsh-pet-2.0.0.nfplugin
+node tools/pack.mjs          # → dist/cn.mcd7.neglectdream.dsh-pet-2.0.0.nfplugin
 ```
 
 `tools/transcode.mjs` 的档位是常量表，`--measure` 只测体积不写产物，`--profile=r3a` 可以强制某一档，`PET_ANIM_BUDGET_MB` 改预算，`PET_TRANSCODE_JOBS` 改并发。测量结果有磁盘缓存，反复调参不会重复编码。

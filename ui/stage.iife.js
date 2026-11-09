@@ -347,6 +347,8 @@ const sound = {
 	context: undefined,
 	buffer: undefined,
 	failed: false,
+	/** Set once a blocked playback has been reported, so the log does not fill up. */
+	reportedBlocked: false,
 	async ensure() {
 		if (this.buffer || this.failed) return this.buffer;
 		if (!PET_SOUND_CLICK) {
@@ -372,6 +374,20 @@ const sound = {
 		// Autoplay policy: a context created before a user gesture starts suspended.
 		// Every call here follows a pointer event, so resuming is legal and cheap.
 		if (this.context.state === "suspended") await this.context.resume().catch(() => {});
+		if (this.context.state !== "running") {
+			/*
+			 * In overlay mode the "pointer event" is a relayed notification, and a
+			 * `postMessage` is not user activation — so the browser may refuse to start
+			 * audio in this frame no matter how often it is poked. That is invisible from
+			 * the outside (the pet simply never clicks), so say it once instead of leaving
+			 * a soundless pet to be diagnosed from scratch.
+			 */
+			if (!this.reportedBlocked) {
+				this.reportedBlocked = true;
+				record("sound", "音效播放", "warn", `AudioContext ${this.context.state}`);
+			}
+			return;
+		}
 		const source = this.context.createBufferSource();
 		source.buffer = buffer;
 		const gain = this.context.createGain();
@@ -1143,6 +1159,13 @@ function buildDom() {
 		element.style.setProperty("color-scheme", hostColorScheme, "important");
 	}
 	document.body.style.setProperty("margin", "0", "important");
+	// Dragging must not start a text selection or leave an insertion point blinking in
+	// the frame; the stage is a canvas, not a document.
+	for (const element of [document.documentElement, document.body]) {
+		element.style.setProperty("user-select", "none", "important");
+		element.style.setProperty("-webkit-user-select", "none", "important");
+		element.style.setProperty("caret-color", "transparent", "important");
+	}
 
 	const root = document.createElement("div");
 	root.className = "pet-stage";
@@ -1681,11 +1704,19 @@ function installOverlayRelay() {
 			clientX: x,
 			clientY: y,
 			pointerId: Number.isFinite(params.pointerId) ? params.pointerId : 1,
-			button: 0,
+			button: Number.isFinite(params.button) ? params.button : 0,
 			buttons: Number.isFinite(params.buttons) ? params.buttons : 0,
 			preventDefault() {},
 			stopPropagation() {},
 		};
+
+		// The frame is click-through, so the browser's own `contextmenu` never fires in
+		// here and the menu would be unreachable. The host relays its own instead; open
+		// exactly what the dock surface opens from the real event.
+		if (params.type === "contextmenu") {
+			openMenu(x, y, petAtPoint(x, y) ?? stage.pets[0]);
+			return;
+		}
 
 		if (params.type === "down") {
 			const pet = petAtPoint(x, y);

@@ -29,7 +29,16 @@ import { ANIM_DIR, ASSETS_DIR, PLUGIN_DIR, formatBytes, posix } from "./paths.mj
 
 const UI_DIR = path.join(PLUGIN_DIR, "ui");
 const INDEX_FILE = path.join(ANIM_DIR, "index.json");
-const SOUND_FILE = path.join(ASSETS_DIR, "sound", "click-duck.wav");
+/*
+ * The click sound is a build input, not a packaged file: it is inlined as base64 below.
+ * It ships inside the package (`assets/sound/`), so a checkout of this repository alone
+ * can rebuild the bundle; the second entry keeps the older layout — where the plugin
+ * lived in a subdirectory of the dsh-pet repository — working.
+ */
+const SOUND_CANDIDATES = [
+	path.join(PLUGIN_DIR, "assets", "sound", "click-duck.wav"),
+	path.join(ASSETS_DIR, "sound", "click-duck.wav"),
+];
 
 /**
  * Entries and what each one needs inlined.
@@ -105,9 +114,15 @@ async function main() {
 	}
 
 	let soundBase64 = "";
-	try {
-		soundBase64 = (await fs.readFile(SOUND_FILE)).toString("base64");
-	} catch {
+	for (const candidate of SOUND_CANDIDATES) {
+		try {
+			soundBase64 = (await fs.readFile(candidate)).toString("base64");
+			break;
+		} catch {
+			/* try the next location */
+		}
+	}
+	if (!soundBase64) {
 		process.stderr.write("[build-ui] 注意：找不到点击音效，舞台将静音\n");
 	}
 
