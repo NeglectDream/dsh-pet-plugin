@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>clip-path hit testing</title>
+<style>
+  html, body { margin: 0; height: 100%; font: 13px system-ui; }
+  #under { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+  #a { position: absolute; left: 20px; top: 20px; width: 120px; height: 40px; }
+  #b { position: absolute; left: 500px; top: 400px; width: 120px; height: 40px; }
+  #frame { position: fixed; inset: 0; border: 0; pointer-events: auto; background: transparent;
+           /* The region we want to be hit-testable: x 400..700, y 300..500 of a 1000x800 viewport */
+           clip-path: inset(300px 300px 300px 400px); }
+  pre { position: absolute; left: 8px; bottom: 8px; font: 12px ui-monospace; background: #ffd; }
+</style>
+<div id="under">
+  <button id="a">A outside clip</button>
+  <button id="b">B inside clip</button>
+</div>
+<iframe id="frame" srcdoc="<body style='margin:0;background:rgba(255,0,0,.25)'></body>"></iframe>
+<pre id="out">…</pre>
+<script>
+  const report = {};
+  // elementFromPoint performs the same hit testing a click would.
+  const probe = (x, y) => {
+    const el = document.elementFromPoint(x, y);
+    return el ? (el.id || el.tagName) : null;
+  };
+  report.outsideTopLeft = probe(80, 40);      // over button A, outside the clip
+  report.insideClip = probe(550, 400);        // over button B, inside the clip
+  report.outsideBottomRight = probe(900, 700);// empty page, outside the clip
+  // A real click on A must reach it, not the iframe.
+  let clicked = null;
+  document.getElementById("a").addEventListener("click", () => { clicked = "A"; });
+  document.getElementById("a").dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: 80, clientY: 40 }));
+  report.programmaticClickOnA = clicked;
+  document.getElementById("out").textContent = JSON.stringify(report, null, 1);
+  window.__hitReport = report;
+</script>

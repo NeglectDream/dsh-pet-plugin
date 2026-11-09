@@ -1,0 +1,35 @@
+/*
+ * Settings panel presentation.
+ *
+ * Almost everything here is Mantine: the host injects its own component CSS
+ * before this view's entry, so the panel already looks like the app. What is left
+ * are the three things the shell cannot know — page background, box model and a
+ * scroll container, because this view's iframe has no host layout around it.
+ */
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+	background: var(--mantine-color-body);
+	color: var(--mantine-color-text);
+	font-family: var(--mantine-font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
+}
+
+#root,
+[data-dsh-pet-settings] {
+	min-height: 100%;
+}
+
+/* Mantine's `Container` centres itself, but inside the iframe there is no outer
+   padding, so the content would touch both edges of the panel. */
+[data-dsh-pet-settings] > * {
+	box-sizing: border-box;
+}
+
+/* Keep the long "what is missing" lists readable without letting them stretch a
+   settings row into a wall of text. */
+[data-dsh-pet-settings] .mantine-Text-root {
+	overflow-wrap: anywhere;
+}

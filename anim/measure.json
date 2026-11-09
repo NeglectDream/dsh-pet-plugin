@@ -1,0 +1,18 @@
+{
+	"generatedAt": "2026-11-06T07:27:52.013Z",
+	"budgetBytes": 62914560,
+	"totalDurationMs": 1124912,
+	"rows": [
+		{
+			"profile": {
+				"name": "r5",
+				"fps": 6,
+				"width": 320,
+				"quality": 42
+			},
+			"perClipBytes": 346790,
+			"projectedBytes": 38847663
+		}
+	],
+	"chosen": "r5"
+}

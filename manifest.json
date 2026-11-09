@@ -1,0 +1,225 @@
+{
+	"schemaVersion": 1,
+	"pluginId": "cn.mcd7.neglectdream.dsh-pet",
+	"version": "2.0.0",
+	"displayName": "DSH Pet",
+	"description": "一只住在 NarraFork 面板里的蓝色大肥鱼：114 段全透明动画、拖拽甩抛、点击 Q 弹、多只同屏互撞，还会按余额档位演戏。",
+	"publisher": {
+		"id": "neglectdream",
+		"name": "NeglectDream"
+	},
+	"license": "MIT",
+	"engine": {
+		"runtime": "bun",
+		"runtimeVersion": ">=1.2 <2",
+		"hostApi": ">=1.0 <2",
+		"rpc": "narrafork.rpc/1",
+		"features": ["host_api.requests"],
+		"os": ["win32", "linux", "darwin"],
+		"arch": ["x64", "arm64"],
+		"runner": "local-process"
+	},
+	"server": {
+		"entry": "server/index.js",
+		"transport": "stdio",
+		"protocol": "narrafork.rpc/1",
+		"args": [],
+		"workingDirectory": "package",
+		"startupTimeoutMs": 15000,
+		"activationTimeoutMs": 30000
+	},
+	"activationEvents": [
+		"onView:pet-stage",
+		"onView:pet-settings",
+		"onCommand:pet-state",
+		"onCommand:pet-config-get",
+		"onCommand:pet-config-set",
+		"onCommand:pet-balance-refresh",
+		"onCommand:pet-balance-providers",
+		"onCommand:pet-clip",
+		"onCommand:pet-secrets-list",
+		"onCommand:pet-log"
+	],
+	"ui": {
+		"entry": "ui/stage.iife.js",
+		"format": "iife",
+		"style": "ui/stage.css",
+		"shell": "host-controlled"
+	},
+	"contributes": {
+		"providers": [],
+		"searchProviders": [],
+		"tools": [],
+		"events": [],
+		"themes": [],
+		"commands": [
+			{
+				"id": "pet-state",
+				"title": "读取桌宠状态",
+				"description": "一次调用返回配置、余额快照与运行态，供舞台轮询。",
+				"handler": "server"
+			},
+			{
+				"id": "pet-config-get",
+				"title": "读取桌宠配置",
+				"handler": "server"
+			},
+			{
+				"id": "pet-config-set",
+				"title": "写入桌宠配置",
+				"description": "深合并到现有配置并返回合并后的完整配置。",
+				"handler": "server",
+				"inputSchema": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"patch": { "type": "object" },
+						"reset": { "type": "boolean" }
+					}
+				}
+			},
+			{
+				"id": "pet-balance-refresh",
+				"title": "刷新余额",
+				"description": "强制查询一次余额。authoritative=false 表示沿用缓存。",
+				"handler": "server",
+				"inputSchema": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"providerId": { "type": "string", "maxLength": 64 },
+						"force": { "type": "boolean" }
+					}
+				}
+			},
+			{
+				"id": "pet-balance-providers",
+				"title": "余额服务商清单",
+				"handler": "server"
+			},
+			{
+				"id": "pet-clip",
+				"title": "读取动画片段字节",
+				"description": "按分片返回一段动画的原始字节（base64）。宿主只服务 manifest 声明过的资源路径，所以图片数据走命令通道交给 UI 组装成 Blob URL。",
+				"handler": "server",
+				"inputSchema": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["index"],
+					"properties": {
+						"index": { "type": "integer", "minimum": 0, "maximum": 999 },
+						"offset": { "type": "integer", "minimum": 0 },
+						"length": { "type": "integer", "minimum": 1, "maximum": 1048576 }
+					}
+				}
+			},
+			{
+				"id": "pet-secrets-list",
+				"title": "已配置密钥",
+				"description": "返回哪些密钥已配置，永不返回值。",
+				"handler": "server"
+			},
+			{
+				"id": "pet-log",
+				"title": "桌宠日志上报",
+				"description": "UI 侧异常上报到插件 stderr，便于诊断。",
+				"handler": "server",
+				"inputSchema": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["level", "message"],
+					"properties": {
+						"level": { "type": "string", "enum": ["info", "warn", "error"] },
+						"message": { "type": "string", "maxLength": 2000 },
+						"detail": { "type": "object" }
+					}
+				}
+			}
+		],
+		"views": [
+			{
+				"id": "pet-stage",
+				"title": "桌宠",
+				"entry": "ui/stage.iife.js",
+				"style": "ui/stage.css",
+				"surfaces": ["workspace", "focus", "director", "overlay"],
+				"scope": "global",
+				"instance": "singleton",
+				"defaultPosition": "bottom"
+			},
+			{
+				"id": "pet-settings",
+				"title": "桌宠设置",
+				"entry": "ui/settings.iife.js",
+				"style": "ui/settings.css",
+				"surfaces": ["settings", "workspace", "focus", "director"],
+				"scope": "global",
+				"instance": "singleton",
+				"runtime": "host-react"
+			}
+		]
+	},
+	"permissions": {
+		"host": [
+			"ui.panel",
+			"storage.read_self",
+			"storage.write_self",
+			"secret.use_self",
+			"diagnostics.readOwnLogs"
+		],
+		"network": {
+			"mode": "allowlist",
+			"allow": [
+				"https://opencode.ai",
+				"https://api.deepseek.com",
+				"https://api.commandcode.ai"
+			]
+		},
+		"filesystem": {
+			"package": "readOnly",
+			"pluginData": "none",
+			"workspace": "none"
+		},
+		"process": {
+			"spawn": "none"
+		}
+	},
+	"secrets": [
+		{
+			"id": "deepseekApiKey",
+			"label": "DeepSeek API Key",
+			"required": false,
+			"scope": ["user"],
+			"usage": "outbound-network",
+			"inject": "ephemeral-reference"
+		},
+		{
+			"id": "opencodeZenApiKey",
+			"label": "OpenCode Zen API Key",
+			"required": false,
+			"scope": ["user"],
+			"usage": "outbound-network",
+			"inject": "ephemeral-reference"
+		},
+		{
+			"id": "commandCodeApiKey",
+			"label": "Command Code API Key",
+			"required": false,
+			"scope": ["user"],
+			"usage": "outbound-network",
+			"inject": "ephemeral-reference"
+		},
+		{
+			"id": "customApiKey",
+			"label": "自定义服务商 API Key",
+			"required": false,
+			"scope": ["user"],
+			"usage": "outbound-network",
+			"inject": "ephemeral-reference"
+		}
+	],
+	"dependencies": {
+		"plugins": {},
+		"runtime": {}
+	}
+}

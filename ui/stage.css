@@ -1,0 +1,252 @@
+/*
+ * Stage presentation.
+ *
+ * The shell already injects the host's Mantine token values into this document's
+ * `:root` (`--mantine-color-body`, `--mantine-color-text`, `--mantine-radius-md`,
+ * `--mantine-font-family`, …), so everything here references those with a
+ * fallback instead of hard-coding a palette. That is what makes the pet follow a
+ * light/dark switch without the plugin shipping two stylesheets — or, in the
+ * theme case, without it shipping any colours at all.
+ */
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+	/* A transparent stage is the point: the pet is drawn on the host's own panel
+	   surface, so painting an opaque backdrop here would look like a hole in the
+	   app's theme. */
+	background: transparent;
+	color: var(--mantine-color-text, #e6e6e6);
+	font-family: var(--mantine-font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
+	/* Dragging a pet must not scroll the panel or select the fish. */
+	overscroll-behavior: none;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: none;
+}
+
+.pet-stage {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	isolation: isolate;
+}
+
+.pet-background {
+	position: absolute;
+	inset: 0;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	pointer-events: none;
+}
+
+.pet-layer {
+	position: absolute;
+	inset: 0;
+}
+
+.pet {
+	position: absolute;
+	top: 0;
+	left: 0;
+	/* Squash and stretch scales from the feet, so the pet compresses against the
+	   floor instead of shrinking toward its middle. */
+	transform-origin: 50% 100%;
+	will-change: transform;
+	cursor: grab;
+	/* The sprite is a transparent rectangle much larger than the fish; without
+	   this the pet would swallow clicks across the whole panel. `pointer-events`
+	   stays on for the element itself, and the blank areas still catch the pointer
+	   — acceptable, because the sprite is the interactive object. */
+	-webkit-tap-highlight-color: transparent;
+}
+
+.pet.is-dragging {
+	cursor: grabbing;
+	/* Lifted: a slight shadow sells "held in the air" without an extra asset. */
+	filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
+}
+
+.pet-frame {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	opacity: 0;
+	transition: opacity 90ms linear;
+	pointer-events: none;
+	/* An animated WebP is drawn one frame at a time; the browser already
+	   composites it, so no extra `image-rendering` hint is wanted. */
+}
+
+.pet-frame.is-front {
+	opacity: 1;
+}
+
+.pet-bubble {
+	position: absolute;
+	transform: translate(-50%, -100%);
+	max-width: min(260px, 80%);
+	padding: 7px 11px;
+	border-radius: var(--mantine-radius-md, 8px);
+	background: var(--mantine-color-body, #1a1b1e);
+	color: var(--mantine-color-text, #e6e6e6);
+	border: 1px solid var(--mantine-color-default-border, rgba(255, 255, 255, 0.16));
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
+	font-size: 12px;
+	line-height: 1.45;
+	text-align: center;
+	pointer-events: none;
+	z-index: 3;
+	animation: pet-bubble-in 140ms ease-out;
+}
+
+.pet-bubble[data-tone="warn"] {
+	border-color: var(--mantine-color-yellow-6, #f0b429);
+}
+
+.pet-bubble[hidden] {
+	display: none;
+}
+
+@keyframes pet-bubble-in {
+	from {
+		opacity: 0;
+		transform: translate(-50%, calc(-100% + 4px));
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -100%);
+	}
+}
+
+/*
+ * The menu is drawn inside the iframe rather than using a host context menu:
+ * the sandbox exposes no menu API, and an in-iframe menu keeps click handling,
+ * positioning and dismissal in one place.
+ */
+.pet-menu {
+	position: absolute;
+	z-index: 5;
+	min-width: 132px;
+	padding: 4px;
+	border-radius: var(--mantine-radius-md, 8px);
+	background: var(--mantine-color-body, #1a1b1e);
+	border: 1px solid var(--mantine-color-default-border, rgba(255, 255, 255, 0.16));
+	box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32);
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+}
+
+.pet-menu-item {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	font-size: 12px;
+	text-align: left;
+	padding: 7px 9px;
+	border-radius: calc(var(--mantine-radius-md, 8px) - 3px);
+	cursor: pointer;
+}
+
+.pet-menu-item:hover {
+	background: var(--mantine-color-default-hover, rgba(255, 255, 255, 0.08));
+}
+
+.pet-menu-separator {
+	height: 1px;
+	margin: 3px 4px;
+	background: var(--mantine-color-default-border, rgba(255, 255, 255, 0.14));
+}
+
+/* ------------------------------------------------------------------ HUD -- */
+
+.pet-hud {
+	position: absolute;
+	inset: 6px auto auto 6px;
+	z-index: 6;
+	max-width: min(440px, calc(100% - 12px));
+	max-height: calc(100% - 12px);
+	overflow: auto;
+	padding: 8px 10px;
+	border-radius: var(--mantine-radius-md, 8px);
+	background: color-mix(in srgb, var(--mantine-color-body, #1a1b1e) 92%, transparent);
+	border: 1px solid var(--mantine-color-default-border, rgba(255, 255, 255, 0.16));
+	font-family: var(--mantine-font-family-monospace, ui-monospace, "Cascadia Mono", monospace);
+	font-size: 11px;
+	line-height: 1.5;
+	color: var(--mantine-color-dimmed, #909296);
+}
+
+.pet-hud[hidden] {
+	display: none;
+}
+
+.pet-hud-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	font-weight: 600;
+	color: var(--mantine-color-text, #e6e6e6);
+	margin-bottom: 4px;
+}
+
+.pet-hud-close {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 15px;
+	line-height: 1;
+	cursor: pointer;
+	padding: 0 2px;
+}
+
+.pet-hud-row {
+	display: grid;
+	grid-template-columns: 96px 1fr;
+	gap: 6px;
+	padding: 1px 0;
+}
+
+.pet-hud-row.is-ok .pet-hud-label::before {
+	content: "✓ ";
+	color: var(--mantine-color-green-6, #40c057);
+}
+
+.pet-hud-row.is-warn .pet-hud-label::before {
+	content: "! ";
+	color: var(--mantine-color-yellow-6, #f0b429);
+}
+
+.pet-hud-row.is-fail .pet-hud-label::before {
+	content: "✕ ";
+	color: var(--mantine-color-red-6, #fa5252);
+}
+
+.pet-hud-label {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.pet-hud-detail {
+	overflow-wrap: anywhere;
+	opacity: 0.85;
+}
+
+.pet-hud-stats {
+	margin-top: 6px;
+	padding-top: 6px;
+	border-top: 1px solid var(--mantine-color-default-border, rgba(255, 255, 255, 0.14));
+}

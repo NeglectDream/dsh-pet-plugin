@@ -1,0 +1,35 @@
+{
+	"spdxVersion": "SPDX-2.3",
+	"dataLicense": "CC0-1.0",
+	"SPDXID": "SPDXRef-DOCUMENT",
+	"name": "cn.mcd7.neglectdream.dsh-pet",
+	"documentNamespace": "https://narrafork.local/sbom/cn.mcd7.neglectdream.dsh-pet",
+	"packages": [
+		{
+			"SPDXID": "SPDXRef-cn.mcd7.neglectdream.dsh-pet",
+			"name": "cn.mcd7.neglectdream.dsh-pet",
+			"versionInfo": "2.0.0",
+			"licenseDeclared": "MIT",
+			"licenseConcluded": "MIT",
+			"supplier": "Person: NeglectDream",
+			"comment": "Zero runtime dependencies. The backend uses only node/bun built-ins; both UI entries are hand-written and bundle no library. The 114 animation WebPs are derived from this project's own webm sources by tools/transcode.mjs and carry the same licence."
+		},
+		{
+			"SPDXID": "SPDXRef-ffmpeg",
+			"name": "FFmpeg",
+			"versionInfo": "8.1.1",
+			"licenseDeclared": "LGPL-2.1-or-later",
+			"licenseConcluded": "LGPL-2.1-or-later",
+			"downloadLocation": "https://ffmpeg.org/",
+			"copyrightText": "Copyright (c) FFmpeg developers",
+			"comment": "BUILD-TIME ONLY. Never shipped and never invoked at runtime: the release process uses it to decode VP9-with-alpha webm and encode animated WebP. Installing this plugin does not require ffmpeg on the machine."
+		}
+	],
+	"relationships": [
+		{
+			"spdxElementId": "SPDXRef-ffmpeg",
+			"relationshipType": "BUILD_TOOL_OF",
+			"relatedSpdxElement": "SPDXRef-cn.mcd7.neglectdream.dsh-pet"
+		}
+	]
+}

@@ -1,0 +1,1835 @@
+/**
+ * The pet stage — everything that happens inside the panel.
+ *
+ * WHY NO FRAMEWORK
+ * The interesting parts of this file are a 60 fps transform loop and a pointer
+ * physics model. React would sit between the loop and the DOM for no benefit,
+ * and pulling the shared host runtime in would cost the panel ~1.2 MB of React and
+ * Mantine to render six absolutely positioned `<img>` elements. The view declares
+ * no `runtime`, so the shell loads exactly this file and nothing else.
+ *
+ * THREE PROBLEMS THAT ARE NOT OBVIOUS FROM THE OUTSIDE
+ *
+ * 1. Animated WebP has no "ended" event. `load` fires when the first frame is
+ *    decoded; nothing fires at the end of the loop. So a clip's duration must
+ *    come from somewhere else — here it is precomputed at build time into the
+ *    inlined index, with `clipDurationMs()` as a fallback that reads the RIFF
+ *    container if an entry is missing its duration.
+ *
+ * 2. The asset route sends `Cache-Control: private, no-store`. Every distinct
+ *    `src` is a fresh download, and re-assigning the *same* `src` is the only
+ *    request-free path. So the player keeps each clip on screen as long as it
+ *    can (looping clips never change `src` at all) and swaps between exactly two
+ *    `<img>` elements, which bounds both the request count and the decoded-frame
+ *    memory to two clips per pet.
+ *
+ * 3. `connect-src 'none'` blocks `fetch` and `XMLHttpRequest` entirely, so there
+ *    is no way to load `index.json` as data. The index is therefore inlined into
+ *    this bundle by `tools/build-ui.mjs` — see the `PET_ANIM_INDEX` placeholder
+ *    at the bottom of the file.
+ */
+
+/* -------------------------------------------------------------------------- */
+/* Boot diagnostics                                                           */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The stage doubles as its own acceptance report.
+ *
+ * A desktop pet that silently does nothing is indistinguishable from a broken
+ * install, and the user cannot open devtools comfortably in a sandboxed iframe.
+ * So every assumption this file depends on gets a named, visible check.
+ */
+const diagnostics = [];
+const diagnosticById = new Map();
+
+function record(id, label, status, detail) {
+	const previous = diagnosticById.get(id);
+	const entry = { id, label, status, detail: detail === undefined ? previous?.detail : detail };
+	if (previous) Object.assign(previous, entry);
+	else {
+		diagnosticById.set(id, entry);
+		diagnostics.push(entry);
+	}
+	if (state.hud) renderDiagnostics();
+	// A failing check is worth a stderr line: the panel may be the only place the
+	// user looks, but the host's diagnostic view is where a maintainer looks.
+	if (status === "fail") SDK.report("error", `自检失败：${label}`, { id, detail: String(detail ?? "") });
+	return entry;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Inlined build data                                                         */
+/* -------------------------------------------------------------------------- */
+
+const INDEX = PET_ANIM_INDEX;
+const CLIP_BY_ID = new Map(INDEX.clips.map((clip) => [clip.id, clip]));
+const PLUGIN_ID = "cn.mcd7.neglectdream.dsh-pet";
+const SETTINGS_VIEW_ID = "pet-settings";
+
+/* -------------------------------------------------------------------------- */
+/* Animation WebP duration fallback                                          */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Read an animated WebP's total duration from its RIFF container.
+ *
+ * The build already measured every clip, so this only runs for an index entry
+ * whose `durationMs` is missing — i.e. a hand-edited or partially regenerated
+ * index. It is intentionally the same 40 lines as `tools/webp.mjs` rather than a
+ * shared module: the UI bundle cannot import, and a wrong duration here only
+ * costs a mistimed cut, never a crash.
+ */
+function clipDurationMs(clip) {
+	if (typeof clip.durationMs === "number" && clip.durationMs > 0) return clip.durationMs;
+	return undefined;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Sound                                                                      */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Click sound, decoded from an inlined base64 WAV.
+ *
+ * `media-src 'none'` means `<audio>` and `<video>` cannot load anything, but
+ * WebAudio decoding an ArrayBuffer the plugin already holds is not a media
+ * element and is not covered by that directive. This is the only way to make a
+ * plugin panel produce sound at all.
+ */
+const sound = {
+	context: undefined,
+	buffer: undefined,
+	failed: false,
+	async ensure() {
+		if (this.buffer || this.failed) return this.buffer;
+		if (!PET_SOUND_CLICK) {
+			this.failed = true;
+			return undefined;
+		}
+		try {
+			const binary = atob(PET_SOUND_CLICK);
+			const bytes = new Uint8Array(binary.length);
+			for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+			this.context = this.context ?? new (globalThis.AudioContext ?? globalThis.webkitAudioContext)();
+			this.buffer = await this.context.decodeAudioData(bytes.buffer);
+			return this.buffer;
+		} catch (error) {
+			this.failed = true;
+			record("sound", "音效解码", "warn", String(error?.message ?? error));
+			return undefined;
+		}
+	},
+	async play(volume) {
+		const buffer = await this.ensure();
+		if (!buffer || !this.context) return;
+		// Autoplay policy: a context created before a user gesture starts suspended.
+		// Every call here follows a pointer event, so resuming is legal and cheap.
+		if (this.context.state === "suspended") await this.context.resume().catch(() => {});
+		const source = this.context.createBufferSource();
+		source.buffer = buffer;
+		const gain = this.context.createGain();
+		gain.gain.value = Math.max(0, Math.min(1, volume));
+		source.connect(gain).connect(this.context.destination);
+		source.start();
+	},
+};
+
+/* -------------------------------------------------------------------------- */
+/* Clip bytes → Blob URLs                                                     */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Animation data does not come from the asset route, and cannot.
+ *
+ * `PluginUiAssetService.readAsset` serves only paths the manifest declares — the
+ * UI entry, each view's `entry`/`style`, and theme images — and answers every
+ * other path under the same asset prefix with 404. A browser reports that as
+ * `decode()` → "The source image cannot be decoded", with nothing pointing at the
+ * cause. Declaring 114 fake views just to whitelist 114 files would abuse the
+ * contribution schema and pollute the admin contribution list, so the bytes come
+ * through the plugin's own command channel instead, and this module turns them
+ * into `blob:` URLs (`img-src` allows `blob:`).
+ *
+ * Two side effects are worth stating because they are improvements, not accidents:
+ *  - a blob URL is stable, so re-showing a clip costs nothing — the host's
+ *    `Cache-Control: private, no-store` on the asset route no longer applies to
+ *    animation at all;
+ *  - the total is bounded by the cache below instead of by the browser's HTTP
+ *    cache behaviour.
+ */
+const CLIP_URL_CACHE_MAX = 24;
+/** index → { url, bytes }; Map order is the LRU order (oldest first). */
+const clipUrls = new Map();
+const clipInflight = new Map();
+
+function base64ToBytes(text) {
+	const binary = atob(text);
+	const bytes = new Uint8Array(binary.length);
+	for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+	return bytes;
+}
+
+async function fetchClipBytes(index) {
+	const parts = [];
+	let offset = 0;
+	let total = Number.POSITIVE_INFINITY;
+	// A clip is up to ~1.5 MB, so this is 1–3 round trips over stdio. Each chunk is
+	// capped server-side at 512 KiB because a JSON-RPC frame is 1 MiB and base64
+	// inflates by 4/3.
+	for (let guard = 0; guard < 32 && offset < total; guard += 1) {
+		const result = await SDK.callSafe("pet-clip", { index, offset });
+		if (!result.ok) throw new Error(result.error.message);
+		const value = result.value ?? {};
+		total = typeof value.total === "number" ? value.total : 0;
+		const bytes = base64ToBytes(String(value.data ?? ""));
+		if (bytes.byteLength === 0) break;
+		parts.push(bytes);
+		offset += bytes.byteLength;
+		if (value.done === true) break;
+	}
+	const merged = new Uint8Array(parts.reduce((sum, part) => sum + part.byteLength, 0));
+	let at = 0;
+	for (const part of parts) {
+		merged.set(part, at);
+		at += part.byteLength;
+	}
+	return merged;
+}
+
+/** Clip ids currently on screen, which must never be evicted underneath a player. */
+function pinnedIndices() {
+	const pinned = new Set();
+	for (const pet of stage.pets) {
+		const clip = pet.player.clipId ? CLIP_BY_ID.get(pet.player.clipId) : undefined;
+		if (clip) pinned.add(clip.index);
+	}
+	return pinned;
+}
+
+function evictClipUrls() {
+	if (clipUrls.size <= CLIP_URL_CACHE_MAX) return;
+	const pinned = pinnedIndices();
+	for (const key of [...clipUrls.keys()]) {
+		if (clipUrls.size <= CLIP_URL_CACHE_MAX) return;
+		if (pinned.has(key)) continue;
+		const entry = clipUrls.get(key);
+		clipUrls.delete(key);
+		try {
+			URL.revokeObjectURL(entry.url);
+		} catch {
+			/* already gone */
+		}
+	}
+}
+
+/** Resolve one clip's index to a reusable `blob:` URL, loading it if needed. */
+async function clipUrl(index) {
+	const cached = clipUrls.get(index);
+	if (cached) {
+		// Touch: move to the hot end of the LRU.
+		clipUrls.delete(index);
+		clipUrls.set(index, cached);
+		return cached.url;
+	}
+	const inFlight = clipInflight.get(index);
+	if (inFlight) return inFlight;
+	const task = (async () => {
+		const bytes = await fetchClipBytes(index);
+		const url = URL.createObjectURL(new Blob([bytes], { type: "image/webp" }));
+		clipUrls.set(index, { url, bytes: bytes.byteLength });
+		evictClipUrls();
+		return url;
+	})();
+	clipInflight.set(index, task);
+	try {
+		return await task;
+	} finally {
+		clipInflight.delete(index);
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+/* Clip player: one double-buffered slot per pet                             */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Plays one clip at a time into a fixed two-image slot.
+ *
+ * The two `<img>` elements alternate: the incoming clip decodes into the hidden
+ * one, and only once `decode()` resolves is the opacity swapped. Skipping that
+ * step is what causes the "flash to transparent" between clips, because a newly
+ * assigned `src` paints nothing until its first frame arrives.
+ */
+class ClipPlayer {
+	constructor(element) {
+		this.element = element;
+		this.layers = [document.createElement("img"), document.createElement("img")];
+		for (const layer of this.layers) {
+			layer.className = "pet-frame";
+			layer.alt = "";
+			layer.decoding = "async";
+			layer.draggable = false;
+			// Critical geometry inline, not only in the stylesheet. If `stage.css`
+			// fails to load or is still in flight when this script runs, a
+			// stack of unstyled `<img>` elements is invisible or grossly misplaced —
+			// and "the panel is empty" is indistinguishable from "the plugin is
+			// broken". Inline opacity in particular: the cross-fade is a CSS effect,
+			// but *being visible at all* must not be.
+			layer.style.cssText =
+				"position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none";
+			element.append(layer);
+		}
+		this.front = 0;
+		this.layers[0].classList.add("is-front");
+		this.layers[0].style.opacity = "1";
+		this.layers[1].style.opacity = "0";
+		this.clipId = undefined;
+		this.token = 0;
+		this.facing = 1;
+		this.updateFacing();
+	}
+
+	updateFacing() {
+		const transform = this.facing < 0 ? "scaleX(-1)" : "none";
+		for (const layer of this.layers) layer.style.transform = transform;
+	}
+
+	setFacing(facing) {
+		if (this.facing === facing) return;
+		this.facing = facing;
+		this.updateFacing();
+	}
+
+	/**
+	 * Show a clip. Resolves once the new frame is on screen (or immediately if the
+	 * request was superseded by a later call).
+	 */
+	async show(clipId) {
+		const clip = CLIP_BY_ID.get(clipId);
+		if (!clip) {
+			record("clip-missing", `动画缺失：${clipId}`, "warn", "index 中没有这个 id");
+			return false;
+		}
+		if (this.clipId === clipId) return true;
+
+		const token = ++this.token;
+		const back = this.layers[1 - this.front];
+		let url;
+		try {
+			url = await clipUrl(clip.index);
+		} catch (error) {
+			if (token !== this.token) return false;
+			record("clip-bytes", `动画数据读取失败：${clipId}`, "fail", String(error?.message ?? error));
+			return false;
+		}
+		if (token !== this.token) return false;
+		if (back.getAttribute("src") !== url) back.src = url;
+
+		try {
+			// `decode()` rejects on a decode error *and* on an aborted load, and it
+			// never resolves for a zero-sized image. Raced against a timeout so a
+			// single broken file cannot freeze the pet forever.
+			await Promise.race([
+				back.decode(),
+				new Promise((_, reject) => setTimeout(() => reject(new Error("decode timeout")), 4000)),
+			]);
+		} catch (error) {
+			// A newer `show()` reuses the same back element and changes its `src`,
+			// which aborts this decode. That is not a failure — it is the normal
+			// outcome of a fast clip switch — so a superseded attempt reports nothing.
+			if (token !== this.token) return false;
+			record("clip-decode", `动画解码失败：${clipId}`, "fail", `${clip.file}: ${error?.message ?? error}`);
+			return false;
+		}
+		if (token !== this.token) return false;
+
+		const previous = this.layers[this.front];
+		back.classList.add("is-front");
+		previous.classList.remove("is-front");
+		back.style.opacity = "1";
+		previous.style.opacity = "0";
+		this.front = 1 - this.front;
+		this.clipId = clipId;
+		record("clip-decode", "动画解码", "ok", `${clipId} ${clip.width}×${clip.height} ${clip.durationMs}ms`);
+		return true;
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+/* A single pet                                                              */
+/* -------------------------------------------------------------------------- */
+
+const GRAVITY = 2600; // px/s² at gravity multiplier 1
+const MAX_SPEED = 4200;
+const DRAG_STIFFNESS = 26;
+const RELEASE_BOOST = 1.15;
+
+class Pet {
+	constructor(stage, index) {
+		this.stage = stage;
+		this.index = index;
+		this.element = document.createElement("div");
+		this.element.className = "pet";
+		// Same reasoning as the frames: geometry lives inline so a missing stylesheet
+		// cannot make the pet un-findable. The stylesheet still owns cursor, shadow
+		// and the squash transform-origin.
+		this.element.style.cssText = "position:absolute;left:0;top:0;transform-origin:50% 100%";
+		this.player = new ClipPlayer(this.element);
+		stage.layers.pets.append(this.element);
+
+		this.w = 120;
+		this.h = 68;
+		this.x = 0;
+		this.y = 0;
+		this.vx = 0;
+		this.vy = 0;
+		this.squash = 0;
+		this.squashVelocity = 0;
+		this.facing = 1;
+		this.dragging = false;
+		this.dragTarget = { x: 0, y: 0 };
+		this.dragPointerId = undefined;
+		this.pressedAt = 0;
+		this.pressedPoint = { x: 0, y: 0 };
+		this.lastClickAt = 0;
+		this.mode = "idle";
+		this.modeUntil = 0;
+		this.clipEndsAt = 0;
+		this.pendingEndAction = undefined;
+		this.travel = undefined;
+		this.sleepSuite = undefined;
+		this.sleepPhase = undefined;
+		this.idleTimer = undefined;
+	}
+
+	/** Size from the stage, so the pet scales with the panel instead of the window. */
+	resize(stageWidth, stageHeight, scale) {
+		const base = Math.min(Math.max(stageWidth * 0.26, 96), 300);
+		const width = base * scale;
+		const aspect = INDEX.canvas.width / INDEX.canvas.height;
+		this.w = width;
+		this.h = width / aspect;
+		// Clamp only — placement is `layout()`'s job. Clamping here means a panel
+		// shrink can never leave a pet hanging outside the stage.
+		this.x = Math.min(Math.max(this.x, this.w / 2), Math.max(this.w / 2, stageWidth - this.w / 2));
+		this.y = Math.min(Math.max(this.y, this.h / 2), Math.max(this.h / 2, stageHeight - this.h / 2));
+		this.element.style.width = `${this.w}px`;
+		this.element.style.height = `${this.h}px`;
+	}
+
+	/* ---- animation control ------------------------------------------------ */
+
+	get config() {
+		return this.stage.config;
+	}
+
+	enabledGroups() {
+		const groups = this.config?.animationGroups ?? {};
+		return groups;
+	}
+
+	groupAllowed(group) {
+		if (group === "balance" || group === "drag" || group === "click") return true;
+		if (group.startsWith("sleep")) return true;
+		return this.enabledGroups()[group] !== false;
+	}
+
+	/** Pick one clip id at random from a list, avoiding an immediate repeat. */
+	pick(list) {
+		const candidates = list.filter((id) => id !== this.lastClipId);
+		const pool = candidates.length > 0 ? candidates : list;
+		return pool[Math.floor(Math.random() * pool.length)];
+	}
+
+	playOnce(clipId, onEnd) {
+		if (!clipId) {
+			// Every pool can be empty if a future index has fewer clips; falling back to
+			// idle is also what keeps the ambient timer armed, so a missing clip cannot
+			// leave the pet frozen on its previous frame forever.
+			this.enterIdle();
+			return;
+		}
+		this.lastClipId = clipId;
+		void this.player.show(clipId);
+		const clip = CLIP_BY_ID.get(clipId);
+		const duration = clipDurationMs(clip) ?? 1200;
+		this.clipEndsAt = performance.now() + duration;
+		this.pendingEndAction = onEnd;
+	}
+
+	playLoop(clipId) {
+		if (!clipId) return;
+		this.lastClipId = clipId;
+		void this.player.show(clipId);
+		this.clipEndsAt = 0;
+		this.pendingEndAction = undefined;
+	}
+
+	/* ---- behaviour ------------------------------------------------------- */
+
+	enterIdle(delayOverride) {
+		this.mode = this.sleepPhase ? "sleep" : "idle";
+		const idlePool = INDEX.pools.idle.filter((id) => this.groupAllowed("idle"));
+		if (idlePool.length > 0) this.playLoop(this.pick(idlePool));
+		const [min, max] = [
+			this.config?.idleMinMs ?? 4000,
+			this.config?.idleMaxMs ?? 9000,
+		];
+		const delay = delayOverride ?? min + Math.random() * Math.max(0, max - min);
+		this.scheduleAmbient(delay);
+	}
+
+	scheduleAmbient(delay) {
+		clearTimeout(this.idleTimer);
+		this.idleTimer = setTimeout(() => this.ambientTick(), delay);
+	}
+
+	/**
+	 * The random-action chain.
+	 *
+	 * Weights come from `config.jsonc` (`animationWeights` + per-category weights)
+	 * so this file does not own a second opinion about how often the fish should
+	 * dance: `idle` here means "stay put", `turn` flips facing, `move` travels, and
+	 * the remainder is split across the enabled action categories.
+	 */
+	ambientTick() {
+		// A one-shot is already playing (`clipEndsAt` is set): let it finish rather
+		// than cutting into it. The idle timer is re-armed when it ends.
+		if (this.mode !== "idle" || this.clipEndsAt) return;
+		const chain = INDEX.chain;
+		const roll = Math.random() * 100;
+		const turnLimit = chain.idle + chain.turn;
+		// `roam: false` pins the pet in place, so the travel slot is folded back into
+		// "do nothing" instead of being handed to a clip that would walk it away.
+		const roam = this.config?.roam !== false;
+		const moveLimit = turnLimit + (roam ? chain.move : 0);
+
+		if (roll < chain.idle) {
+			this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
+			return;
+		}
+		if (roll < turnLimit && this.groupAllowed("turn") && INDEX.pools.turn.length > 0) {
+			this.playFlipOnce(this.pick(INDEX.pools.turn));
+			return;
+		}
+		if (roll < moveLimit && this.groupAllowed("move") && INDEX.pools.move.length > 0) {
+			this.startTravel(this.pick(INDEX.pools.move));
+			return;
+		}
+
+		const categories = INDEX.pools.categories.filter((category) => this.groupAllowed(category.group));
+		const totalWeight = categories.reduce((sum, category) => sum + category.weight, 0);
+		if (totalWeight <= 0) {
+			this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
+			return;
+		}
+		let target = Math.random() * totalWeight;
+		for (const category of categories) {
+			target -= category.weight;
+			if (target > 0) continue;
+			const pool = category.clipIds.filter((id) => {
+				const clip = CLIP_BY_ID.get(id);
+				// `noMirror` clips carry text: playing them mirrored would show reversed
+				// characters, so they are skipped while the pet faces left.
+				return clip && !(clip.noMirror && this.facing < 0);
+			});
+			if (pool.length === 0) break;
+			this.playOnce(this.pick(pool), () => this.enterIdle());
+			return;
+		}
+		this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
+	}
+
+	/** A `move` clip that also translates the pet across the stage. */
+	startTravel(clipId) {
+		const clip = CLIP_BY_ID.get(clipId);
+		const params = { ...(INDEX.moveDefaults ?? {}), ...(INDEX.moveParams?.[clipId] ?? {}) };
+		const stageWidth = this.stage.width;
+		const scale = this.w / 462; // config.jsonc's distances assume a 462 px-wide pet
+		const minDist = (params.minDist ?? 60) * scale;
+		const maxDist = (params.maxDist ?? 240) * scale;
+		const margin = params.margin ?? 20;
+		const distance = minDist + Math.random() * Math.max(0, maxDist - minDist);
+		const roomRight = stageWidth - margin - (this.x + this.w / 2);
+		const roomLeft = this.x - this.w / 2 - margin;
+		let direction = Math.random() < 0.5 ? -1 : 1;
+		if (roomRight < distance && roomLeft > roomRight) direction = -1;
+		else if (roomLeft < distance && roomRight > roomLeft) direction = 1;
+		const reachable = Math.min(distance, direction < 0 ? roomLeft : roomRight);
+		if (reachable < 8) {
+			// Nowhere to go: treat it as a plain one-shot rather than sliding into a wall.
+			this.playOnce(clipId, () => this.enterIdle());
+			return;
+		}
+		const durationMs = clipDurationMs(clip) ?? 2000;
+		this.travel = {
+			fromX: this.x,
+			toX: this.x + direction * reachable,
+			startedAt: performance.now(),
+			durationMs,
+			leadMs: (params.leadSec ?? 2) * 1000,
+			tailMs: (params.tailSec ?? 2) * 1000,
+		};
+		this.setFacing(direction);
+		this.playOnce(clipId, () => {
+			this.travel = undefined;
+			this.enterIdle();
+		});
+	}
+
+		/** Play `clipId` once and flip the pet's facing when it finishes. */
+	playFlipOnce(clipId) {
+		this.playOnce(clipId, () => {
+			this.setFacing(this.facing < 0 ? 1 : -1);
+			this.enterIdle();
+		});
+	}
+
+	setFacing(facing) {
+		this.facing = facing < 0 ? -1 : 1;
+		this.player.setFacing(this.facing);
+	}
+
+	/* ---- interaction ----------------------------------------------------- */
+
+	onPointerDown(event) {
+		if (event.button !== undefined && event.button !== 0) return;
+		this.dragging = true;
+		this.dragPointerId = event.pointerId;
+		this.pressedAt = performance.now();
+		this.pressedPoint = { x: event.clientX, y: event.clientY };
+		// Grab point relative to the pet's centre, so the fish keeps its offset under
+		// the cursor instead of snapping its middle to the fingertip.
+		const rect = this.stage.root.getBoundingClientRect();
+		this.dragOffset = {
+			x: event.clientX - rect.left - this.x,
+			y: event.clientY - rect.top - this.y,
+		};
+		this.dragTarget = { x: this.x, y: this.y };
+		// `setPointerCapture` throws `NotFoundError` for a pointer id the browser does
+		// not consider active (synthetic events, a pointer already released). Capture
+		// is an optimisation — the pet tracks the pointer either way — so a failure
+		// here must not abort the drag that just started.
+		try {
+			this.element.setPointerCapture?.(event.pointerId);
+		} catch {
+			/* capture unavailable */
+		}
+		this.element.classList.add("is-dragging");
+		clearTimeout(this.idleTimer);
+		this.mode = "drag";
+		const dragPool = INDEX.pools.drag.filter(() => this.groupAllowed("drag"));
+		if (dragPool.length > 0) this.playLoop(this.pick(dragPool));
+		this.vx = 0;
+		this.vy = 0;
+	}
+
+	onPointerMove(event) {
+		if (!this.dragging || event.pointerId !== this.dragPointerId) return;
+		const rect = this.stage.root.getBoundingClientRect();
+		this.dragTarget.x = Math.min(
+			Math.max(event.clientX - rect.left - (this.dragOffset?.x ?? 0), this.w / 2),
+			Math.max(this.w / 2, this.stage.width - this.w / 2),
+		);
+		this.dragTarget.y = Math.min(
+			Math.max(event.clientY - rect.top - (this.dragOffset?.y ?? 0), this.h / 2),
+			Math.max(this.h / 2, this.stage.height - this.h / 2),
+		);
+	}
+
+	onPointerUp(event) {
+		if (!this.dragging || event.pointerId !== this.dragPointerId) return;
+		this.dragging = false;
+		try {
+			this.element.releasePointerCapture?.(event.pointerId);
+		} catch {
+			/* capture was never acquired */
+		}
+		this.element.classList.remove("is-dragging");
+		const elapsed = performance.now() - this.pressedAt;
+		const travel = Math.hypot(event.clientX - this.pressedPoint.x, event.clientY - this.pressedPoint.y);
+
+		if (travel < 6 && elapsed < 400) {
+			this.handleClick();
+			return;
+		}
+		// Thrown: keep most of the pointer velocity so the fish flies the way it was flicked.
+		this.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, this.vx * RELEASE_BOOST));
+		this.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, this.vy * RELEASE_BOOST));
+		this.sleepPhase = undefined;
+		this.enterIdle(300);
+	}
+
+	handleClick() {
+		const now = performance.now();
+		const isDouble = now - this.lastClickAt < 320;
+		this.lastClickAt = now;
+		this.squash = -Math.max(0.1, this.config?.clickSquash ?? 0.35);
+		this.squashVelocity = 0;
+
+		if (isDouble) {
+			// Second click inside the double-click window: launch upward instead of
+			// playing a second reaction. Doing both would look like a stutter.
+			this.vy = -Math.max(900, GRAVITY * 0.42);
+			this.vx += (Math.random() - 0.5) * 260;
+			this.playOnce(this.pick(INDEX.pools.click), () => this.enterIdle());
+			return;
+		}
+
+		if (this.config?.sound?.enabled) void sound.play(this.config.sound.volume ?? 0.6);
+		const clickPool = INDEX.pools.click.filter(() => this.groupAllowed("click"));
+		if (clickPool.length > 0) this.playOnce(this.pick(clickPool), () => this.enterIdle());
+		else this.enterIdle(600);
+	}
+
+	setSleeping(sleeping) {
+		const suites = INDEX.pools.sleep ?? [];
+		const suite = suites[Math.floor(Math.random() * suites.length)];
+		if (!sleeping) {
+			if (!this.sleepPhase) return;
+			const endPool = this.sleepSuite?.end ?? [];
+			this.sleepPhase = undefined;
+			this.sleepSuite = undefined;
+			if (endPool.length > 0) this.playOnce(this.pick(endPool), () => this.enterIdle());
+			else this.enterIdle();
+			return;
+		}
+		if (!suite) return;
+		this.sleepSuite = suite;
+		this.sleepPhase = "start";
+		clearTimeout(this.idleTimer);
+		this.mode = "sleep";
+		const startPool = suite.start ?? [];
+		if (startPool.length === 0) {
+			this.beginSleepLoop();
+			return;
+		}
+		this.playOnce(this.pick(startPool), () => this.beginSleepLoop());
+	}
+
+	beginSleepLoop() {
+		const pool = this.sleepSuite?.loop ?? [];
+		this.sleepPhase = "loop";
+		this.mode = "sleep";
+		if (pool.length > 0) this.playLoop(this.pick(pool));
+		else this.playLoop(this.lastClipId);
+	}
+
+	get isAsleep() {
+		return this.sleepPhase !== undefined;
+	}
+
+	/* ---- physics --------------------------------------------------------- */
+
+	update(dt) {
+		const config = this.stage.config;
+		const gravity = GRAVITY * (config?.gravity ?? 1) * (this.mode === "sleep" ? 1 : 1);
+		const bounce = config?.bounce ?? 0.55;
+		const friction = config?.friction ?? 0.9;
+
+		if (this.dragging) {
+			const previousX = this.x;
+			const previousY = this.y;
+			// Critically damped follow: the pet trails the pointer without oscillating.
+			const alpha = Math.min(1, DRAG_STIFFNESS * dt);
+			this.x += (this.dragTarget.x - this.x) * alpha;
+			this.y += (this.dragTarget.y - this.y) * alpha;
+			if (dt > 0) {
+				this.vx = (this.x - previousX) / dt;
+				this.vy = (this.y - previousY) / dt;
+			}
+			this.applySquashSpring(dt);
+			return;
+		}
+
+		if (this.travel) {
+			const elapsed = performance.now() - this.travel.startedAt;
+			const { leadMs, tailMs, durationMs, fromX, toX } = this.travel;
+			const movingMs = Math.max(1, durationMs - leadMs - tailMs);
+			const progress = Math.min(1, Math.max(0, (elapsed - leadMs) / movingMs));
+			// Ease-in-out so the walk starts and stops instead of teleporting.
+			const eased = progress < 0.5 ? 2 * progress * progress : 1 - 2 * (1 - progress) * (1 - progress);
+			this.x = fromX + (toX - fromX) * eased;
+			this.vx = 0;
+		} else {
+			this.x += this.vx * dt;
+		}
+
+		this.vy += gravity * dt;
+		this.y += this.vy * dt;
+
+		const halfW = this.w / 2;
+		const halfH = this.h / 2;
+		const floor = this.stage.height - halfH;
+		const ceiling = halfH;
+		const left = halfW;
+		const right = this.stage.width - halfW;
+
+		if (this.y > floor) {
+			this.y = floor;
+			if (Math.abs(this.vy) > 90) this.vy = -this.vy * bounce;
+			else this.vy = 0;
+			this.vx *= Math.pow(friction, dt * 60);
+			if (Math.abs(this.vx) < 4) this.vx = 0;
+		}
+		if (this.y < ceiling) {
+			this.y = ceiling;
+			this.vy = Math.abs(this.vy) * bounce;
+		}
+		if (this.x < left) {
+			this.x = left;
+			this.vx = Math.abs(this.vx) * bounce;
+		}
+		if (this.x > right) {
+			this.x = right;
+			this.vx = -Math.abs(this.vx) * bounce;
+		}
+
+		this.applySquashSpring(dt);
+	}
+
+	applySquashSpring(dt) {
+		// A spring, not a lerp: a plain decay cannot overshoot, and the overshoot is
+		// what makes the squash read as jelly rather than as a slow resize.
+		const stiffness = 260;
+		const damping = 18;
+		this.squashVelocity += (-stiffness * this.squash - damping * this.squashVelocity) * dt;
+		this.squash += this.squashVelocity * dt;
+	}
+
+	/** Clip timers: an animated WebP cannot tell us it finished. */
+	tickClipTimer(now) {
+		if (this.mode === "drag" || this.sleepPhase === "loop") return;
+		if (!this.clipEndsAt || now < this.clipEndsAt) return;
+		const action = this.pendingEndAction;
+		this.clipEndsAt = 0;
+		this.pendingEndAction = undefined;
+		if (action) action();
+	}
+
+	render() {
+		const scaleY = 1 + this.squash;
+		const scaleX = 1 - this.squash * 0.5;
+		this.element.style.transform =
+			`translate3d(${(this.x - this.w / 2).toFixed(2)}px, ${(this.y - this.h / 2).toFixed(2)}px, 0) ` +
+			`scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
+	}
+
+	dispose() {
+		clearTimeout(this.idleTimer);
+		this.element.remove();
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+/* Stage                                                                      */
+/* -------------------------------------------------------------------------- */
+
+const state = {
+	config: undefined,
+	balance: undefined,
+	hud: undefined,
+	ready: false,
+	paused: false,
+	lastFrameAt: 0,
+	frameCount: 0,
+	fps: 0,
+	balanceTier: undefined,
+	balanceBubbleAt: 0,
+	/**
+	 * `"overlay"` means the view was mounted in the host's full-viewport transparent
+	 * layer rather than inside a dock panel. The difference is not cosmetic: in
+	 * overlay mode the iframe is click-through, so DOM pointer events never arrive
+	 * and interaction has to come from the host's `overlay.pointer` relay instead.
+	 */
+	surface: "panel",
+	/** The host's `narrafork.overlay` API, when this host exposes it. */
+	overlayApi: undefined,
+	/** Which pet currently owns the relayed pointer gesture. */
+	overlayPet: undefined,
+};
+
+const stage = {
+	root: undefined,
+	layers: {},
+	pets: [],
+	width: 0,
+	height: 0,
+	bubbleTimer: undefined,
+	menu: undefined,
+	rafId: 0,
+	emergencyStop: false,
+};
+
+/* -------------------------------------------------------------------------- */
+/* DOM construction                                                          */
+/* -------------------------------------------------------------------------- */
+
+function buildDom() {
+	// Everything below is about one thing: this document must be transparent.
+	//
+	// In an overlay surface this frame covers the entire application, so an opaque
+	// canvas is not cosmetic — it is a white sheet over the whole UI. Three
+	// independent things can paint it, and all three are handled here because only one
+	// of them being wrong is enough to blank the app:
+	//
+	//   1. the host shell's loading splash (`position: fixed; inset: 0` filled with the
+	//      theme's body colour). It is supposed to be removed when the entry script
+	//      loads; in a panel nobody notices if it is not, but stretched over the whole
+	//      viewport it *is* the white screen. Removed explicitly rather than assumed.
+	//   2. `html`/`body` backgrounds from any stylesheet, including one that loads
+	//      after this script — hence `!important` through CSSOM, which cannot be lost
+	//      to load order the way a plain rule can.
+	//   3. the used `color-scheme`, which decides the colour of the canvas when the
+	//      root has no background at all — and which additionally has to MATCH the
+	//      embedder. Chromium gives a frame whose scheme disagrees with its parent's an
+	//      opaque canvas, however transparent its own root is; the app shell is dark, so
+	//      declaring `normal` (light) here is itself a cause of the white sheet. Mirror
+	//      the host's own scheme, which the host shell writes onto `<html>`.
+	document.getElementById("plugin-shell-splash")?.remove();
+	const hostColorScheme =
+		document.documentElement.getAttribute("data-mantine-color-scheme") === "light"
+			? "light"
+			: "dark";
+	for (const element of [document.documentElement, document.body]) {
+		element.style.setProperty("background", "transparent", "important");
+		element.style.setProperty("color-scheme", hostColorScheme, "important");
+	}
+	document.body.style.setProperty("margin", "0", "important");
+
+	const root = document.createElement("div");
+	root.className = "pet-stage";
+	// The stage must fill the iframe with or without `stage.css`. Without this floor,
+	// a stylesheet that 404s or arrives after the script leaves the stage at whatever
+	// height its emptied body has — which is zero, and zero is silent.
+	root.style.cssText = "position:relative;width:100%;height:100%;overflow:hidden";
+
+	const background = document.createElement("div");
+	background.className = "pet-background";
+	background.setAttribute("aria-hidden", "true");
+	background.style.cssText = "position:absolute;inset:0;pointer-events:none";
+
+	const pets = document.createElement("div");
+	pets.className = "pet-layer";
+	pets.style.cssText = "position:absolute;inset:0";
+
+	const bubble = document.createElement("div");
+	bubble.className = "pet-bubble";
+	bubble.hidden = true;
+	bubble.style.position = "absolute";
+
+	const hud = document.createElement("div");
+	hud.className = "pet-hud";
+	hud.hidden = true;
+	hud.style.position = "absolute";
+
+	root.append(background, pets, bubble, hud);
+	document.body.replaceChildren(root);
+	stage.root = root;
+	stage.layers = { background, pets, bubble, hud };
+	return root;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout                                                                    */
+/* -------------------------------------------------------------------------- */
+
+function layout() {
+	const rect = stage.root.getBoundingClientRect();
+	const previousWidth = stage.width;
+	const previousHeight = stage.height;
+	stage.width = Math.max(1, Math.floor(rect.width));
+	stage.height = Math.max(1, Math.floor(rect.height));
+
+	const config = state.config ?? {};
+	const target = Math.max(1, Math.min(6, config.count ?? 1));
+	while (stage.pets.length < target) {
+		const pet = new Pet(stage, stage.pets.length);
+		stage.pets.push(pet);
+		bindPet(pet);
+	}
+	while (stage.pets.length > target) {
+		stage.pets.pop()?.dispose();
+	}
+
+	for (const [index, pet] of stage.pets.entries()) {
+		if (!pet.placed) {
+			// A pet created after the stage already had a size (i.e. the user raised the
+			// count) never saw the initial-placement branch, so it would otherwise sit at
+			// x = 0 — or, after the proportional reflow below, at the exact centre on top
+			// of pet 0. Placing by index is what makes "count: 2" mean two fish side by
+			// side rather than one fish drawn twice.
+			pet.x = (stage.width * (index + 1)) / (target + 1);
+			pet.y = stage.height - pet.h / 2;
+			pet.placed = true;
+		} else if (previousWidth !== stage.width || previousHeight !== stage.height) {
+			// Proportional reflow after a resize: keeping absolute pixels would push pets
+			// outside a shrunken panel, and a resize should not teleport them.
+			pet.x = (pet.x / previousWidth) * stage.width;
+			pet.y = (pet.y / previousHeight) * stage.height;
+		}
+		pet.resize(stage.width, stage.height, config.scale ?? 1);
+	}
+
+	// Recorded here rather than once at boot: a panel that opens at 0×0 and grows a
+	// moment later is a normal Dockview start-up, and the self-check should show the
+	// size it settled on, not the size it briefly had.
+	record(
+		"size",
+		"舞台尺寸",
+		stage.width > 32 && stage.height > 32 ? "ok" : "warn",
+		`${stage.width}×${stage.height}（视口 ${window.innerWidth}×${window.innerHeight}）`,
+	);
+	// A resize or a pet-count change moves the union rectangle, and in overlay mode the
+	// host's hit region has to follow immediately or clicks land on the wrong place.
+	publishOverlayBounds(true);
+}
+
+function bindPet(pet) {
+	// In overlay mode the iframe is click-through by construction, so no DOM pointer
+	// event can ever reach these listeners; input arrives through `overlay.pointer`
+	// instead (see `installOverlayRelay`). Binding them anyway would be dead code
+	// that makes the next reader think dragging works natively here.
+	if (state.surface === "overlay") return;
+	pet.element.addEventListener("pointerdown", (event) => {
+		event.preventDefault();
+		pet.onPointerDown(event);
+	});
+	pet.element.addEventListener("pointermove", (event) => pet.onPointerMove(event));
+	pet.element.addEventListener("pointerup", (event) => pet.onPointerUp(event));
+	pet.element.addEventListener("pointercancel", (event) => pet.onPointerUp(event));
+	pet.element.addEventListener("contextmenu", (event) => {
+		event.preventDefault();
+		// Stop here: the stage-level handler below opens the same menu, and letting
+		// the event bubble would open it twice.
+		event.stopPropagation();
+		openMenu(event.clientX, event.clientY, pet);
+	});
+}
+
+/* -------------------------------------------------------------------------- */
+/* Frame loop                                                                */
+/* -------------------------------------------------------------------------- */
+
+function startLoop() {
+	if (stage.rafId || stage.emergencyStop) return;
+	state.lastFrameAt = performance.now();
+	stage.rafId = requestAnimationFrame(frame);
+}
+
+function stopLoop() {
+	if (!stage.rafId) return;
+	cancelAnimationFrame(stage.rafId);
+	stage.rafId = 0;
+}
+
+function frame(now) {
+	stage.rafId = 0;
+	if (state.paused || stage.emergencyStop) return;
+	const last = state.lastFrameAt || now;
+	// Clamp dt: a background tab returns a multi-second delta, which would fling
+	// every pet through a wall in one step.
+	const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+	state.lastFrameAt = now;
+
+	for (const pet of stage.pets) {
+		pet.tickClipTimer(now);
+		pet.update(dt);
+	}
+	resolveCollisions();
+	for (const pet of stage.pets) pet.render();
+	// Keeps the host's hit rectangle following the pets. Self-throttling, so calling it
+	// every frame costs a few comparisons rather than a bridge round trip per frame.
+	publishOverlayBounds();
+
+	state.frameCount += 1;
+	if (now - (state.fpsWindowAt ?? 0) > 1000) {
+		state.fps = Math.round((state.frameCount * 1000) / (now - (state.fpsWindowAt ?? now - 1000)));
+		state.frameCount = 0;
+		state.fpsWindowAt = now;
+		if (state.hud) renderHud();
+		// A report raised while the images were still loading repairs itself once the
+		// stage is actually drawing, so a slow first frame does not leave a permanent
+		// error banner over a working pet.
+		if (document.getElementById(FAULT_REPORT_ID) && !stageLooksPainted()) {
+			/* keep it */
+		} else if (document.getElementById(FAULT_REPORT_ID)) {
+			clearFaultReport();
+		}
+	}
+	stage.rafId = requestAnimationFrame(frame);
+}
+
+/**
+ * Push overlapping pets apart.
+ *
+ * Axis-aligned separation along the shallow axis, with half the correction each
+ * and an elastic exchange on the separating axis. Not a physics engine: the pets
+ * have no rotation and no stacking, and a real solver here would be visible only
+ * as jitter when six of them pile into the same corner.
+ */
+function resolveCollisions() {
+	if (!state.config?.collisions || stage.pets.length < 2) return;
+	for (let a = 0; a < stage.pets.length; a += 1) {
+		for (let b = a + 1; b < stage.pets.length; b += 1) {
+			const first = stage.pets[a];
+			const second = stage.pets[b];
+			if (first.dragging || second.dragging) continue;
+			const dx = second.x - first.x;
+			const dy = second.y - first.y;
+			const overlapX = (first.w + second.w) / 2 - Math.abs(dx);
+			const overlapY = (first.h + second.h) / 2 - Math.abs(dy);
+			if (overlapX <= 0 || overlapY <= 0) continue;
+			if (overlapX < overlapY) {
+				const push = (overlapX / 2) * (dx < 0 ? -1 : 1);
+				first.x -= push;
+				second.x += push;
+				const average = (first.vx + second.vx) / 2;
+				first.vx = average - Math.abs(first.vx - average) * 0.4;
+				second.vx = average + Math.abs(second.vx - average) * 0.4;
+			} else {
+				const push = (overlapY / 2) * (dy < 0 ? -1 : 1);
+				first.y -= push;
+				second.y += push;
+				const average = (first.vy + second.vy) / 2;
+				first.vy = average - Math.abs(first.vy - average) * 0.35;
+				second.vy = average + Math.abs(second.vy - average) * 0.35;
+			}
+		}
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+/* Bubble                                                                    */
+/* -------------------------------------------------------------------------- */
+
+function showBubble(text, options = {}) {
+	const bubble = stage.layers.bubble;
+	if (!text) {
+		bubble.hidden = true;
+		return;
+	}
+	bubble.textContent = text;
+	bubble.dataset.tone = options.tone ?? "info";
+	bubble.hidden = false;
+	// Anchor above the first pet, clamped into the stage.
+	const pet = stage.pets[0];
+	if (pet) {
+		const left = Math.min(Math.max(pet.x, 90), Math.max(90, stage.width - 90));
+		bubble.style.left = `${left}px`;
+		bubble.style.top = `${Math.max(8, pet.y - pet.h / 2 - 14)}px`;
+	}
+	clearTimeout(stage.bubbleTimer);
+	if (options.sticky !== true) {
+		stage.bubbleTimer = setTimeout(() => {
+			bubble.hidden = true;
+		}, options.durationMs ?? 6000);
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+/* Context menu                                                              */
+/* -------------------------------------------------------------------------- */
+
+function closeMenu() {
+	stage.menu?.remove();
+	stage.menu = undefined;
+}
+
+function openMenu(clientX, clientY, pet) {
+	closeMenu();
+	const rect = stage.root.getBoundingClientRect();
+	const menu = document.createElement("div");
+	menu.className = "pet-menu";
+
+	const items = [
+		{ label: "换个动作", run: () => randomAction(pet) },
+		{ label: "刷新余额", run: () => void refreshBalance(true) },
+		{
+			label: pet.isAsleep ? "叫醒它" : "让它睡觉",
+			run: () => pet.setSleeping(!pet.isAsleep),
+		},
+		{ label: "全部复位", run: () => resetPets() },
+		{ separator: true },
+		{ label: "桌宠设置", run: () => openSettings() },
+		{ label: "自检信息", run: () => toggleHud(true) },
+	];
+	for (const item of items) {
+		if (item.separator) {
+			const line = document.createElement("div");
+			line.className = "pet-menu-separator";
+			menu.append(line);
+			continue;
+		}
+		const button = document.createElement("button");
+		button.type = "button";
+		button.className = "pet-menu-item";
+		button.textContent = item.label;
+		button.addEventListener("click", () => {
+			closeMenu();
+			item.run();
+		});
+		menu.append(button);
+	}
+
+	stage.root.append(menu);
+	const bounds = menu.getBoundingClientRect();
+	menu.style.left = `${Math.min(clientX - rect.left, Math.max(0, stage.width - bounds.width - 4))}px`;
+	menu.style.top = `${Math.min(clientY - rect.top, Math.max(0, stage.height - bounds.height - 4))}px`;
+
+	const dismiss = (event) => {
+		if (menu.contains(event.target)) return;
+		closeMenu();
+		document.removeEventListener("pointerdown", dismiss, true);
+	};
+	// Deferred: the pointerup that opened the menu would otherwise immediately close it.
+	setTimeout(() => document.addEventListener("pointerdown", dismiss, true), 0);
+}
+
+function randomAction(pet) {
+	if (!pet) return;
+	const categories = INDEX.pools.categories.filter((category) => pet.groupAllowed(category.group));
+	const pool = categories.flatMap((category) => category.clipIds);
+	if (pool.length === 0) return;
+	pet.playOnce(pet.pick(pool), () => pet.enterIdle());
+}
+
+function resetPets() {
+	for (const [index, pet] of stage.pets.entries()) {
+		pet.travel = undefined;
+		pet.vx = 0;
+		pet.vy = 0;
+		pet.x = (stage.width * (index + 1)) / (stage.pets.length + 1);
+		pet.y = stage.height - pet.h / 2;
+		pet.setFacing(1);
+		pet.sleepPhase = undefined;
+		pet.sleepSuite = undefined;
+		pet.enterIdle();
+	}
+	showBubble("都回到原位啦", { durationMs: 2000 });
+}
+
+async function openSettings() {
+	try {
+		const api = SDK.bridge();
+		await api.panel.open({ pluginId: PLUGIN_ID, contributionId: SETTINGS_VIEW_ID });
+		closeMenu();
+	} catch (error) {
+		showBubble("打不开设置面板，请从设置页进入「桌宠设置」", { tone: "warn", durationMs: 6000 });
+		SDK.report("warn", "panel.open failed", { message: String(error?.message ?? error) });
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+/* HUD / diagnostics                                                         */
+/* -------------------------------------------------------------------------- */
+
+function toggleHud(force) {
+	state.hud = force ?? !state.hud;
+	stage.layers.hud.hidden = !state.hud;
+	if (state.hud) {
+		renderDiagnostics();
+		renderHud();
+	}
+}
+
+function renderDiagnostics() {
+	if (!state.hud) return;
+	const hud = stage.layers.hud;
+	hud.replaceChildren();
+	const title = document.createElement("div");
+	title.className = "pet-hud-title";
+	title.textContent = "桌宠自检";
+	const close = document.createElement("button");
+	close.type = "button";
+	close.className = "pet-hud-close";
+	close.textContent = "×";
+	close.addEventListener("click", () => toggleHud(false));
+	title.append(close);
+	hud.append(title);
+
+	const list = document.createElement("div");
+	list.className = "pet-hud-list";
+	for (const entry of diagnostics) {
+		const row = document.createElement("div");
+		row.className = `pet-hud-row is-${entry.status}`;
+		const label = document.createElement("span");
+		label.className = "pet-hud-label";
+		label.textContent = entry.label;
+		const detail = document.createElement("span");
+		detail.className = "pet-hud-detail";
+		detail.textContent = entry.detail ?? "";
+		row.append(label, detail);
+		list.append(row);
+	}
+	hud.append(list);
+}
+
+function renderHud() {
+	if (!state.hud) return;
+	const hud = stage.layers.hud;
+	let stats = hud.querySelector(".pet-hud-stats");
+	if (!stats) {
+		stats = document.createElement("div");
+		stats.className = "pet-hud-stats";
+		hud.append(stats);
+	}
+	const pet = stage.pets[0];
+	stats.textContent = [
+		`${state.fps} fps`,
+		`${stage.pets.length} 只`,
+		pet ? `clipplay ${pet.lastClipId ?? "-"}` : "",
+		`${stage.width}×${stage.height}`,
+		state.balance?.ok ? `${Math.round(state.balance.percent ?? 0)}% 档${state.balance.tier}` : "",
+	]
+		.filter(Boolean)
+		.join(" · ");
+}
+
+/* -------------------------------------------------------------------------- */
+/* Self-describing failure report                                             */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * When nothing appears, the panel has to say why.
+ *
+ * A desktop pet that renders nothing is indistinguishable from a plugin that
+ * failed to load, a panel that was never enabled, and a stylesheet that 404'd —
+ * and the user has no console to check, because this is a sandboxed iframe they
+ * cannot inspect. So if the stage is still not visibly painted a few seconds in,
+ * it draws its own diagnosis on top of everything, with inline styles that cannot
+ * themselves be broken by a missing stylesheet.
+ */
+const FAULT_REPORT_ID = "pet-fault-report";
+
+function faultFacts(trigger) {
+	const rect = stage.root?.getBoundingClientRect();
+	const body = document.body.getBoundingClientRect();
+	let sheets;
+	try {
+		sheets = [...document.styleSheets].map((sheet) => sheet.href ?? "inline").join(", ");
+	} catch (error) {
+		sheets = `读取失败：${error?.message ?? error}`;
+	}
+	const stagePosition = stage.root ? getComputedStyle(stage.root).position : "缺失";
+	const lines = [
+		`桌宠没有正常绘制（${trigger}）`,
+		"",
+		`iframe 视口    ${window.innerWidth}×${window.innerHeight}  dpr=${window.devicePixelRatio}`,
+		`body           ${Math.round(body.width)}×${Math.round(body.height)}`,
+		`舞台 rect      ${rect ? `${Math.round(rect.width)}×${Math.round(rect.height)} @ ${Math.round(rect.left)},${Math.round(rect.top)}` : "缺失"}`,
+		`舞台 position  ${stagePosition}${stagePosition === "relative" ? "" : "   ← 样式表可能没有生效"}`,
+		`样式表         ${sheets || "(无)"}`,
+		`动画索引       ${INDEX.clips.length} 段 / ${INDEX.profile}`,
+		`宠物           ${stage.pets.length} 只`,
+		...stage.pets.map((pet, index) => {
+			const box = pet.element.getBoundingClientRect();
+			const frame = pet.player.layers[pet.player.front];
+			return `  #${index} ${Math.round(box.width)}×${Math.round(box.height)} @ ${Math.round(box.left)},${Math.round(box.top)} clip=${pet.lastClipId ?? "none"} img=${frame.naturalWidth}×${frame.naturalHeight} src=${(frame.currentSrc || "").split("/").pop() || "(空)"}`;
+		}),
+		"",
+		"自检：",
+		...diagnostics.map((entry) => `  [${entry.status}] ${entry.label}: ${entry.detail ?? ""}`),
+	];
+	return lines.join("\n");
+}
+
+function showFaultReport(reason) {
+	let report = document.getElementById(FAULT_REPORT_ID);
+	if (!report) {
+		report = document.createElement("pre");
+		report.id = FAULT_REPORT_ID;
+		report.style.cssText = [
+			"position:fixed",
+			"inset:8px",
+			"z-index:2147483647",
+			"margin:0",
+			"padding:10px 12px",
+			"overflow:auto",
+			"white-space:pre-wrap",
+			"font:11px/1.55 ui-monospace,Consolas,monospace",
+			"color:#ffd7d7",
+			"background:rgba(24,12,14,.95)",
+			"border:1px solid #b03040",
+			"border-radius:8px",
+		].join(";");
+		document.body.append(report);
+	}
+	report.textContent = faultFacts(reason);
+	SDK.report("error", `stage not painted: ${reason}`, { report: report.textContent.slice(0, 1200) });
+}
+
+function clearFaultReport() {
+	document.getElementById(FAULT_REPORT_ID)?.remove();
+}
+
+/** A stage that is sized and has at least one decoded frame is considered drawn. */
+function stageLooksPainted() {
+	const rect = stage.root?.getBoundingClientRect();
+	if (!rect || rect.width < 32 || rect.height < 32) return "舞台尺寸为 0";
+	const painted = stage.pets.some((pet) => {
+		const layer = pet.player.layers[pet.player.front];
+		return layer.complete && layer.naturalWidth > 0;
+	});
+	return painted ? undefined : "没有任何一帧动画解码成功";
+}
+
+function installVisibilityWatchdog() {
+	setTimeout(() => {
+		const reason = stageLooksPainted();
+		if (reason) showFaultReport(reason);
+	}, 3200);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Overlay surface: pointer relay + interactive rectangle                      */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Where this view was mounted, and whether the host can relay pointer input.
+ *
+ * `context.get` is a host-local method: it answers from the same snapshot as the
+ * handshake, so `surface.kind` is authoritative and available before the first
+ * frame. A host that predates the overlay surface simply reports a dock surface,
+ * and nothing here changes.
+ */
+async function detectSurface() {
+	let kind;
+	try {
+		const context = await SDK.bridge().getContext();
+		kind = context?.surface?.kind;
+	} catch {
+		kind = undefined;
+	}
+	state.surface = kind === "overlay" ? "overlay" : "panel";
+	state.overlayApi = state.surface === "overlay" ? SDK.overlay() : undefined;
+	return kind;
+}
+
+/** The pet whose sprite box contains a viewport point, topmost last. */
+function petAtPoint(x, y) {
+	for (let index = stage.pets.length - 1; index >= 0; index -= 1) {
+		const pet = stage.pets[index];
+		if (Math.abs(x - pet.x) <= pet.w / 2 && Math.abs(y - pet.y) <= pet.h / 2) return pet;
+	}
+	return undefined;
+}
+
+/**
+ * Turn the host's relayed pointer stream into the same handlers the dock surface
+ * gets from real DOM events.
+ *
+ * The events are synthesized, so anything the handlers do that depends on the
+ * event being trusted — pointer capture in particular — is already wrapped in a
+ * try/catch inside `Pet`, where it is an optimisation rather than a requirement.
+ */
+function installOverlayRelay() {
+	SDK.onNotification((message) => {
+		if (message?.method !== "overlay.pointer") return;
+		const params = message.params ?? {};
+		const x = Number(params.x);
+		const y = Number(params.y);
+		if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+		const event = {
+			clientX: x,
+			clientY: y,
+			pointerId: Number.isFinite(params.pointerId) ? params.pointerId : 1,
+			button: 0,
+			buttons: Number.isFinite(params.buttons) ? params.buttons : 0,
+			preventDefault() {},
+			stopPropagation() {},
+		};
+
+		if (params.type === "down") {
+			const pet = petAtPoint(x, y);
+			if (!pet) return;
+			state.overlayPet = pet;
+			pet.onPointerDown(event);
+			return;
+		}
+		const pet = state.overlayPet;
+		if (!pet) return;
+		if (params.type === "move") {
+			pet.onPointerMove(event);
+			return;
+		}
+		if (params.type === "up" || params.type === "cancel") {
+			state.overlayPet = undefined;
+			pet.onPointerUp(event);
+			// The pet has stopped moving, so the host's hit rectangle can tighten right
+			// away instead of waiting for the next throttled publish.
+			publishOverlayBounds(true);
+		}
+	});
+}
+
+let lastPublishedBounds;
+let lastPublishAt = 0;
+
+/**
+ * Publish the rectangle the host should make clickable.
+ *
+ * Bounds are the union of every pet's sprite box plus a margin. The margin exists
+ * for a specific reason: while a gesture is in flight the rectangle can only lag
+ * behind the pet (it is published at most ~10 times a second), and anything drawn
+ * outside the published rectangle would be invisible — the host clips nothing, but
+ * the *hit region* is what receives the pointer, so a lagging rectangle means
+ * missed clicks rather than missing pixels. A generous margin removes that.
+ */
+function publishOverlayBounds(force = false) {
+	if (state.surface !== "overlay" || !state.overlayApi) return;
+	if (stage.pets.length === 0) return;
+	const now = performance.now();
+	if (!force && now - lastPublishAt < 100) return;
+
+	let minX = Number.POSITIVE_INFINITY;
+	let minY = Number.POSITIVE_INFINITY;
+	let maxX = Number.NEGATIVE_INFINITY;
+	let maxY = Number.NEGATIVE_INFINITY;
+	for (const pet of stage.pets) {
+		minX = Math.min(minX, pet.x - pet.w / 2);
+		minY = Math.min(minY, pet.y - pet.h / 2);
+		maxX = Math.max(maxX, pet.x + pet.w / 2);
+		maxY = Math.max(maxY, pet.y + pet.h / 2);
+	}
+	if (!Number.isFinite(minX)) return;
+
+	const margin = 60;
+	const rect = {
+		x: Math.floor(minX - margin),
+		y: Math.floor(minY - margin),
+		width: Math.ceil(maxX - minX + margin * 2),
+		height: Math.ceil(maxY - minY + margin * 2),
+	};
+	if (
+		!force &&
+		lastPublishedBounds &&
+		Math.abs(rect.x - lastPublishedBounds.x) < 8 &&
+		Math.abs(rect.y - lastPublishedBounds.y) < 8 &&
+		Math.abs(rect.width - lastPublishedBounds.width) < 8 &&
+		Math.abs(rect.height - lastPublishedBounds.height) < 8
+	) {
+		return;
+	}
+	lastPublishedBounds = rect;
+	lastPublishAt = now;
+	try {
+		// The answer carries the applied (clamped) rectangle and the viewport size; the
+		// stage does not need either today, but ignoring it keeps the call fire-and-forget.
+		void state.overlayApi.setBounds(rect)?.catch?.(() => {});
+	} catch {
+		// A host that stops answering must not break the render loop.
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+/* Backend polling                                                           */
+/* -------------------------------------------------------------------------- */
+
+async function fetchState() {
+	const result = await SDK.callSafe("pet-state");
+	if (!result.ok) {
+		record("backend", "后端命令", "fail", result.error.message);
+		return undefined;
+	}
+	record("backend", "后端命令", "ok", `pet-state 往返成功`);
+	const value = result.value ?? {};
+	if (value.config) applyConfig(value.config);
+	state.balance = value.balance ?? null;
+	maybePlayBalance();
+	return value;
+}
+
+function applyConfig(config) {
+	const previous = state.config;
+	state.config = config;
+	if (!previous || previous.count !== config.count || previous.scale !== config.scale) {
+		layout();
+	}
+	if (!previous) {
+		for (const pet of stage.pets) pet.enterIdle();
+	}
+	applyBackground();
+}
+
+/**
+ * Balance → animation + bubble.
+ *
+ * Only fires on a *tier change*: the numeric balance is polled repeatedly and an
+ * animation on every poll would be a twitch every few seconds.
+ */
+function maybePlayBalance() {
+	const snapshot = state.balance;
+	if (!snapshot) return;
+	if (!snapshot.ok) {
+		if (state.balanceTier !== "error") {
+			state.balanceTier = "error";
+			const text =
+				snapshot.error?.kind === "missing_secret"
+					? "还没填余额 API Key"
+					: `余额查询失败：${snapshot.error?.message ?? "未知原因"}`;
+			showBubble(text, { tone: "warn", durationMs: 8000 });
+			SDK.bridge().notifications?.show?.({ message: text, title: "桌宠" })?.catch?.(() => {});
+		}
+		return;
+	}
+	const tier = typeof snapshot.tier === "number" ? snapshot.tier : undefined;
+	if (tier === undefined) return;
+	if (state.balanceTier === tier) return;
+	state.balanceTier = tier;
+	const pool = INDEX.pools.balance;
+	const clipId = pool[tier];
+	const pet = stage.pets[0];
+	if (pet && clipId) pet.playOnce(clipId, () => pet.enterIdle());
+	showBubble(snapshot.summary ?? "", { tone: tier >= 4 ? "warn" : "info", durationMs: 7000 });
+}
+
+async function refreshBalance(force) {
+	const result = await SDK.callSafe("pet-balance-refresh", { force });
+	if (!result.ok) {
+		record("balance", "余额查询", "fail", result.error.message);
+		return;
+	}
+	state.balance = result.value?.snapshot ?? state.balance;
+	maybePlayBalance();
+}
+
+/* -------------------------------------------------------------------------- */
+/* Background image (optional)                                               */
+/* -------------------------------------------------------------------------- */
+
+function applyBackground() {
+	// The stage is deliberately transparent by default: it sits in a Dockview panel
+	// above the app's own background, and painting an opaque rectangle inside a
+	// panel looks like a broken theme. A user who wants a scene supplies one later.
+	stage.layers.background.style.backgroundImage = "none";
+}
+
+/* -------------------------------------------------------------------------- */
+/* Boot                                                                      */
+/* -------------------------------------------------------------------------- */
+
+function wireGlobalErrorHandlers() {
+	window.addEventListener("error", (event) => {
+		record("js-error", "脚本异常", "fail", event.message);
+	});
+	window.addEventListener("unhandledrejection", (event) => {
+		record("js-error", "未捕获的 Promise", "fail", String(event.reason?.message ?? event.reason));
+	});
+	// A CSP violation inside the iframe is otherwise silent until something looks
+	// wrong, and the usual cause is this plugin asking for something the shell's
+	// policy forbids — worth naming explicitly.
+	document.addEventListener("securitypolicyviolation", (event) => {
+		record(
+			"csp",
+			"CSP 违规",
+			"fail",
+			`${event.violatedDirective} blocked ${String(event.blockedURI).slice(0, 120)}`,
+		);
+	});
+}
+
+function startVisibilityGating() {
+	const sync = () => {
+		const hidden = document.hidden;
+		state.paused = hidden || !state.intersecting;
+		if (state.paused) stopLoop();
+		else startLoop();
+	};
+	state.intersecting = true;
+	document.addEventListener("visibilitychange", sync);
+	// Dockview keeps an inactive tab's DOM mounted, so `document.hidden` stays
+	// false while the panel is invisible. An IntersectionObserver is the only
+	// reliable signal that this panel is actually on screen — and it is what makes
+	// the "hidden panel uses no CPU" claim true rather than aspirational.
+	if ("IntersectionObserver" in globalThis) {
+		const observer = new IntersectionObserver((entries) => {
+			state.intersecting = entries.some((entry) => entry.isIntersecting);
+			sync();
+		});
+		observer.observe(stage.root);
+	}
+}
+
+/**
+ * Prove the animation channel works before anything else relies on it.
+ *
+ * One clip, end to end: command → base64 → Blob → `decode()`. The GIF/PNG probes
+ * that used to be here are gone with the asset-route assumption they were testing —
+ * the host never served them either.
+ */
+async function probeAssets() {
+	const first = INDEX.clips[0];
+	if (!first) {
+		record("clip-bytes", "动画数据通道", "fail", "索引为空");
+		return;
+	}
+	const started = performance.now();
+	try {
+		const url = await clipUrl(first.index);
+		const image = new Image();
+		image.src = url;
+		await Promise.race([
+			image.decode(),
+			new Promise((_, reject) => setTimeout(() => reject(new Error("decode timeout")), 8000)),
+		]);
+		record(
+			"clip-bytes",
+			"动画数据通道",
+			image.naturalWidth > 0 ? "ok" : "fail",
+			`${first.id} ${image.naturalWidth}×${image.naturalHeight} ${Math.round(performance.now() - started)}ms`,
+		);
+	} catch (error) {
+		record("clip-bytes", "动画数据通道", "fail", String(error?.message ?? error));
+	}
+}
+
+async function boot() {
+	buildDom();
+	state.hud = false;
+	wireGlobalErrorHandlers();
+	startVisibilityGating();
+
+	// Right-clicking the empty part of the panel should reach the same menu as
+	// right-clicking a pet; without this the browser's own context menu appears
+	// inside the panel and there is no way back to the settings entry.
+	stage.root.addEventListener("contextmenu", (event) => {
+		event.preventDefault();
+		openMenu(event.clientX, event.clientY, stage.pets[0]);
+	});
+
+	// Observing the stage element rather than the document catches the case that
+	// actually happens: a Dockview panel is resized or re-docked while the window
+	// itself never changes size.
+	new ResizeObserver(() => {
+		if (state.config) layout();
+	}).observe(stage.root);
+
+	const env = SDK.environment();
+	record("bridge", "UI bridge", env.hasBridge ? "ok" : "fail", env.hasBridge ? "narrafork.* 可用" : "globalThis.narrafork 缺失");
+	const surfaceKind = await detectSurface();
+	record(
+		"surface",
+		"承载界面",
+		surfaceKind ? "ok" : "warn",
+		state.surface === "overlay"
+			? `overlay（${state.overlayApi ? "可交互：命中区域已上报" : "宿主不支持 overlay.setBounds，仅显示"}）`
+			: `${surfaceKind ?? "未知"}（面板模式，DOM 指针事件）`,
+	);
+	record(
+		"asset-root",
+		"资源根路径",
+		env.assetRoot ? "ok" : "fail",
+		env.assetRoot ? env.assetRoot.replace(/^https?:\/\/[^/]+/, "") : "document.currentScript 不可用",
+	);
+	record("index", "动画索引", INDEX.clips.length > 0 ? "ok" : "fail", `${INDEX.clips.length} 段 / ${INDEX.profile}`);
+
+	// Lay out before any network call: the stage geometry should not depend on
+	// whether the backend answers, so a dead backend still shows a pet.
+	layout();
+
+	// Whether `stage.css` actually took effect.
+	//
+	// NOT by checking `position: relative` on the stage: that is now also set
+	// inline, so it would pass with no stylesheet at all — a self-check that
+	// cannot fail is worse than none. `body { overflow: hidden }` comes from the
+	// stylesheet alone, so it is the honest probe.
+	let sheetCount;
+	try {
+		sheetCount = document.styleSheets.length;
+	} catch {
+		sheetCount = -1;
+	}
+	const bodyOverflow = getComputedStyle(document.body).overflow;
+	record(
+		"style",
+		"样式表",
+		bodyOverflow === "hidden" ? "ok" : "warn",
+		`${sheetCount} 个样式表，body overflow=${bodyOverflow}${bodyOverflow === "hidden" ? "" : "（stage.css 可能没加载，外观会不正确）"}`,
+	);
+
+	await probeAssets();
+	const value = await fetchState();
+	record("ready", "舞台就绪", value ? "ok" : "warn", value ? `v${value.version ?? "?"}` : "后端未响应");
+
+	state.ready = true;
+	const failures = diagnostics.filter((entry) => entry.status === "fail");
+	// Push the whole self-check to the backend once, regardless of outcome. The
+	// panel is an opaque-origin iframe the user cannot inspect, so without this the
+	// only record of "what the panel saw" is the panel's own pixels.
+	void SDK.callSafe("pet-log", {
+		level: failures.length > 0 ? "error" : "info",
+		message: "stage boot",
+		detail: {
+			version: value?.version,
+			diagnostics: diagnostics.map((entry) => ({
+				id: entry.id,
+				status: entry.status,
+				detail: entry.detail ?? null,
+			})),
+			env: SDK.environment(),
+			stage: { width: stage.width, height: stage.height, pets: stage.pets.length },
+			// The measured result, not the intent: an overlay that reports white here is
+			// the white screen, and this line says so without needing devtools.
+			backdrop: {
+				html: getComputedStyle(document.documentElement).backgroundColor,
+				body: getComputedStyle(document.body).backgroundColor,
+				colorScheme: getComputedStyle(document.documentElement).colorScheme,
+				splashPresent: Boolean(document.getElementById("plugin-shell-splash")),
+				bodyChildren: document.body.children.length,
+			},
+		},
+	});
+	if (failures.length > 0) toggleHud(true);
+	// A `warn` is not cosmetic either: the stylesheet row warns when `stage.css` did
+	// not take effect, which on the overlay surface means an opaque canvas over the
+	// whole app. Opening the HUD on any non-ok row makes that visible instead of
+	// leaving the user with a blank page and no explanation.
+	else if (diagnostics.some((entry) => entry.status === "warn")) toggleHud(true);
+	else if (state.config?.diagnostics) toggleHud(true);
+	else showBubble("桌宠已就位：拖我、点我、右键试试", { durationMs: 4000 });
+
+	startLoop();
+	installVisibilityWatchdog();
+	if (state.surface === "overlay") {
+		installOverlayRelay();
+		// Publish once immediately: until the host knows the rectangle, the overlay is
+		// purely decorative, and there is no reason to wait for the first frame.
+		publishOverlayBounds(true);
+	}
+	// Slow poll: config changes made in the settings panel should reach the stage
+	// without a reload. Balance has its own, much slower, staleness check inside
+	// `pet-state`, so this interval is about settings, not about the network.
+	setInterval(() => {
+		if (state.paused) return;
+		void fetchState();
+	}, 12_000);
+
+	globalThis.__dshPetDiagnostics = () => diagnostics.slice();
+	globalThis.__dshPetStage = stage;
+	// Deliberately callable: the fault report is the one part of the stage that has
+	// to work when everything else is broken, so it must be possible to raise it
+	// without breaking something first.
+	globalThis.__dshPetFault = (reason) => showFaultReport(reason ?? "手动触发");
+}
+
+// A resize must re-run layout, and `ResizeObserver` also catches the first paint
+// (where a `window.resize` listener would miss a panel that opened at a size it
+// never changes from).
+boot().catch((error) => {
+	record("boot", "启动", "fail", String(error?.message ?? error));
+	SDK.report("error", "stage boot failed", { message: String(error?.message ?? error) });
+	// Even a failed boot must paint something: a blank iframe is indistinguishable
+	// from a plugin that never loaded.
+	if (!stage.root) buildDom();
+	toggleHud(true);
+});
+
+/* -------------------------------------------------------------------------- */
+/* Inlined build artefacts (replaced by tools/build-ui.mjs)                  */
+/* -------------------------------------------------------------------------- */
+
+// PET_ANIM_INDEX, PET_SOUND_CLICK, PET_PROBE_GIF and PET_PROBE_PNG are injected
+// ahead of this file by the build; they are declared here as comments only so the
+// dependency is greppable from the stage's own source.
