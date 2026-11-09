@@ -86,72 +86,6 @@ function clipDurationMs(clip) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Sound                                                                      */
-/* -------------------------------------------------------------------------- */
-
-/**
- * Click sound, decoded from an inlined base64 WAV.
- *
- * `media-src 'none'` means `<audio>` and `<video>` cannot load anything, but
- * WebAudio decoding an ArrayBuffer the plugin already holds is not a media
- * element and is not covered by that directive. This is the only way to make a
- * plugin panel produce sound at all.
- */
-const sound = {
-	context: undefined,
-	buffer: undefined,
-	failed: false,
-	/** Set once a blocked playback has been reported, so the log does not fill up. */
-	reportedBlocked: false,
-	async ensure() {
-		if (this.buffer || this.failed) return this.buffer;
-		if (!PET_SOUND_CLICK) {
-			this.failed = true;
-			return undefined;
-		}
-		try {
-			const binary = atob(PET_SOUND_CLICK);
-			const bytes = new Uint8Array(binary.length);
-			for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
-			this.context = this.context ?? new (globalThis.AudioContext ?? globalThis.webkitAudioContext)();
-			this.buffer = await this.context.decodeAudioData(bytes.buffer);
-			return this.buffer;
-		} catch (error) {
-			this.failed = true;
-			record("sound", "音效解码", "warn", String(error?.message ?? error));
-			return undefined;
-		}
-	},
-	async play(volume) {
-		const buffer = await this.ensure();
-		if (!buffer || !this.context) return;
-		// Autoplay policy: a context created before a user gesture starts suspended.
-		// Every call here follows a pointer event, so resuming is legal and cheap.
-		if (this.context.state === "suspended") await this.context.resume().catch(() => {});
-		if (this.context.state !== "running") {
-			/*
-			 * In overlay mode the "pointer event" is a relayed notification, and a
-			 * `postMessage` is not user activation — so the browser may refuse to start
-			 * audio in this frame no matter how often it is poked. That is invisible from
-			 * the outside (the pet simply never clicks), so say it once instead of leaving
-			 * a soundless pet to be diagnosed from scratch.
-			 */
-			if (!this.reportedBlocked) {
-				this.reportedBlocked = true;
-				record("sound", "音效播放", "warn", `AudioContext ${this.context.state}`);
-			}
-			return;
-		}
-		const source = this.context.createBufferSource();
-		source.buffer = buffer;
-		const gain = this.context.createGain();
-		gain.gain.value = Math.max(0, Math.min(1, volume));
-		source.connect(gain).connect(this.context.destination);
-		source.start();
-	},
-};
-
-/* -------------------------------------------------------------------------- */
 /* Clip bytes → Blob URLs                                                     */
 /* -------------------------------------------------------------------------- */
 
@@ -693,7 +627,6 @@ class Pet {
 			return;
 		}
 
-		if (this.config?.sound?.enabled) void sound.play(this.config.sound.volume ?? 0.6);
 		const clickPool = INDEX.pools.click.filter(() => this.groupAllowed("click"));
 		if (clickPool.length > 0) this.playOnce(this.pick(clickPool), () => this.enterIdle());
 		else this.enterIdle(600);
@@ -1166,12 +1099,16 @@ function openMenu(clientX, clientY, pet) {
 	const menu = document.createElement("div");
 	menu.className = "pet-menu";
 
+	// `pet` is optional: the menu is also opened for a right-click on empty stage, and
+	// reading `pet.isAsleep` unguarded threw before a single node was appended — the menu
+	// simply never appeared.
+	const asleep = Boolean(pet?.isAsleep);
 	const items = [
 		{ label: "换个动作", run: () => randomAction(pet) },
 		{ label: "刷新余额", run: () => void refreshBalance(true) },
 		{
-			label: pet.isAsleep ? "叫醒它" : "让它睡觉",
-			run: () => pet.setSleeping(!pet.isAsleep),
+			label: asleep ? "叫醒它" : "让它睡觉",
+			run: () => pet?.setSleeping(!asleep),
 		},
 		{ label: "全部复位", run: () => resetPets() },
 		{ separator: true },
@@ -1458,19 +1395,11 @@ function installOverlayRelay() {
 			clientX: x,
 			clientY: y,
 			pointerId: Number.isFinite(params.pointerId) ? params.pointerId : 1,
-			button: Number.isFinite(params.button) ? params.button : 0,
+			button: 0,
 			buttons: Number.isFinite(params.buttons) ? params.buttons : 0,
 			preventDefault() {},
 			stopPropagation() {},
 		};
-
-		// The frame is click-through, so the browser's own `contextmenu` never fires in
-		// here and the menu would be unreachable. The host relays its own instead; open
-		// exactly what the dock surface opens from the real event.
-		if (params.type === "contextmenu") {
-			openMenu(x, y, petAtPoint(x, y) ?? stage.pets[0]);
-			return;
-		}
 
 		if (params.type === "down") {
 			const pet = petAtPoint(x, y);
@@ -1861,6 +1790,6 @@ boot().catch((error) => {
 /* Inlined build artefacts (replaced by tools/build-ui.mjs)                  */
 /* -------------------------------------------------------------------------- */
 
-// PET_ANIM_INDEX, PET_SOUND_CLICK, PET_PROBE_GIF and PET_PROBE_PNG are injected
-// ahead of this file by the build; they are declared here as comments only so the
-// dependency is greppable from the stage's own source.
+// PET_ANIM_INDEX, PET_PROBE_GIF and PET_PROBE_PNG are injected ahead of this file by
+// the build; they are declared here as comments only so the dependency is greppable
+// from the stage's own source.

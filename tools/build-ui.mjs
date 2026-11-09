@@ -10,9 +10,7 @@
  *     way to share them at runtime;
  *  2. `anim/index.json` is inlined into the stage, because `fetch()` is blocked —
  *     this is the difference between a player that starts instantly and one that
- *     cannot start at all;
- *  3. the click sound is inlined as base64, because `media-src 'none'` rules out
- *     `<audio>` and the asset route cannot serve `.wav` with a usable MIME type.
+ *     cannot start at all.
  *
  * No transpiling, no tree shaking, no minification. The source is the artefact;
  * a build step that rewrote it would make the shipped code unreadable to anyone
@@ -29,16 +27,6 @@ import { ANIM_DIR, ASSETS_DIR, PLUGIN_DIR, formatBytes, posix } from "./paths.mj
 
 const UI_DIR = path.join(PLUGIN_DIR, "ui");
 const INDEX_FILE = path.join(ANIM_DIR, "index.json");
-/*
- * The click sound is a build input, not a packaged file: it is inlined as base64 below.
- * It ships inside the package (`assets/sound/`), so a checkout of this repository alone
- * can rebuild the bundle; the second entry keeps the older layout — where the plugin
- * lived in a subdirectory of the dsh-pet repository — working.
- */
-const SOUND_CANDIDATES = [
-	path.join(PLUGIN_DIR, "assets", "sound", "click-duck.wav"),
-	path.join(ASSETS_DIR, "sound", "click-duck.wav"),
-];
 
 /**
  * Entries and what each one needs inlined.
@@ -53,14 +41,12 @@ const ENTRIES = [
 		source: "stage.js",
 		output: "stage.iife.js",
 		needsIndex: true,
-		needsSound: true,
 	},
 	{
 		name: "settings",
 		source: "settings.js",
 		output: "settings.iife.js",
 		needsIndex: false,
-		needsSound: false,
 		needsProbes: false,
 	},
 ];
@@ -113,19 +99,6 @@ async function main() {
 		throw new Error("missing anim/index.json — run tools/transcode.mjs and tools/build-index.mjs first");
 	}
 
-	let soundBase64 = "";
-	for (const candidate of SOUND_CANDIDATES) {
-		try {
-			soundBase64 = (await fs.readFile(candidate)).toString("base64");
-			break;
-		} catch {
-			/* try the next location */
-		}
-	}
-	if (!soundBase64) {
-		process.stderr.write("[build-ui] 注意：找不到点击音效，舞台将静音\n");
-	}
-
 	for (const entry of ENTRIES) {
 		const body = await fs.readFile(path.join(UI_DIR, entry.source), "utf8");
 		const injected = [];
@@ -152,9 +125,6 @@ async function main() {
 
 			};
 			injected.push(`const PET_ANIM_INDEX = ${literal(slim)};`);
-		}
-		if (entry.needsSound) {
-			injected.push(`const PET_SOUND_CLICK = ${literal(soundBase64)};`);
 		}
 
 		const bundle = [

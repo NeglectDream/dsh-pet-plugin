@@ -65,12 +65,6 @@ export const DEFAULT_CONFIG = Object.freeze({
 	/** Bounds of the wait between two ambient actions, in milliseconds. */
 	idleMinMs: 4000,
 	idleMaxMs: 9000,
-	/**
-	 * Click sound. On by default, matching the original: the click is the one piece of
-	 * feedback that makes the pet feel physical, and a pet that silently ignores a poke
-	 * reads as broken rather than as "audio is off". Volume 0.5 is the original's too.
-	 */
-	sound: Object.freeze({ enabled: true, volume: 0.5 }),
 	balance: Object.freeze({
 		/**
 		 * `"host"` reuses NarraFork's own relay-station balance (no configuration at
@@ -190,12 +184,6 @@ export function sanitizeConfig(raw) {
 		config.animationGroups.idle = true;
 		warnings.push("至少需要保留一个动画分组，已重新启用 idle");
 	}
-
-	const sound = isPlainObject(source.sound) ? source.sound : {};
-	config.sound = {
-		enabled: sound.enabled === undefined ? defaults.sound.enabled : Boolean(sound.enabled),
-		volume: clampNumber(sound.volume, defaults.sound.volume, 0, 1),
-	};
 
 	const balance = isPlainObject(source.balance) ? source.balance : {};
 	const providerId = balance.providerId;

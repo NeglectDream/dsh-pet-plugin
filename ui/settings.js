@@ -341,7 +341,6 @@ function App() {
 					h(M.Tabs.Tab, { value: "pet" }, "宠物"),
 					h(M.Tabs.Tab, { value: "anim" }, "动画"),
 					h(M.Tabs.Tab, { value: "physics" }, "物理"),
-					h(M.Tabs.Tab, { value: "sound" }, "音效"),
 					h(M.Tabs.Tab, { value: "balance" }, "余额"),
 					h(M.Tabs.Tab, { value: "about" }, "关于"),
 				),
@@ -499,34 +498,6 @@ function App() {
 							format: (value) => `${Math.round(value * 100)}%`,
 						}),
 						h(M.Text, { size: "xs", c: "dimmed" }, FIELD_HELP.friction),
-					),
-				),
-
-				/* ---------------------------------------------------- 音效 */
-				h(
-					M.Tabs.Panel,
-					{ value: "sound", pt: "sm" },
-					h(
-						Section,
-						{
-							title: "点击音效",
-							description:
-								"宿主禁止 iframe 加载任何媒体文件（media-src 'none'），所以音效以 base64 内联在插件里，用 WebAudio 解码播放。",
-						},
-						h(Toggle, {
-							label: "启用",
-							checked: config.sound.enabled,
-							onChange: (value) => commit({ sound: { ...config.sound, enabled: value } }),
-						}),
-						h(SliderRow, {
-							label: "音量",
-							value: config.sound.volume,
-							min: 0,
-							max: 1,
-							step: 0.02,
-							onChange: (value) => commit({ sound: { ...config.sound, volume: value } }),
-							format: (value) => `${Math.round(value * 100)}%`,
-						}),
 					),
 				),
 
