@@ -1,12 +1,14 @@
 # DSH Pet for NarraFork
 
-一只住在 NarraFork 面板里的蓝色大肥鱼。114 段带 alpha 的动画、拖拽甩抛、点击 Q 弹、多只同屏互撞，还会按余额档位演戏。
+一只**浮在 NarraFork 整个界面之上**的蓝色大肥鱼。114 段带 alpha 的动画、拖拽甩抛、点击 Q 弹、双击弹弓、多只同屏互撞，还会按余额档位演戏。
+
+2.0 起宠物走宿主的 `overlay` 表面——覆盖全视口、默认点击穿透的透明图层，不再是面板里的一小块。面板模式仍然可用（宿主不支持该表面时会自动退回去）。
 
 本包是 [dsh-pet](https://github.com/PC2005-cloud/dsh-pet)（DSH / Cordis 插件）的 NarraFork 移植版。**只做插件包，不改动 NarraFork 核心**——所以能力边界由宿主决定，而不是由本插件决定。本文最后一节如实列出因此缺失的功能。
 
 - 插件 id：`cn.mcd7.neglectdream.dsh-pet`
 - 版本：`2.0.0`
-- 许可证：MIT
+- 许可证：代码 MIT；`anim/` 下的动画素材为 CC BY-NC-SA 4.0（见仓库 README 的「许可与署名」）
 - 运行时依赖：无
 
 ---
@@ -142,7 +144,7 @@ manifest 里写了 `allow: [...]`，但宿主**不读取**这个字段（`manife
 
 | 缺失 | 原因 |
 |---|---|
-| 全屏置顶浮层 / 桌面级漫游 | 宿主只有 `workspace`/`director`/`focus`/`settings`/`provider-settings` 五个 surface，桌宠被限制在面板矩形内 |
+| 桌面级漫游 / 透明置顶小窗 | 没有 Electron。2.0 起宠物可借 `overlay` 表面浮在**整个页面**之上，但仍限制在浏览器窗口内 |
 | 系统托盘、多显示器、DPI 适配 | 没有 Electron |
 | `<video>` / `<audio>` 播放 | iframe 的 `media-src` 为 `'none'` |
 | 语音合成 / 语音识别 | 宿主没有对应 API，且音频本来也播不出来 |

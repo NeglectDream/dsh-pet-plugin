@@ -20,3 +20,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+The MIT grant above covers the source code in this repository. The animation
+material under `anim/` is derived from https://github.com/PC2005-cloud/dsh-pet and
+is NOT MIT: it is licensed CC BY-NC-SA 4.0 (attribution, non-commercial, share
+alike). The attribution and the original notice are reproduced in the "?????"
+section of README.md.
