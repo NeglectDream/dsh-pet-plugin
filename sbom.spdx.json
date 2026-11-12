@@ -8,11 +8,21 @@
 		{
 			"SPDXID": "SPDXRef-cn.mcd7.neglectdream.dsh-pet",
 			"name": "cn.mcd7.neglectdream.dsh-pet",
-			"versionInfo": "2.0.0",
+			"versionInfo": "2.2.0",
 			"licenseDeclared": "MIT",
 			"licenseConcluded": "MIT",
 			"supplier": "Person: NeglectDream",
-			"comment": "Zero runtime dependencies. The backend uses only node/bun built-ins; both UI entries are hand-written and bundle no library. The 114 animation WebPs are derived from this project's own webm sources by tools/transcode.mjs and carry the same licence."
+			"comment": "Zero runtime dependencies. Backend uses node/bun built-ins; UI contains audited MIT bubble source/presets but no third-party runtime library. The 114 WebP animations and existing duck sound retain their upstream asset licences, not the MIT code licence."
+		},
+		{
+			"SPDXID": "SPDXRef-bubble-source",
+			"name": "DeepSeek-Balance-Whale-Widget",
+			"versionInfo": "5247dd6813d6e4430728f39ccc63d43cda046022",
+			"licenseDeclared": "MIT",
+			"licenseConcluded": "MIT",
+			"downloadLocation": "https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget",
+			"copyrightText": "Copyright (c) 2026 MeteorNOX",
+			"comment": "Reviewed bubble geometry, text presets and styling only; no upstream GIF, PNG, audio or fonts are included. See ui/bubble-presets.json and source audit for exclusions. Not a runtime dependency."
 		},
 		{
 			"SPDXID": "SPDXRef-ffmpeg",
@@ -26,6 +36,11 @@
 		}
 	],
 	"relationships": [
+		{
+			"spdxElementId": "SPDXRef-cn.mcd7.neglectdream.dsh-pet",
+			"relationshipType": "GENERATED_FROM",
+			"relatedSpdxElement": "SPDXRef-bubble-source"
+		},
 		{
 			"spdxElementId": "SPDXRef-ffmpeg",
 			"relationshipType": "BUILD_TOOL_OF",

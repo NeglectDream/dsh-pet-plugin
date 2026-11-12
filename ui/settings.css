@@ -33,3 +33,193 @@ body {
 [data-dsh-pet-settings] .mantine-Text-root {
 	overflow-wrap: anywhere;
 }
+
+[data-dsh-pet-settings] *,
+[data-dsh-pet-settings] *::before,
+[data-dsh-pet-settings] *::after {
+	box-sizing: border-box;
+}
+
+[data-dsh-pet-settings] .mantine-Tabs-list {
+	flex-wrap: wrap;
+	gap: 2px;
+}
+
+[data-dsh-pet-settings] .mantine-Tabs-tab {
+	padding: 9px 10px;
+	font-size: 12px;
+}
+
+[data-dsh-pet-settings] .mantine-InputWrapper-root,
+[data-dsh-pet-settings] .mantine-Stack-root,
+[data-dsh-pet-settings] .mantine-Group-root > div {
+	min-width: 0;
+}
+
+[data-dsh-pet-settings] .mantine-Alert-message {
+	overflow-wrap: anywhere;
+}
+
+[data-dsh-pet-settings] .pet-settings-columns {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+
+[data-dsh-pet-settings] .pet-settings-facts {
+	display: grid;
+	grid-template-columns: minmax(100px, 0.8fr) minmax(0, 1.4fr);
+	gap: 7px 12px;
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.6;
+}
+
+[data-dsh-pet-settings] .pet-settings-facts dt {
+	color: var(--mantine-color-dimmed);
+}
+
+[data-dsh-pet-settings] .pet-settings-facts dd {
+	margin: 0;
+	overflow-wrap: anywhere;
+	font-variant-numeric: tabular-nums;
+}
+
+[data-dsh-pet-settings] .pet-settings-form,
+[data-dsh-pet-settings] .pet-settings-preview {
+	padding: 12px;
+	border: 1px solid var(--mantine-color-default-border, #868e9655);
+	border-radius: var(--mantine-radius-md, 8px);
+	background: var(--mantine-color-body);
+}
+
+[data-dsh-pet-settings] .pet-settings-preview-stage {
+	position: relative;
+	isolation: isolate;
+	width: 100%;
+	max-width: 460px;
+	height: 300px;
+	margin: 8px auto;
+	border-radius: 8px;
+	background: color-mix(in srgb, var(--mantine-color-text) 3%, transparent);
+	overflow: hidden;
+}
+
+[data-dsh-pet-settings] .pet-settings-preview-bubbles {
+	position: absolute;
+	inset: 0;
+}
+
+[data-dsh-pet-settings] .pet-settings-preview-anchor {
+	position: absolute;
+	left: 50%;
+	top: 210px;
+	width: 160px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transform: translateX(-50%);
+	border: 1px dashed var(--mantine-color-dimmed, #868e96);
+	border-radius: 24px;
+	font-size: 10px;
+	color: var(--mantine-color-dimmed);
+	pointer-events: none;
+	z-index: -1;
+}
+
+[data-dsh-pet-settings] .pet-settings-details {
+	padding: 9px 0;
+	border-top: 1px solid var(--mantine-color-default-border, #868e9655);
+}
+
+[data-dsh-pet-settings] .pet-settings-details summary {
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 12.5px;
+	line-height: 1.6;
+	padding: 4px 0;
+}
+
+[data-dsh-pet-settings] .pet-settings-details summary:focus-visible {
+	outline: 2px solid var(--mantine-primary-color-filled, #228be6);
+	outline-offset: 3px;
+	border-radius: 3px;
+}
+
+[data-dsh-pet-settings] .pet-settings-preset-row,
+[data-dsh-pet-settings] .pet-settings-record {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 12px 0;
+	border-bottom: 1px solid var(--mantine-color-default-border, #868e9655);
+}
+
+[data-dsh-pet-settings] .pet-settings-preset-row:last-child,
+[data-dsh-pet-settings] .pet-settings-record:last-child {
+	border-bottom: 0;
+}
+
+/* The API-key row is a password field plus two buttons: on a narrow panel the
+   field has to shrink instead of pushing the buttons out of the card. */
+[data-dsh-pet-settings] .pet-settings-key-row {
+	display: flex;
+	align-items: flex-end;
+	gap: 8px;
+	min-width: 0;
+}
+
+[data-dsh-pet-settings] .pet-settings-key-row > * {
+	min-width: 0;
+}
+
+[data-dsh-pet-settings] .pet-settings-plain-text {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+[data-dsh-pet-settings] .pet-settings-audit {
+	max-height: 420px;
+	overflow-y: auto;
+	padding-right: 4px;
+	overscroll-behavior: contain;
+}
+
+[data-dsh-pet-settings] .pet-settings-table-scroll {
+	max-height: 330px;
+	overflow: auto;
+	overscroll-behavior: contain;
+}
+
+[data-dsh-pet-settings] .pet-settings-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 11px;
+	font-variant-numeric: tabular-nums;
+}
+
+[data-dsh-pet-settings] .pet-settings-table th,
+[data-dsh-pet-settings] .pet-settings-table td {
+	padding: 7px;
+	text-align: left;
+	border-bottom: 1px solid var(--mantine-color-default-border, #868e9655);
+	white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+	[data-dsh-pet-settings] .pet-settings-columns {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	[data-dsh-pet-settings] .pet-settings-facts {
+		grid-template-columns: minmax(82px, 0.75fr) minmax(0, 1.25fr);
+		gap: 7px 9px;
+		font-size: 11px;
+	}
+
+	[data-dsh-pet-settings] .mantine-Tabs-tab {
+		padding: 8px;
+		font-size: 11px;
+	}
+}

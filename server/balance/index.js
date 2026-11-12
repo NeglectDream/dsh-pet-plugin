@@ -1,276 +1,280 @@
 /**
- * Balance orchestration: percent semantics, tier index, cache, error classes.
+ * Structured snapshots for the single user-configured balance API.
  *
- * THE ONE NUMBER THE PET NEEDS
- * Everything visual about balance reduces to `percent` — how much of the
- * allowance has been *used*, 0 meaning untouched and 100 meaning nothing left.
- * Turning a provider's raw response into that single number is what these shape
- * handlers do, and doing it here (not in the UI) keeps one copy of the rules:
+ * ONE SOURCE, ISOLATED CACHES
+ * Every snapshot is scoped by a context key derived from the endpoint URL, the two
+ * response paths, the unit, the secret's fingerprint and the accounting time zone.
+ * Switching any of those therefore starts a *new* account: the previous numbers
+ * can never be shown as the new API's balance, and the ledger keeps them under
+ * their own identity instead of mixing units.
  *
- *  - `money`   — an account balance. Each wallet is divided by its currency's
- *                reference amount, so several currencies can be averaged without
- *                inventing an exchange rate.
- *  - `windows` — rolling / weekly / monthly usage percentages. The worst window
- *                wins: an almost-exhausted 5-hour window matters even when the
- *                monthly allowance is untouched.
- *  - `points`  — a bare remaining count with no ceiling. This shape *cannot*
- *                produce a percentage, and deliberately returns `undefined`
- *                rather than scaling against a made-up maximum.
- *
- * RETRY LIVES IN THE POLLER, NOT IN THE REQUEST
- * dsh-pet retried inside the request with 1s/4s/16s backoff. Here every read is
- * triggered by a UI `commands.execute`, whose bridge timeout is 10 s
- * (`PLUGIN_UI_DEFAULT_TIMEOUT_MS`) — a 21-second backoff inside one command
- * would guarantee a timeout instead of a retry. So one call is one attempt, the
- * stage re-calls on its own schedule, and a failure is *reported* rather than
- * hidden. That is the same recovery behaviour with a much better failure mode.
+ * FAILURE IS NOT ZERO
+ * A failed request preserves this context's last successful numbers and marks them
+ * `stale` so the panel can say "旧数据". A context that never succeeded stays
+ * empty. Nothing here reads a host balance file, a log or a database.
  */
 
+import { createHash } from "node:crypto";
 import { log } from "../log.js";
-import { readHostBalanceSnapshot } from "./host.js";
-import { findProvider } from "./providers.js";
+import { accountIdentity, createAccounting } from "../accounting.js";
+import { customProvider, CUSTOM_SECRET_KEY, REQUEST_DEADLINE_MS } from "./providers.js";
+import { POINTS_CURRENCY, isMoneyCurrency, measureAmount } from "./amounts.js";
 
 export const BALANCE_KEY = "balance.snapshot";
 export const BALANCE_SCOPE = { type: "global" };
+/** Internal identity only: the ledger schema is v1 and keeps providerId per account. */
+export const PROVIDER_ID = "custom";
+export const DEFAULT_THRESHOLDS = [20, 40, 60, 80, 100];
+const NOT_CONFIGURED_MESSAGE = "请配置第三方余额 API 和密钥";
+const REFRESH_SERIAL = Symbol.for("cn.mcd7.neglectdream.dsh-pet.balance.serial.v2");
 
-/** One read attempt must finish well inside the UI bridge's 10 s ceiling. */
-export const DEFAULT_DEADLINE_MS = 6000;
-
-/** Tier boundaries are 20 % apart; index 5 is reserved for "exactly exhausted". */
-export function balanceEventIndex(percent) {
+/** One shared rule: thresholds are inclusive starts, 100 is always exhausted. */
+export function balanceEventIndex(percent, thresholds = DEFAULT_THRESHOLDS) {
 	if (typeof percent !== "number" || !Number.isFinite(percent)) return undefined;
 	const clamped = Math.max(0, Math.min(100, percent));
-	if (clamped === 100) return 5;
-	const index = Math.floor(clamped / 20);
-	return index < 5 ? index : 4;
+	return thresholds.filter((threshold) => clamped >= threshold).length;
 }
 
-function moneyPercent(data) {
-	let remaining = 0;
-	let based = 0;
-	for (const wallet of data.wallets ?? []) {
-		const total = Number(wallet.total);
-		const full = Number(wallet.fullBalance);
-		// A currency with no reference amount is skipped, not guessed. An overdrawn
-		// wallet contributes a negative ratio, which is exactly right: it should pull
-		// the result to "completely used".
-		if (!Number.isFinite(total) || !Number.isFinite(full) || full <= 0) continue;
-		remaining += total / full;
-		based += 1;
-	}
-	if (based === 0) return undefined;
-	return Math.max(0, Math.min(100, 100 - remaining * 100));
-}
-
-function windowsPercent(data) {
-	const values = [data.rolling, data.weekly, data.monthly].filter(
-		(value) => typeof value === "number" && Number.isFinite(value),
-	);
-	if (values.length === 0) return undefined;
-	return Math.max(0, Math.min(100, Math.max(...values)));
-}
-
-function pointsPercent(data) {
-	// No ceiling in the data means no percentage; see the module comment.
-	if (typeof data.total === "number" && data.total > 0 && typeof data.remaining === "number") {
-		return Math.max(0, Math.min(100, 100 - (data.remaining / data.total) * 100));
-	}
-	return undefined;
-}
-
-const SHAPES = {
-	money: { percent: moneyPercent, summary: summarizeMoney },
-	windows: { percent: windowsPercent, summary: summarizeWindows },
-	points: { percent: pointsPercent, summary: summarizePoints },
-};
-
-function summarizeMoney(data) {
-	const visible = (data.wallets ?? [])
-		.filter((wallet) => Number(wallet.total) !== 0)
-		.sort((a, b) => (a.currency === "CNY" ? 0 : 1) - (b.currency === "CNY" ? 0 : 1));
-	const amount =
-		visible.length > 0
-			? visible.map((wallet) => (wallet.currency === "USD" ? "$" : "¥") + wallet.total).join(" / ")
-			: "¥0.00";
-	const tierLabel = data.tier === "peak" ? "峰" : data.tier === "idle" ? "谷" : undefined;
-	return tierLabel ? `余额（${tierLabel}）${amount}` : `余额 ${amount}`;
-}
-
-function summarizeWindows(data) {
-	const rows = [];
-	if (typeof data.rolling === "number") rows.push(`${data.rollingLabel ?? "5h"} ${Math.round(data.rolling)}%`);
-	if (typeof data.weekly === "number") rows.push(`周 ${Math.round(data.weekly)}%`);
-	if (typeof data.monthly === "number") rows.push(`月 ${Math.round(data.monthly)}%`);
-	return rows.length > 0 ? `已用 ${rows.join(" · ")}` : "用量未知";
-}
-
-function summarizePoints(data) {
-	return typeof data.remaining === "number" ? `剩余 ${data.remaining}` : "余额未知";
-}
-
-/** Normalise a raw provider view into the small shape both backends and UI consume. */
-export function describeView(view) {
-	const handler = SHAPES[view.shape];
-	if (!handler) return { shape: view.shape, percent: undefined, summary: "未知响应形态" };
-	return {
-		shape: view.shape,
-		percent: handler.percent(view.data),
-		summary: handler.summary(view.data),
-	};
-}
-
-function classify(error) {
-	if (error?.kind) return error.kind;
-	const message = String(error?.message ?? "");
-	if (message.includes("鉴权")) return "auth_failed";
-	if (message.includes("超时") || message.includes("网络")) return "network";
-	return "unknown";
-}
-
-/**
- * Read the cached snapshot.
- *
- * A snapshot is a cache of the *last attempt*, success or failure, so the stage
- * can render "auth failed" persistently instead of only for the one frame where
- * a request happened to be in flight.
- */
 export async function readSnapshot(callHost) {
 	const entry = await callHost("storage.get", { scope: BALANCE_SCOPE, key: BALANCE_KEY });
-	const value = entry && typeof entry === "object" && "value" in entry ? entry.value : undefined;
-	if (!value || typeof value !== "object") return null;
-	return value;
+	const value = entry && typeof entry === "object" ? entry.value : null;
+	return value && typeof value === "object" && !Array.isArray(value) ? value : null;
 }
 
 async function writeSnapshot(callHost, snapshot) {
-	await callHost("storage.set", { scope: BALANCE_SCOPE, key: BALANCE_KEY, value: snapshot });
+	const written = await callHost("storage.set", { scope: BALANCE_SCOPE, key: BALANCE_KEY, value: snapshot });
+	if (written?.stored === false) throw new Error("宿主拒绝保存余额快照");
 	return snapshot;
 }
 
-/**
- * Query one balance source once and cache the outcome.
- *
- * Two sources, one output shape:
- *
- *  - `host`   — reuse the relay-station balance NarraFork already fetched and
- *               cached. Zero configuration, and it is the number the user is
- *               actually watching in the host UI.
- *  - `manual` — query a service directly with a key the user pasted. Needed for
- *               anything the host does not track (a DeepSeek official key, a
- *               bespoke endpoint).
- *
- * `providerId` may be omitted, in which case the configured provider is used. The
- * provider is resolved from *config*, never from the caller's parameters beyond
- * the id — so a UI cannot ask this backend to spend a secret on a service the
- * user has not configured.
- */
-export async function refreshBalance({ callHost, config, providerId, signal, force = true }) {
-	const snapshot = await readSnapshot(callHost);
+function settingsOf(config) {
+	const custom = config?.balance?.custom ?? {};
+	return {
+		url: typeof custom.url === "string" ? custom.url : "",
+		totalPath: typeof custom.totalPath === "string" ? custom.totalPath : "",
+		usedPath: typeof custom.usedPath === "string" ? custom.usedPath : "",
+		currency: isMoneyCurrency(custom.currency) ? custom.currency.toUpperCase() : POINTS_CURRENCY,
+	};
+}
 
-	// A non-forced call reuses a snapshot younger than the configured interval,
-	// which is what keeps a stage that polls every few seconds from hammering the
-	// upstream API (and its rate limits).
-	if (!force && snapshot?.fetchedAt && snapshot.source === config.balance.source) {
-		const ageMs = Date.now() - Date.parse(snapshot.fetchedAt);
-		if (Number.isFinite(ageMs) && ageMs >= 0 && ageMs < config.balance.refreshMinutes * 60_000) {
-			return { snapshot, cached: true };
-		}
-	}
+function thresholdsOf(config) {
+	const thresholds = config?.balance?.thresholds;
+	return Array.isArray(thresholds) && thresholds.length ? thresholds : DEFAULT_THRESHOLDS;
+}
 
-	if (config.balance.source === "host") {
-		const host = await readHostBalanceSnapshot();
-		if (!host.ok) {
-			return {
-				snapshot: await writeSnapshot(callHost, {
-					source: "host",
-					ok: false,
-					error: host.error,
-					fetchedAt: new Date().toISOString(),
-				}),
-			};
-		}
-		const written = await writeSnapshot(callHost, {
-			...host,
-			source: "host",
-			tier: balanceEventIndex(host.percent),
-		});
-		return { snapshot: written };
-	}
+function endpointKey(settings, timeZone) {
+	return createHash("sha256").update(JSON.stringify([
+		PROVIDER_ID, settings.url, settings.totalPath, settings.usedPath, settings.currency, timeZone,
+	])).digest("hex");
+}
 
-	const targetId = providerId ?? config.balance.providerId;
-	if (!targetId) {
-		return { snapshot: null, skipped: "not_configured" };
-	}
-	const provider = findProvider(targetId);
-	if (!provider) {
-		return {
-			snapshot: await writeSnapshot(callHost, {
-				source: "manual",
-				providerId: targetId,
-				ok: false,
-				error: { kind: "unknown_provider", message: `未知服务商：${targetId}` },
-				fetchedAt: new Date().toISOString(),
-			}),
-		};
-	}
-
-	let secret;
+async function readSecret(callHost) {
 	try {
-		const result = await callHost("secrets.get", { key: provider.secretKey });
-		secret = typeof result?.value === "string" && result.value.length > 0 ? result.value : undefined;
-	} catch (error) {
-		log.warn("secrets.get failed", error);
-		secret = undefined;
+		const result = await callHost("secrets.get", { key: CUSTOM_SECRET_KEY });
+		return typeof result?.value === "string" && result.value.length > 0 ? result.value : undefined;
+	} catch {
+		return undefined;
 	}
+}
+
+/** The ledger identity this configuration and key produce, and the fetch inputs. */
+async function accountsFor({ callHost, config, accounting }) {
+	const settings = settingsOf(config);
+	const timeZone = config?.accounting?.timeZone ?? "UTC";
+	const configKey = endpointKey(settings, timeZone);
+	if (!settings.url) {
+		return { accountIds: [], settings, timeZone, configKey, contextKey: null, configured: false, reason: "not_configured" };
+	}
+	const secret = await readSecret(callHost);
 	if (!secret) {
-		return {
-			snapshot: await writeSnapshot(callHost, {
-				source: "manual",
-				providerId: targetId,
-				ok: false,
-				error: { kind: "missing_secret", message: `未配置 ${provider.label} 的 API Key` },
-				fetchedAt: new Date().toISOString(),
-			}),
-		};
+		return { accountIds: [], settings, timeZone, configKey, contextKey: null, configured: false, reason: "missing_secret" };
 	}
-
-	const startedAt = Date.now();
+	let keyFingerprint;
 	try {
-		const view = await provider.fetch({
-			key: secret,
-			signal,
-			deadlineMs: DEFAULT_DEADLINE_MS,
-			custom: config.balance.custom,
-		});
-		const described = describeView(view);
-		const written = await writeSnapshot(callHost, {
-			source: "manual",
-			providerId: targetId,
-			label: provider.label,
-			ok: true,
-			shape: described.shape,
-			percent: described.percent,
-			summary: described.summary,
-			tier: balanceEventIndex(described.percent),
-			detail: view.data,
-			elapsedMs: Date.now() - startedAt,
-			fetchedAt: new Date().toISOString(),
-		});
-		return { snapshot: written };
+		keyFingerprint = await accounting.fingerprint(secret, configKey);
 	} catch (error) {
-		// The message is kept verbatim: "HTTP 500" and "响应缺少 balance_infos" call
-		// for very different user actions, and collapsing them into "查询失败" is how
-		// a settings panel becomes useless.
-		const kind = classify(error);
-		log.warn(`balance ${targetId} failed`, `${kind}: ${error?.message ?? error}`);
-		const written = await writeSnapshot(callHost, {
-			source: "manual",
-			providerId: targetId,
-			label: provider.label,
-			ok: false,
-			error: { kind, message: String(error?.message ?? error) },
-			elapsedMs: Date.now() - startedAt,
-			fetchedAt: new Date().toISOString(),
-		});
-		return { snapshot: written };
+		return { accountIds: [], settings, timeZone, configKey, contextKey: null, configured: false, reason: "ledger_error", error };
 	}
+	const contextKey = createHash("sha256").update(JSON.stringify([configKey, keyFingerprint])).digest("hex");
+	const shape = settings.currency === POINTS_CURRENCY ? "points" : "money";
+	const account = { source: "manual", providerId: PROVIDER_ID, keyFingerprint, currency: settings.currency, shape, scope: shape, window: null, slot: 0 };
+	return { accountIds: [accountIdentity(account, timeZone)], settings, timeZone, configKey, contextKey, configured: true, keyFingerprint, secret };
+}
+
+/**
+ * Which ledger accounts belong to the *current* configuration/key.
+ *
+ * Used by the RPC layer to scope ledger reads, corrections and notice claims
+ * without performing a network request; the key fingerprint is a read-only HMAC.
+ */
+export async function activeAccounts(options) {
+	const active = await accountsFor(options);
+	return { accountIds: active.accountIds, configKey: active.configKey, contextKey: active.contextKey,
+		configured: active.configured, reason: active.reason, timeZone: active.timeZone, settings: active.settings };
+}
+
+function exposeAccount(raw, config) {
+	// No key fingerprint, slot, provider id or label reaches the UI: one account is
+	// the whole point of this design, and its identity is `accountId` alone.
+	const { keyFingerprint, slot, label, providerId, ...rest } = raw;
+	return { ...rest, accountId: accountIdentity(raw, config.accounting.timeZone), timeZone: config.accounting.timeZone };
+}
+
+function summaryFor({ remaining, used, total, currency }) {
+	if (remaining === null) return "余额未知";
+	return used !== null && total !== null
+		? `${remaining} / ${total} ${currency}`
+		: `${remaining} ${currency}`;
+}
+
+function unconfiguredSnapshot(reason) {
+	return {
+		source: "manual", configKey: null, contextKey: null,
+		ok: false, stale: true, accounts: [], balances: [],
+		percent: null, remainingPercent: null, summary: "余额未知",
+		fetchedAt: null, attemptedAt: new Date().toISOString(),
+		error: { kind: reason ?? "not_configured", message: NOT_CONFIGURED_MESSAGE },
+	};
+}
+
+async function readLedger(accounting, config, accountIds) {
+	try {
+		return await accounting.read(config, { light: true, accountIds });
+	} catch (error) {
+		return { schemaVersion: 1, revision: null, status: "unavailable", error: String(error?.message ?? error), accounts: [] };
+	}
+}
+
+/**
+ * A failed attempt: keep this context's last successful numbers, explicitly stale.
+ *
+ * Two distinct reuse rules, because they answer different questions:
+ *  - a request with the current key failed → reuse only this exact context's data;
+ *  - the key was *removed* → reuse this endpoint's last success, since the numbers
+ *    were produced by this endpoint and the user has not replaced them with
+ *    another key's data.
+ * A *replaced* key therefore never inherits the previous key's numbers.
+ */
+async function failSnapshot({ callHost, old, active, error, config, accounting }) {
+	const sameContext = active.configured && old?.contextKey === active.contextKey;
+	const sameEndpointSuccess = old?.configKey === active.configKey && old?.ok === true;
+	const reusable = sameContext && Array.isArray(old?.accounts) && old.accounts.length > 0
+		? old.accounts
+		: active.reason === "missing_secret" && sameEndpointSuccess && Array.isArray(old?.accounts) && old.accounts.length > 0
+			? old.accounts
+			: [];
+	const accounts = reusable.map((account) => ({ ...account, stale: true, ok: false }));
+	const percent = reusable.length ? (old.percent ?? null) : null;
+	const snapshot = {
+		source: "manual",
+		configKey: active.configKey,
+		contextKey: active.configured ? active.contextKey : reusable.length ? old.contextKey ?? null : null,
+		currency: active.settings.currency,
+		ok: false, stale: true,
+		accounts, balances: accounts,
+		percent,
+		remainingPercent: reusable.length ? (old.remainingPercent ?? null) : null,
+		summary: reusable.length ? `${old.summary ?? "余额未知"}（旧数据）` : "余额未知",
+		tier: balanceEventIndex(percent, thresholdsOf(config)),
+		fetchedAt: reusable.length ? (old.fetchedAt ?? null) : null,
+		attemptedAt: new Date().toISOString(),
+		error,
+	};
+	// A failure only marks freshness; numeric baselines are untouched.
+	try { if (accounts.length) await accounting.markStale(accounts.map((account) => account.accountId)); } catch { /* corrupt ledgers stay untouched */ }
+	return writeSnapshot(callHost, snapshot);
+}
+
+async function recordAccounts(accounting, rawAccounts, config, accountIds) {
+	try { return { ledger: await accounting.ingest(rawAccounts, config, { accountIds }) }; }
+	catch (error) {
+		log.warn("ledger observation not committed", error?.kind ?? error?.message);
+		return { ledgerError: { kind: error?.kind ?? "STORAGE_ERROR", message: String(error?.message ?? error) } };
+	}
+}
+
+async function refresh({ callHost, config, signal, force, accounting }) {
+	const old = await readSnapshot(callHost);
+	const active = await accountsFor({ callHost, config, accounting });
+	const refreshMs = Math.max(1, Number(config?.balance?.refreshMinutes) || 30) * 60_000;
+	const age = Date.now() - Date.parse(old?.attemptedAt ?? old?.fetchedAt ?? "");
+	const fresh = !force && Number.isFinite(age) && age >= 0 && age < refreshMs;
+	if (!active.configured && active.reason === "not_configured") {
+		return { snapshot: unconfiguredSnapshot("not_configured"), skipped: "not_configured",
+			ledger: await readLedger(accounting, config, []), activeAccountIds: [] };
+	}
+	if (!active.configured && active.reason === "ledger_error") {
+		const snapshot = await failSnapshot({ callHost, old, active, config, accounting,
+			error: { kind: active.error?.kind ?? "LEDGER_CORRUPT", message: "账本存储不可用，未查询余额" } });
+		return { snapshot, ledger: await readLedger(accounting, config, []), activeAccountIds: [] };
+	}
+	if (!active.configured) {
+		// Do not rewrite the snapshot on every stage poll while the key is missing:
+		// an explicit force still records the attempt for "旧数据" freshness.
+		if (fresh && old?.configKey === active.configKey && old?.error?.kind === "missing_secret" && Array.isArray(old.accounts)) {
+			return { snapshot: old, cached: true, ledger: await readLedger(accounting, config, []), activeAccountIds: [] };
+		}
+		const snapshot = await failSnapshot({ callHost, old, active, config, accounting,
+			error: { kind: "missing_secret", message: "未配置余额 API 密钥" } });
+		return { snapshot, ledger: await readLedger(accounting, config, []), activeAccountIds: [] };
+	}
+	const { accountIds, contextKey, keyFingerprint, settings } = active;
+	// `missing_secret` snapshots are deliberately not served as cached: a key that
+	// was just re-entered must be used immediately instead of waiting for the
+	// refresh interval to expire.
+	if (fresh && old?.contextKey === contextKey && old?.error?.kind !== "missing_secret") {
+		let ledger;
+		try { ledger = await accounting.evaluate(config, { accountIds }); }
+		catch { ledger = await readLedger(accounting, config, accountIds); }
+		return { snapshot: { ...old, tier: balanceEventIndex(old.percent, thresholdsOf(config)) }, cached: true, ledger, activeAccountIds: accountIds };
+	}
+	const startedAt = Date.now();
+	let view;
+	try {
+		view = await customProvider.fetch({ key: active.secret, signal, deadlineMs: REQUEST_DEADLINE_MS, custom: settings });
+	} catch (error) {
+		const kind = typeof error?.kind === "string" ? error.kind : "unknown";
+		// Provider messages are constructed locally and never contain the URL, key or body.
+		const message = typeof error?.message === "string" && error.message.length ? error.message.slice(0, 160) : "余额查询失败";
+		log.warn("balance custom failed", kind);
+		const snapshot = await failSnapshot({ callHost, old, active, config, accounting, error: { kind, message } });
+		return { snapshot, ledger: await readLedger(accounting, config, accountIds), activeAccountIds: accountIds };
+	}
+	const sampledAt = new Date(startedAt).toISOString();
+	const remaining = view.remaining;
+	const used = view.used;
+	const total = remaining !== null && used !== null ? Number(remaining) + Number(used) : null;
+	const measured = measureAmount({ remaining, used });
+	const raw = {
+		source: "manual", providerId: PROVIDER_ID, label: "余额 API",
+		shape: view.shape, scope: view.shape, currency: view.currency,
+		remaining, total, used, unlimited: false, window: null, slot: 0,
+		keyFingerprint, sampledAt, stale: false, ok: true,
+		accountingEligible: view.shape === "money",
+		remainingPercent: measured.remainingPercent,
+	};
+	const accounts = [exposeAccount({ ...raw, percent: measured.percent, percentBasis: measured.percentBasis }, config)];
+	const observed = await recordAccounts(accounting, [raw], config, accountIds);
+	const snapshot = {
+		source: "manual", configKey: active.configKey, contextKey,
+		shape: view.shape, currency: view.currency,
+		ok: true, stale: false,
+		accounts, balances: accounts,
+		percent: measured.percent,
+		remainingPercent: measured.remainingPercent,
+		summary: summaryFor(raw),
+		tier: balanceEventIndex(measured.percent, thresholdsOf(config)),
+		elapsedMs: Date.now() - startedAt,
+		fetchedAt: sampledAt,
+		attemptedAt: new Date().toISOString(),
+	};
+	return { snapshot: await writeSnapshot(callHost, snapshot), activeAccountIds: accountIds, ...observed };
+}
+
+export function refreshBalance(options) {
+	const accounting = options.accounting ?? createAccounting({ callHost: options.callHost });
+	const previous = globalThis[REFRESH_SERIAL] ?? Promise.resolve();
+	const running = previous.then(() => refresh({ force: true, ...options, accounting }));
+	globalThis[REFRESH_SERIAL] = running.catch(() => {});
+	return running;
 }

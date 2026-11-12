@@ -2,6 +2,7 @@ MIT License
 
 Copyright (c) 2026 PC2005-cloud
 Copyright (c) 2026 NeglectDream (NarraFork port)
+Copyright (c) 2026 MeteorNOX (DeepSeek-Balance-Whale-Widget bubble code and presets)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,5 +27,11 @@ SOFTWARE.
 The MIT grant above covers the source code in this repository. The animation
 material under `anim/` is derived from https://github.com/PC2005-cloud/dsh-pet and
 is NOT MIT: it is licensed CC BY-NC-SA 4.0 (attribution, non-commercial, share
-alike). The attribution and the original notice are reproduced in the "?????"
-section of README.md.
+alike). The attribution and the original notice are reproduced in the
+"?????" section of README.md.
+
+Bubble source code and text presets are derived from MeteorNOX's
+DeepSeek-Balance-Whale-Widget at commit
+5247dd6813d6e4430728f39ccc63d43cda046022 under the MIT grant above.
+No GIF/PNG/audio/font resources from that project are redistributed here.
+Its code license does not relicense the existing animation or click sound assets.

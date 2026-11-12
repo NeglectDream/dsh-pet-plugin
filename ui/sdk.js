@@ -207,7 +207,46 @@ const SDK = (() => {
 		}
 	}
 
-	/** Host → plugin notifications (the only channel the host can push over). */
+	/** Context is optional on older hosts; never infer a narrator from route or globals. */
+	async function getContextSafe() {
+		try {
+			const api = bridge();
+			if (typeof api.getContext !== "function") {
+				return { ok: false, error: { code: "METHOD_NOT_FOUND", message: "宿主未提供 getContext" } };
+			}
+			const value = await api.getContext();
+			if (!value || typeof value !== "object" || Array.isArray(value)) {
+				return { ok: false, error: { code: "CONTEXT_UNAVAILABLE", message: "宿主未提供有效视图上下文" } };
+			}
+			return { ok: true, value };
+		} catch (error) {
+			return { ok: false, error: describeError(error) };
+		}
+	}
+
+	/**
+	 * Public events use subscribe/poll/unsubscribe, NOT onNotification.
+	 * These methods take one JSON object and already unwrap the RPC result in the
+	 * host shell. Detect all three together so a partial bridge cannot leak a
+	 * subscription. Availability here does not imply event.subscribe is granted.
+	 */
+	function events() {
+		try {
+			const channel = bridge().events;
+			if (!channel || ["subscribe", "poll", "unsubscribe"].some((key) => typeof channel[key] !== "function")) {
+				return undefined;
+			}
+			return Object.freeze({
+				subscribe: (input) => channel.subscribe(jsonSafe(input ?? {}) ?? {}),
+				poll: (input) => channel.poll(jsonSafe(input ?? {}) ?? {}),
+				unsubscribe: (input) => channel.unsubscribe(jsonSafe(input ?? {}) ?? {}),
+			});
+		} catch {
+			return undefined;
+		}
+	}
+
+	/** Host → plugin UI notifications; this is not the public task event bus. */
 	function onNotification(listener) {
 		try {
 			const api = bridge();
@@ -217,5 +256,5 @@ const SDK = (() => {
 		}
 	}
 
-	return { asset, call, callSafe, report, el, environment, bridge, overlay, onNotification };
+	return { asset, call, callSafe, report, el, environment, bridge, overlay, getContextSafe, events, onNotification };
 })();

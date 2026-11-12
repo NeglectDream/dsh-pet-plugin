@@ -11,7 +11,7 @@
  * A plugin view can only reach its own backend through `commands.execute(<id>)`
  * (`PluginCommandRegistry.find(commandId, pluginId)`), and the reply must be a
  * `commandsInvokeResult`-shaped object — only `output` reaches the iframe.
- * So `HANDLERS` below is the complete surface: seven ids, no dynamic
+ * So `HANDLERS` below is the complete surface: nine ids, no dynamic
  * registration, no callback the host could call out of band.
  */
 
@@ -30,11 +30,12 @@ import {
 	sanitizeConfig,
 	writeConfig,
 } from "./config.js";
-import { readSnapshot, refreshBalance } from "./balance/index.js";
-import { providerCatalogue } from "./balance/providers.js";
+import { refreshBalance, activeAccounts } from "./balance/index.js";
+import { CUSTOM_SECRET_KEY } from "./balance/providers.js";
+import { AccountingError, createAccounting, validateLedgerGet, validateCorrection, validateNoticeInput } from "./accounting.js";
 
 const PLUGIN_ID = "cn.mcd7.neglectdream.dsh-pet";
-const PLUGIN_VERSION = "2.0.0";
+const PLUGIN_VERSION = "2.2.0";
 const PACKAGE_DIGEST = process.env.NF_PLUGIN_PACKAGE_DIGEST;
 
 /**
@@ -98,6 +99,38 @@ async function appendUiReport(level, message, detail) {
 	}
 }
 
+/**
+ * The current API's ledger identity, without any network request.
+ *
+ * The key fingerprint is a read-only HMAC over the vault secret and the endpoint
+ * configuration, so ledger reads, corrections and notice claims can be scoped to
+ * the *current* API even when no refresh has happened yet. Historical accounts stay
+ * in storage; they only stop being part of the numbers the user can act on.
+ */
+async function balanceScope(callHost) {
+	const { config, warnings, stored } = await readConfig(callHost);
+	const accounting = createAccounting({ callHost });
+	const scope = await activeAccounts({ callHost, config, accounting });
+	return { config, warnings, stored, accounting, accountIds: scope.accountIds };
+}
+
+/** `force` is the only accepted refresh input; anything else is a protocol error. */
+function refreshInput(input) {
+	if (input === undefined || input === null) return { force: true };
+	if (typeof input !== "object" || Array.isArray(input)) {
+		throw new RpcError(ERROR_CODES.INVALID_PARAMS, "pet-balance-refresh 只接受一个对象参数", { code: "INVALID_PARAMS" });
+	}
+	for (const key of Object.keys(input)) {
+		if (key !== "force") {
+			throw new RpcError(ERROR_CODES.INVALID_PARAMS, `pet-balance-refresh 不接受参数 ${key.slice(0, 40)}`, { code: "INVALID_PARAMS" });
+		}
+	}
+	if (input.force !== undefined && typeof input.force !== "boolean") {
+		throw new RpcError(ERROR_CODES.INVALID_PARAMS, "pet-balance-refresh 的 force 必须是布尔值", { code: "INVALID_PARAMS" });
+	}
+	return { force: input.force !== false };
+}
+
 /** The dispatch table. Key = manifest `commands[].id`, value = handler. */
 const HANDLERS = {
 	"pet-state": ({ callHost, signal }) => readState({ callHost, signal }),
@@ -124,15 +157,38 @@ const HANDLERS = {
 	},
 
 	"pet-balance-refresh": async ({ callHost, input, signal }) => {
+		const { force } = refreshInput(input);
 		const { config } = await readConfig(callHost);
-		const providerId = typeof input?.providerId === "string" ? input.providerId : undefined;
-		const force = input?.force !== false;
-		const result = await refreshBalance({ callHost, config, providerId, signal, force });
+		const result = await refreshBalance({ callHost, config, signal, force });
+		const accountIds = Array.isArray(result.activeAccountIds) ? result.activeAccountIds : [];
 		return {
 			snapshot: result.snapshot,
 			cached: result.cached === true,
 			skipped: result.skipped,
+			ledger: result.ledger,
+			ledgerError: result.ledgerError,
+			// Which ledger accounts belong to this configuration/key; views use it to
+			// avoid claiming notices that were queued for a previous API.
+			activeAccountIds: accountIds,
 		};
+	},
+
+	"pet-ledger-get": async ({ callHost, input }) => {
+		const options = validateLedgerGet(input);
+		const { config, accounting, accountIds } = await balanceScope(callHost);
+		return { ledger: await accounting.read(config, { ...options, accountIds }) };
+	},
+
+	"pet-ledger-correct": async ({ callHost, input }) => {
+		const value = validateCorrection(input);
+		const { config, accounting, accountIds } = await balanceScope(callHost);
+		return accounting.correct(value, config, { accountIds });
+	},
+
+	"pet-notices": async ({ callHost, input }) => {
+		const value = validateNoticeInput(input);
+		const { config, accounting, accountIds } = await balanceScope(callHost);
+		return accounting.notices(value, config, { accountIds });
 	},
 
 	"pet-clip": async ({ input }) => {
@@ -174,46 +230,18 @@ const HANDLERS = {
 		};
 	},
 
-	"pet-balance-providers": async () => ({
-		// Two sources, not four providers: the default reuses the host's own
-		// relay-station balance, and the manual list is the fallback for services the
-		// host does not track.
-		sources: [
-			{
-				id: "host",
-				label: "跟随 NarraFork 中转站余额",
-				description: "直接读取宿主已经查到的中转站余额，无需再填一次密钥。",
-			},
-			{
-				id: "manual",
-				label: "手动配置服务商",
-				description: "由本插件自己请求某个服务商的余额接口，需要单独填 API Key。",
-			},
-		],
-		providers: providerCatalogue(),
-	}),
-
 	"pet-secrets-list": async ({ callHost }) => {
-		// Two sources of truth on purpose: which keys exist (the vault's own list) and
-		// which keys the plugin knows how to use (the provider catalogue). The settings
-		// panel needs the union, so a key the user set for a provider that has since
-		// been removed still shows up and can be cleared.
-		const configured = new Set();
+		// Exactly one key exists for this plugin now. The vault may still hold keys a
+		// previous version wrote (`deepseekApiKey`, `opencodeZenApiKey`, …); they are
+		// neither reported nor deleted, and no value is ever read back to the UI.
+		let configured = false;
 		try {
-			const listed = await callHost("secrets.list", {});
-			for (const entry of listed?.secrets ?? []) {
-				if (typeof entry?.key === "string") configured.add(entry.key);
-			}
+			const result = await callHost("secrets.get", { key: CUSTOM_SECRET_KEY });
+			configured = typeof result?.value === "string" && result.value.length > 0;
 		} catch (error) {
-			log.warn("secrets.list failed", error);
+			log.warn("secrets.get failed", error?.message ?? error);
 		}
-		const known = providerCatalogue().map((provider) => provider.secretKey);
-		const keys = [...new Set([...known, ...configured])].map((key) => ({
-			key,
-			configured: configured.has(key),
-			known: known.includes(key),
-		}));
-		return { keys };
+		return { keys: [{ key: CUSTOM_SECRET_KEY, configured, known: true }] };
 	},
 
 	"pet-log": async ({ input }) => {
@@ -235,42 +263,29 @@ const HANDLERS = {
  * the other: `animationGroups` decides which clips are playable and the balance
  * tier decides which of them is *wanted*. Two calls would double the polling and
  * let the two halves disagree for a frame.
+ *
+ * `activeAccountIds` names the ledger accounts the current API configuration and
+ * key produce. Views pass it to `pet-notices` so a notice queued for a previous
+ * endpoint is not delivered as if it belonged to the number on screen.
  */
 async function readState({ callHost, signal }) {
 	const { config, warnings, stored } = await readConfig(callHost);
-	// `host` needs no provider id: it reads whatever the host already cached. Only
-	// the manual path can be "not configured".
-	const balanceEnabled =
-		config.balance.source === "host" ? true : Boolean(config.balance.providerId);
-	const balance = balanceEnabled ? await readSnapshot(callHost) : null;
-
-	// Opportunistic refresh: no background timer exists in this process (a plugin
-	// that sleeps on a `setInterval` holds a lease it does not need), so the poll
-	// that the visible stage already performs is what keeps the number current.
-	let refreshed = balance;
-	if (balanceEnabled && !signal?.aborted) {
-		const ageMs = balance?.fetchedAt ? Date.now() - Date.parse(balance.fetchedAt) : Number.POSITIVE_INFINITY;
-		const stale =
-			!(ageMs >= 0 && ageMs < config.balance.refreshMinutes * 60_000) ||
-			balance?.source !== config.balance.source;
-		if (stale) {
-			const result = await refreshBalance({
-				callHost,
-				config,
-				providerId: config.balance.providerId,
-				signal,
-				force: false,
-			});
-			refreshed = result.snapshot ?? balance;
-		}
-	}
+	const accounting = createAccounting({ callHost });
+	// Even a cached read validates the current secret fingerprint; nothing here reads
+	// a host balance file and no path consumes or claims persisted notifications.
+	const result = signal?.aborted ? {} : await refreshBalance({ callHost, config, signal, force: false, accounting });
+	const accountIds = Array.isArray(result.activeAccountIds) ? result.activeAccountIds : [];
+	const ledger = result.ledger ?? await accounting.read(config, { light: true, accountIds });
 
 	return {
 		version: PLUGIN_VERSION,
 		config,
 		configWarnings: warnings,
 		configStored: stored,
-		balance: refreshed,
+		balance: result.snapshot ?? null,
+		ledger,
+		ledgerError: result.ledgerError,
+		activeAccountIds: accountIds,
 		defaults: { config: DEFAULT_CONFIG, configKey: CONFIG_KEY, configScope: CONFIG_SCOPE },
 	};
 }
@@ -320,8 +335,11 @@ const rpc = createRpc({
 					// the selftest.
 					log.error(`command ${contributionId} failed`, error);
 					const reason = error instanceof RpcError ? error.message : String(error?.message ?? error);
-					const code = error instanceof RpcError ? error.code : ERROR_CODES.INTERNAL_ERROR;
-					const cause = error instanceof RpcError ? (error.data?.code ?? "INVALID_PARAMS") : "INTERNAL_ERROR";
+					const code = error instanceof RpcError ? error.code : error instanceof AccountingError
+						? (error.kind === "INVALID_PARAMS" || error.kind === "AMOUNT_OVERFLOW" ? ERROR_CODES.INVALID_PARAMS : -32010)
+						: ERROR_CODES.INTERNAL_ERROR;
+					const cause = error instanceof RpcError ? (error.data?.code ?? "INVALID_PARAMS")
+						: error instanceof AccountingError ? error.kind : "INTERNAL_ERROR";
 					throw new RpcError(code, `${contributionId} 失败：${String(reason).slice(0, 300)}`, { cause });
 				}
 			},

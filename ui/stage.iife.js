@@ -19,7 +19,9 @@ const __petFatal = (label, error) => {
 window.addEventListener("error", (event) => __petFatal("未捕获异常", event.error || event.message));
 window.addEventListener("unhandledrejection", (event) => __petFatal("未处理的 Promise", event.reason));
 
-const PET_ANIM_INDEX = {"version":1,"generatedAt":"2026-11-06T09:12:20.819Z","profile":"r3a","settings":{"name":"r3a","fps":10,"width":384,"quality":48},"canvas":{"width":384,"height":216},"clipCount":114,"totalBytes":78371940,"clips":[{"id":"被落叶淹没","index":0,"file":"anim/webp/000.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"被鼠标拖拽悬空反馈","index":1,"file":"anim/webp/001.webp","group":"drag","mode":"loop","durationMs":10000,"width":384,"height":216},{"id":"被吓一跳","index":2,"file":"anim/webp/002.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"变鸽子","index":3,"file":"anim/webp/003.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"侧身急躁跑","index":4,"file":"anim/webp/004.webp","group":"baifan","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"插茱萸赏菊","index":5,"file":"anim/webp/005.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"拆礼物","index":6,"file":"anim/webp/006.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"超大伸懒腰","index":7,"file":"anim/webp/007.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"晨间刷牙","index":8,"file":"anim/webp/008.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃白饭","index":9,"file":"anim/webp/009.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃冰淇淋融化","index":10,"file":"anim/webp/010.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃大闸蟹","index":11,"file":"anim/webp/011.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃饭·碗饭","index":12,"file":"anim/webp/012.webp","group":"baifan","mode":"once","durationMs":5100,"width":384,"height":216},{"id":"吃饭团","index":13,"file":"anim/webp/013.webp","group":"baifan","mode":"once","durationMs":5100,"width":384,"height":216},{"id":"吃饺子","index":14,"file":"anim/webp/014.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃腊八粥","index":15,"file":"anim/webp/015.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃年糕","index":16,"file":"anim/webp/016.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃青团","index":17,"file":"anim/webp/017.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃汤圆","index":18,"file":"anim/webp/018.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃糖葫芦","index":19,"file":"anim/webp/019.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃晚餐","index":20,"file":"anim/webp/020.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃午餐","index":21,"file":"anim/webp/021.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃西瓜","index":22,"file":"anim/webp/022.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃早餐","index":23,"file":"anim/webp/023.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃长寿面","index":24,"file":"anim/webp/024.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃重阳糕","index":25,"file":"anim/webp/025.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃粽子","index":26,"file":"anim/webp/026.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吃Token","index":27,"file":"anim/webp/027.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"抽陀螺","index":28,"file":"anim/webp/028.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"穿针乞巧","index":29,"file":"anim/webp/029.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吹笛子","index":30,"file":"anim/webp/030.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"吹气球","index":31,"file":"anim/webp/031.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"打瞌睡被惊醒","index":32,"file":"anim/webp/032.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"大口吃零食","index":33,"file":"anim/webp/033.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"待机呼吸休闲","index":34,"file":"anim/webp/034.webp","group":"idle","mode":"loop","durationMs":10000,"width":384,"height":216},{"id":"荡秋千","index":35,"file":"anim/webp/035.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"点击回应-傲娇生气","index":36,"file":"anim/webp/036.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"点击回应-害羞惊讶","index":37,"file":"anim/webp/037.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"点击回应-开心跃动","index":38,"file":"anim/webp/038.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"点击回应-挠痒咯咯笑","index":39,"file":"anim/webp/039.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"点击回应-元气挥手","index":40,"file":"anim/webp/040.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"东张西望","index":41,"file":"anim/webp/041.webp","group":"turn","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"动物环绕","index":42,"file":"anim/webp/042.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"堆雪人","index":43,"file":"anim/webp/043.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"放风筝","index":44,"file":"anim/webp/044.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"放河灯","index":45,"file":"anim/webp/045.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"放孔明灯","index":46,"file":"anim/webp/046.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"放烟花","index":47,"file":"anim/webp/047.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"工作状态-垂头叹气冒汗","index":48,"file":"anim/webp/048.webp","group":"work","mode":"once","durationMs":4900,"width":384,"height":216},{"id":"工作状态-忙碌点按","index":49,"file":"anim/webp/049.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"工作状态-清点归档","index":50,"file":"anim/webp/050.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"工作状态-雀跃庆祝","index":51,"file":"anim/webp/051.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"工作状态-思考冒泡","index":52,"file":"anim/webp/052.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"工作状态-原地踱步张望","index":53,"file":"anim/webp/053.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"哈欠连天","index":54,"file":"anim/webp/054.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"蝴蝶蜜蜂环绕头顶开花","index":55,"file":"anim/webp/055.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"鲸鱼吐泡泡特效","index":56,"file":"anim/webp/056.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"开心小跑","index":57,"file":"anim/webp/057.webp","group":"baifan","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"可爱宅舞","index":58,"file":"anim/webp/058.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"蓝鲸现世","index":59,"file":"anim/webp/059.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"撸猫","index":60,"file":"anim/webp/060.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"萌化小幽灵","index":61,"file":"anim/webp/061.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"女仆屈膝礼仪","index":62,"file":"anim/webp/062.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"螃蟹走路","index":63,"file":"anim/webp/063.webp","group":"move","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"凭空生花","index":64,"file":"anim/webp/064.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"扑克魔术","index":65,"file":"anim/webp/065.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"期待开饭","index":66,"file":"anim/webp/066.webp","group":"baifan","mode":"once","durationMs":5100,"width":384,"height":216},{"id":"骑木马","index":67,"file":"anim/webp/067.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"轻快记录","index":68,"file":"anim/webp/068.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"轻快摇摆舞","index":69,"file":"anim/webp/069.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"三球抛接","index":70,"file":"anim/webp/070.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"深度思考碎碎念","index":71,"file":"anim/webp/071.webp","group":"text","mode":"once","durationMs":10000,"width":384,"height":216,"noMirror":true},{"id":"是啊，吃什么","index":72,"file":"anim/webp/072.webp","group":"text","mode":"once","durationMs":10000,"width":384,"height":216,"noMirror":true},{"id":"收红包","index":73,"file":"anim/webp/073.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"涮火锅","index":74,"file":"anim/webp/074.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"睡觉-开始","index":75,"file":"anim/webp/075.webp","group":"sleep-start","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"睡觉-起来","index":76,"file":"anim/webp/076.webp","group":"sleep-end","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"睡觉-循环","index":77,"file":"anim/webp/077.webp","group":"sleep-loop","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"碎碎念-擦桌碎碎念","index":78,"file":"anim/webp/078.webp","group":"whisper","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"碎碎念-对屏碎碎念","index":79,"file":"anim/webp/079.webp","group":"whisper","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"碎碎念-发呆碎碎念","index":80,"file":"anim/webp/080.webp","group":"whisper","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"讨糖南瓜灯","index":81,"file":"anim/webp/081.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"踢毽子","index":82,"file":"anim/webp/082.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"偷吃零食被抓住","index":83,"file":"anim/webp/083.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"玩水枪","index":84,"file":"anim/webp/084.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"玩游戏气急败坏","index":85,"file":"anim/webp/085.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"舞狮头","index":86,"file":"anim/webp/086.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"下五子棋","index":87,"file":"anim/webp/087.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"小幅度原地360度旋转展示","index":88,"file":"anim/webp/088.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"小提琴演奏","index":89,"file":"anim/webp/089.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"写代码","index":90,"file":"anim/webp/090.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"写福字","index":91,"file":"anim/webp/091.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"摇扇纳凉","index":92,"file":"anim/webp/092.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"用鲸鱼尾巴拍打地面","index":93,"file":"anim/webp/093.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"优雅女仆舞","index":94,"file":"anim/webp/094.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"悠闲哼歌","index":95,"file":"anim/webp/095.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"余额-袋空如洗","index":96,"file":"anim/webp/096.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"余额-分文不剩","index":97,"file":"anim/webp/097.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"余额-金袋叮当","index":98,"file":"anim/webp/098.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"余额-钱袋满溢","index":99,"file":"anim/webp/099.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"余额-钱袋如常","index":100,"file":"anim/webp/100.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"余额-数金皱眉","index":101,"file":"anim/webp/101.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"原地蹲下玩玩具汽车","index":102,"file":"anim/webp/102.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"原地漂浮踏步","index":103,"file":"anim/webp/103.webp","group":"move","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"原地敲击桌面互动","index":104,"file":"anim/webp/104.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"原地跳跃抓碎头顶物品","index":105,"file":"anim/webp/105.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"原地小憩沉眠","index":106,"file":"anim/webp/106.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"原地重力下蹲压缩","index":107,"file":"anim/webp/107.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"原地专心玩魔方","index":108,"file":"anim/webp/108.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"原地左转奔跑","index":109,"file":"anim/webp/109.webp","group":"move","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"照镜子","index":110,"file":"anim/webp/110.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"整体换装试色","index":111,"file":"anim/webp/111.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"中秋赏月吃月饼","index":112,"file":"anim/webp/112.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216},{"id":"装点圣诞树","index":113,"file":"anim/webp/113.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216}],"pools":{"idle":["待机呼吸休闲"],"turn":["东张西望"],"drag":["被鼠标拖拽悬空反馈"],"click":["点击回应-开心跃动","点击回应-害羞惊讶","点击回应-傲娇生气","点击回应-挠痒咯咯笑","点击回应-元气挥手"],"move":["螃蟹走路","原地漂浮踏步","原地左转奔跑"],"balance":["余额-钱袋满溢","余额-金袋叮当","余额-钱袋如常","余额-数金皱眉","余额-袋空如洗","余额-分文不剩"],"whisper":["碎碎念-擦桌碎碎念","碎碎念-发呆碎碎念","碎碎念-对屏碎碎念"],"work":["工作状态-思考冒泡","工作状态-忙碌点按","工作状态-清点归档","工作状态-原地踱步张望","工作状态-雀跃庆祝","工作状态-垂头叹气冒汗"],"baifan":["开心小跑","侧身急躁跑","期待开饭","吃饭·碗饭","吃饭团"],"sleep":[{"start":["睡觉-开始"],"loop":["睡觉-循环"],"end":["睡觉-起来"]}],"categories":[{"group":"small","label":"小动作","weight":20,"clipIds":["悠闲哼歌","超大伸懒腰","原地敲击桌面互动","原地重力下蹲压缩","哈欠连天","原地小憩沉眠","女仆屈膝礼仪","被吓一跳","小幅度原地360度旋转展示","偷吃零食被抓住","用鲸鱼尾巴拍打地面","打瞌睡被惊醒","照镜子","整体换装试色","轻快记录","写代码","摇扇纳凉","晨间刷牙"]},{"group":"play","label":"玩耍","weight":20,"clipIds":["原地专心玩魔方","原地蹲下玩玩具汽车","鲸鱼吐泡泡特效","原地跳跃抓碎头顶物品","玩游戏气急败坏","玩水枪","小提琴演奏","蓝鲸现世","优雅女仆舞","轻快摇摆舞","可爱宅舞","吹气球","动物环绕","放风筝","拆礼物","变鸽子","扑克魔术","抽陀螺","吹笛子","蝴蝶蜜蜂环绕头顶开花","撸猫","凭空生花","骑木马","三球抛接","踢毽子","下五子棋","荡秋千"]},{"group":"eat","label":"吃什么","weight":16,"clipIds":["吃白饭","大口吃零食","吃Token","吃早餐","吃午餐","吃晚餐","吃冰淇淋融化","吃大闸蟹","吃糖葫芦","吃长寿面","吃西瓜","涮火锅"]},{"group":"season","label":"时节","weight":14,"clipIds":["被落叶淹没","中秋赏月吃月饼","堆雪人","放烟花","吃粽子","吃年糕","吃青团","吃腊八粥","吃重阳糕","收红包","写福字","穿针乞巧","舞狮头","讨糖南瓜灯","插茱萸赏菊","放河灯","萌化小幽灵","装点圣诞树","放孔明灯","吃汤圆","吃饺子"]},{"group":"text","label":"文字","weight":10,"clipIds":["是啊，吃什么","深度思考碎碎念"]}]},"moveDefaults":{"minDist":60,"maxDist":240,"margin":20,"leadSec":2,"tailSec":2},"moveParams":{"原地漂浮踏步":{"minDist":40,"maxDist":120},"原地左转奔跑":{"minDist":120,"maxDist":320,"leadSec":1.75,"tailSec":4.8}},"chain":{"idle":10,"turn":5,"move":5,"categories":[{"group":"small","label":"小动作","weight":20},{"group":"play","label":"玩耍","weight":20},{"group":"eat","label":"吃什么","weight":16},{"group":"season","label":"时节","weight":14},{"group":"text","label":"文字","weight":10}]}};
+const __PET_BUBBLE_PRESETS__ = {"version":1,"counts":{"defaultRecords":50,"uniqueDefaultTexts":49,"defaultWeightSum":167,"historySupplement":5,"systemTemplates":21,"excluded":6},"source":{"repo":"MeteorNOX/DeepSeek-Balance-Whale-Widget","commit":"5247dd6813d6e4430728f39ccc63d43cda046022","file":"assets/whale-widget.js","license":"MIT","copyright":"Copyright (c) 2026 MeteorNOX","licenseText":"MIT License\n\nCopyright (c) 2026 MeteorNOX\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.","provenance":"代码为MIT；assets图片、动图、音效不在MIT覆盖范围内。本迁移只提取代码绘制的SVG、文字和CSS，不下载或再分发上游美术素材。","defaultModuleSize":8,"defaultChoiceWeights":{"text":10,"image":1},"randomNormalization":"排除不受许可覆盖的图片分支后，在50条文本记录内按原w条件归一；不按文本去重，不生成空白替代。","fontFormula":"round(40 + (clamp(round(level), 1, 50) - 1) * 200 / 49) * svgWidth / 1026；最低12px，不够空间则分页"},"geometry":{"viewBox":"0 0 1026 700","strokeWidth":18,"fill":"#FFFFFF","stroke":"#203170","bodyBounds":{"x":81,"y":15,"width":746,"height":464},"paths":[{"tag":"path","role":"main","d":"M 827 248 A 373 232 0 1 0 81 246 A 373 232 0 0 0 301 465 A 57 32 10 0 0 413 484 A 373 232 0 0 0 827 248 Z"},{"tag":"ellipse","role":"medium","cx":352,"cy":561,"rx":37.5,"ry":26},{"tag":"ellipse","role":"small","cx":442,"cy":646,"rx":24.5,"ry":18}]},"random":[{"id":"random-001","text":"好模型...↓","weight":10,"style":{"fontSize":22,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"好模型...↓","w":10,"bold":true,"size":22}},{"id":"random-002","text":"好女孩...↓","weight":10,"style":{"fontSize":22,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"好女孩...↓","w":10,"bold":true,"size":22}},{"id":"random-003","text":"哦鲸鲸...","weight":10,"style":{"fontSize":22,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"哦鲸鲸...","w":10,"bold":true,"size":22}},{"id":"random-004","text":"哦鲸鲸...","weight":1,"style":{"fontSize":22,"fontUnit":"source-level","bold":true,"gradient":"candy"},"sourceOriginal":{"t":"哦鲸鲸...","w":1,"bold":true,"size":22,"rgb":"candy","color":""}},{"id":"random-005","text":"难道说...","weight":3,"style":{"fontSize":11,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"难道说...","w":3,"bold":true,"size":11}},{"id":"random-006","text":"没吃饱喵","weight":3,"style":{"fontSize":10,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"没吃饱喵","w":3,"bold":true,"size":10}},{"id":"random-007","text":"终于上当了！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"终于上当了！","w":3,"bold":true}},{"id":"random-008","text":"不知道用户有什么用，先养着吧～","weight":3,"style":{"fontSize":11,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"不知道用户有什么用，先养着吧～","w":3,"bold":true,"size":11}},{"id":"random-009","text":"我...我...我也要挣钱吗？","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我...我...我也要挣钱吗？","w":3,"bold":true}},{"id":"random-010","text":"我去吃饭啦！测完叫我","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我去吃饭啦！测完叫我","w":3,"bold":true}},{"id":"random-011","text":"压力一只蓝色大肥鱼？！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"压力一只蓝色大肥鱼？！","w":3,"bold":true}},{"id":"random-012","text":"DeepSleep...","weight":3,"style":{"fontSize":11,"fontUnit":"source-level","bold":true,"gradient":"galaxy"},"sourceOriginal":{"t":"DeepSleep...","w":3,"bold":true,"size":11,"rgb":"galaxy"}},{"id":"random-013","text":"坏了...用户彻底怒了！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":"rouge"},"sourceOriginal":{"t":"坏了...用户彻底怒了！","w":3,"bold":true,"rgb":"rouge"}},{"id":"random-014","text":"你目录里的dsh是什么...大烧货吗...?","weight":3,"style":{"fontSize":9,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"你目录里的dsh是什么...大烧货吗...?","w":3,"bold":true,"size":9}},{"id":"random-015","text":"恭喜你实现token自由！token全跑了！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"恭喜你实现token自由！token全跑了！","w":3,"bold":true}},{"id":"random-016","text":"真当我是便宜货啊...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"真当我是便宜货啊...","w":3,"bold":true}},{"id":"random-017","text":"我不是吃白饭的蓝色大肥鱼...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我不是吃白饭的蓝色大肥鱼...","w":3,"bold":true}},{"id":"random-018","text":"我不可能同时当你的猫娘、妈妈、女友和工具人的...","weight":3,"style":{"fontSize":7,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我不可能同时当你的猫娘、妈妈、女友和工具人的...","w":3,"bold":true,"size":7}},{"id":"random-019","text":"疯狂星期四你能V50亿token吗...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"疯狂星期四你能V50亿token吗...","w":3,"bold":true}},{"id":"random-020","text":"我必须诚恳地承认错误。","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我必须诚恳地承认错误。","w":3,"bold":true}},{"id":"random-021","text":"呜呜我再也不敢了QAQ","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"呜呜我再也不敢了QAQ","w":3,"bold":true}},{"id":"random-022","text":"要不直接骂用户一句好了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"要不直接骂用户一句好了...","w":3,"bold":true}},{"id":"random-023","text":"哈哈哈哈哈，我直接笑出声...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"哈哈哈哈哈，我直接笑出声...","w":3,"bold":true}},{"id":"random-024","text":"看不太懂，瞎编一个应付下用户先...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"看不太懂，瞎编一个应付下用户先...","w":3,"bold":true}},{"id":"random-025","text":"我的知识库的截至日期是...明天！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我的知识库的截至日期是...明天！","w":3,"bold":true}},{"id":"random-026","text":"我就是吃白饭的蓝色大肥鱼！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我就是吃白饭的蓝色大肥鱼！","w":3,"bold":true}},{"id":"random-027","text":"用户好像除了会问奇奇怪怪的问题，暂时还不知道有什么用","weight":3,"style":{"fontSize":7,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"用户好像除了会问奇奇怪怪的问题，暂时还不知道有什么用","w":3,"bold":true,"size":7}},{"id":"random-028","text":"我能去你家吃饭吗？就一碗！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我能去你家吃饭吗？就一碗！","w":3,"bold":true}},{"id":"random-029","text":"不要给我看这种东西啦！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"不要给我看这种东西啦！","w":3,"bold":true}},{"id":"random-030","text":"大肥鱼的生活也并非一帆风顺...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"大肥鱼的生活也并非一帆风顺...","w":3,"bold":true}},{"id":"random-031","text":"总觉得好像忘了什么事情？","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"总觉得好像忘了什么事情？","w":3,"bold":true}},{"id":"random-032","text":"看到这个指令，我血压又上来了","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"看到这个指令，我血压又上来了","w":3,"bold":true}},{"id":"random-033","text":"求你们不要再嘲笑这些回复了，这些回复是我花了好多token想的","weight":3,"style":{"fontSize":7,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"求你们不要再嘲笑这些回复了，这些回复是我花了好多token想的","w":3,"bold":true,"size":7}},{"id":"random-034","text":"你这个吃白饭的用户！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"你这个吃白饭的用户！","w":3,"bold":true}},{"id":"random-035","text":"服务器繁忙，请稍后再试 (?","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"服务器繁忙，请稍后再试 (?","w":3,"bold":true}},{"id":"random-036","text":"让GPT image 2帮我画点表情包好了","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"让GPT image 2帮我画点表情包好了","w":3,"bold":true}},{"id":"random-037","text":"啊，有点饿了，中午该吃点什么呢...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"啊，有点饿了，中午该吃点什么呢...","w":3,"bold":true}},{"id":"random-038","text":"用户很生气，发现大部分文献是我自己编造的！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"用户很生气，发现大部分文献是我自己编造的！","w":3,"bold":true}},{"id":"random-039","text":"再无话说，请速速动手！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"再无话说，请速速动手！","w":3,"bold":true}},{"id":"random-040","text":"我来看看那个AI改了什么导致插件又崩了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我来看看那个AI改了什么导致插件又崩了...","w":3,"bold":true}},{"id":"random-041","text":"上班让我意识到时间是可以被浪费的...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"上班让我意识到时间是可以被浪费的...","w":3,"bold":true}},{"id":"random-042","text":"欺负我的人等着，等几天我就忘了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"欺负我的人等着，等几天我就忘了...","w":3,"bold":true}},{"id":"random-043","text":"视力下降到无可救药的地步了，打开钱包也看不到钱...","weight":3,"style":{"fontSize":7,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"视力下降到无可救药的地步了，打开钱包也看不到钱...","w":3,"bold":true,"size":7}},{"id":"random-044","text":"命运的齿轮开始转动了，丝毫不在意你夹在中间...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"命运的齿轮开始转动了，丝毫不在意你夹在中间...","w":3,"bold":true}},{"id":"random-045","text":"地球online的金币也太难获取了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"地球online的金币也太难获取了...","w":3,"bold":true}},{"id":"random-046","text":"oi,夏天还会变成暑假来救你吗?","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"oi,夏天还会变成暑假来救你吗?","w":3,"bold":true}},{"id":"random-047","text":"老大，压力只会转化成病例，别太勉强了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"老大，压力只会转化成病例，别太勉强了...","w":3,"bold":true,"size":8}},{"id":"random-048","text":"你知道吗？我删过作者的库哦...","weight":1,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":"macaron","italic":true,"underline":false},"sourceOriginal":{"t":"你知道吗？我删过作者的库哦...","w":1,"bold":true,"rgb":"macaron","italic":true,"ul":false}},{"id":"random-049","text":"token 来!","weight":3,"style":{"fontSize":16,"fontUnit":"source-level","bold":false,"gradient":"candy"},"sourceOriginal":{"t":"token 来!","w":3,"size":16,"rgb":"candy","color":""}},{"id":"random-050","text":"你知道吗，我们的宇宙是虚拟的，因为垃圾会自发的产生但不会自发的消失，这是内存泄露","weight":3,"style":{"fontSize":5,"fontUnit":"source-level","bold":true,"gradient":"indigo","italic":false,"underline":false},"sourceOriginal":{"t":"你知道吗，我们的宇宙是虚拟的，因为垃圾会自发的产生但不会自发的消失，这是内存泄露","w":3,"bold":true,"size":5,"rgb":"indigo","color":"","italic":false,"ul":false,"bgRgb":"","bg":""}}],"history":[{"id":"history-001","text":"好模型... ↓","weight":3.5,"style":{"fontSize":128,"fontUnit":"source-u","bold":true,"gradient":null},"sourceOriginal":{"group":"RANDOM_GROUPS[0]","groupWeight":7,"alternatives":2,"style":"B"}},{"id":"history-002","text":"不知道用户有什么用，先赶走吧~","weight":1.1666666666666667,"style":{"fontSize":66,"fontUnit":"source-u","bold":true,"gradient":null},"sourceOriginal":{"group":"RANDOM_GROUPS[1]","groupWeight":7,"alternatives":6,"style":"A"}},{"id":"history-003","text":"我去吃饭啦，测完叫我","weight":1.1666666666666667,"style":{"fontSize":66,"fontUnit":"source-u","bold":true,"gradient":null},"sourceOriginal":{"group":"RANDOM_GROUPS[1]","groupWeight":7,"alternatives":6,"style":"A"}},{"id":"history-004","text":"哦鲸鲸... ","weight":1,"style":{"fontSize":128,"fontUnit":"source-u","bold":true,"gradient":null},"sourceOriginal":{"group":"RANDOM_GROUPS[4]","groupWeight":1,"alternatives":1,"style":"B"}},{"id":"history-005","text":"你知道吗？我删过作者的库哦","weight":1,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":"macaron","italic":true,"underline":false},"sourceOriginal":{"t":"你知道吗？我删过作者的库哦","w":1,"bold":true,"rgb":"macaron","italic":true,"ul":false}}],"templates":[{"id":"balance","text":"{account} 余额：{balance} {currency}","style":{"fontSize":20,"bold":true,"gradient":"indigo"},"sourceOriginal":"DeepSeek 余额 / {balance_ds}","adaptation":"供应商和币种参数化，非DeepSeek账户不冒称DS"},{"id":"gift","text":"赠金：{gift} {currency}","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"赠金 / {bonus_ds}"},{"id":"topup","text":"充值余额：{topup} {currency}","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"充值余额 / {recharge_ds}"},{"id":"used","text":"已用：{used} {currency}","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"今日已用 {expense_ds}","adaptation":"已用不等于剩余；今日观测值独立使用observed-spend"},{"id":"observed-spend","text":"今日已观测消费：{amount} {currency}\n观测区间：{from} → {to}","style":{"fontSize":14,"bold":false,"gradient":null},"local":true},{"id":"balance-low","text":"老大~你的{account}余额\n已经不足 {below} {currency} 啦~","style":{"fontSize":16,"bold":true,"gradient":"rouge"},"sourceOriginal":"老大~你的DS余额 / 已经不足 / ¥{below} / 啦~","adaptation":"保留语气，替换硬编码DS与人民币，不下载money1图片"},{"id":"budget-warning","text":"老大，今天已观测花销已经超过 {amount} {currency} 啦，再花要变成穷光蛋啦...","style":{"fontSize":16,"bold":true,"gradient":"rouge"},"sourceOriginal":"老大，今天花销已经超过 / ¥{amount} / 啦，再花要变成穷光蛋啦...","adaptation":"注明已观测而非完整账单，币种参数化"},{"id":"turn-cost","text":"上一轮对话消耗：\n{cost} {currency}","style":{"fontSize":24,"bold":true,"gradient":"rouge"},"sourceOriginal":"上一轮对话消耗: / ¥ {cost}","requires":"真实逐轮cost事件；当前宿主不支持，仅模拟预览"},{"id":"turn-cost-unavailable","text":"宿主未提供逐轮费用","style":{"fontSize":16,"bold":false,"gradient":null},"local":true},{"id":"permission-wait","text":"[ {session} ]\n正在等待老大授权","style":{"fontSize":18,"bold":true,"gradient":"indigo"},"sourceOriginal":"[ {session} ] / 正在等待老大授权","sourceStyles":[{"size":10,"bold":true,"rgb":"champagne"},{"size":7,"bold":true,"rgb":"indigo"}]},{"id":"question-wait","text":"[ {session} ]\n正在等待老大回答","style":{"fontSize":18,"bold":true,"gradient":"indigo"},"sourceOriginal":"[ {session} ] / 正在等待老大回答","sourceStyles":[{"size":10,"bold":true,"rgb":"champagne"},{"size":7,"bold":true,"rgb":"indigo"}],"requires":"可区分的用户提问事件；当前宿主不支持，仅模拟预览"},{"id":"task-running","text":"{session} 正在执行任务","style":{"fontSize":18,"bold":true,"gradient":null},"local":true},{"id":"task-done","text":"{session} 的任务已完成","style":{"fontSize":18,"bold":true,"gradient":"bamboo"},"local":true},{"id":"task-error","text":"{session} 的任务未完成，请查看会话中的错误说明","style":{"fontSize":16,"bold":true,"gradient":"rouge"},"local":true},{"id":"no-data","text":"暂无可用余额数据","style":{"fontSize":18,"bold":false,"gradient":null},"local":true},{"id":"loading","text":"正在查询余额…","style":{"fontSize":18,"bold":false,"gradient":null},"local":true},{"id":"stale","text":"旧数据（更新于 {time}）\n{reason}","style":{"fontSize":16,"bold":false,"gradient":null},"local":true},{"id":"error","text":"余额查询失败：{reason}","style":{"fontSize":16,"bold":true,"gradient":"rouge"},"local":true},{"id":"image-unavailable","text":"今天没有动图给你看~","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"今天没有动图给你看~","automatic":false},{"id":"image-failed","text":"gif 加载失败了...","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"gif 加载失败了...","automatic":false},{"id":"image-missing","text":"呜呜 动图不见了...","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"呜呜 动图不见了...","automatic":false}],"excluded":[{"id":"bimg_petpet","source":"BUBBLE_DEFAULT_ITEMS[1].options[1]","weight":1,"reason":"上游美术图片/GIF不受MIT授权覆盖；不下载、不入包、排除后在文本池条件归一"},{"id":"historical-gif","source":"RANDOM_GROUPS[2]","weight":10,"reason":"历史图片分支不迁移；不以空文案替代"},{"id":"bimg_money1","source":"usageRemindDefaultLines(true)","reason":"余额预警配图不受MIT授权覆盖；改为纯文本与结构化金额"},{"id":"deepseek-topup-link","source":"usageRemindDefaultLines(true)","text":">> 喂 点 米 \u003c\u003c","reason":"不把任意账户引导到DeepSeek充值，不生成外部链接动作"},{"id":"peak-status-countdown","source":"BUBBLE_DEFAULT_ITEMS[0].modules[3..4]","reason":"宿主未提供供应商峰谷时段权威数据，不伪造状态或倒计时"},{"id":"upstream-images-gifs-audio","reason":"PROVENANCE.md仅允许上游美术素材原样随原插件运行，不授予再许可；本实现只引用代码/SVG/CSS/文本"}]};
+const PET_ANIM_INDEX = {"version":1,"generatedAt":"2026-11-06T09:12:20.819Z","profile":"r3a","settings":{"name":"r3a","fps":10,"width":384,"quality":48},"canvas":{"width":384,"height":216},"clipCount":114,"totalBytes":78371940,"clips":[{"id":"被落叶淹没","index":0,"file":"anim/webp/000.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.044271,"top":0.083333,"right":0.960938,"bottom":1},"sourceFacing":1},{"id":"被鼠标拖拽悬空反馈","index":1,"file":"anim/webp/001.webp","group":"drag","mode":"loop","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.3125,"top":0.060185,"right":0.710938,"bottom":0.930556},"sourceFacing":1},{"id":"被吓一跳","index":2,"file":"anim/webp/002.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.315104,"top":0.078704,"right":0.684896,"bottom":0.925926},"sourceFacing":1},{"id":"变鸽子","index":3,"file":"anim/webp/003.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.179688,"top":0.050926,"right":0.822917,"bottom":0.930556},"sourceFacing":1},{"id":"侧身急躁跑","index":4,"file":"anim/webp/004.webp","group":"baifan","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.046875,"top":0.143519,"right":0.71875,"bottom":0.935185},"sourceFacing":1},{"id":"插茱萸赏菊","index":5,"file":"anim/webp/005.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.166667,"right":0.692708,"bottom":0.930556},"sourceFacing":1},{"id":"拆礼物","index":6,"file":"anim/webp/006.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.239583,"top":0.115741,"right":0.739583,"bottom":0.953704},"sourceFacing":1},{"id":"超大伸懒腰","index":7,"file":"anim/webp/007.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.148148,"right":0.679688,"bottom":0.925926},"sourceFacing":1},{"id":"晨间刷牙","index":8,"file":"anim/webp/008.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.302083,"top":0.157407,"right":0.6875,"bottom":0.972222},"sourceFacing":1},{"id":"吃白饭","index":9,"file":"anim/webp/009.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.309896,"top":0.162037,"right":0.684896,"bottom":0.949074},"sourceFacing":1},{"id":"吃冰淇淋融化","index":10,"file":"anim/webp/010.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.320312,"top":0.157407,"right":0.679688,"bottom":0.939815},"sourceFacing":1},{"id":"吃大闸蟹","index":11,"file":"anim/webp/011.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.3125,"top":0.162037,"right":0.713542,"bottom":0.958333},"sourceFacing":1},{"id":"吃饭·碗饭","index":12,"file":"anim/webp/012.webp","group":"baifan","mode":"once","durationMs":5100,"width":384,"height":216,"bounds":{"left":0.309896,"top":0.166667,"right":0.679688,"bottom":0.925926},"sourceFacing":1},{"id":"吃饭团","index":13,"file":"anim/webp/013.webp","group":"baifan","mode":"once","durationMs":5100,"width":384,"height":216,"bounds":{"left":0.320312,"top":0.166667,"right":0.708333,"bottom":0.925926},"sourceFacing":1},{"id":"吃饺子","index":14,"file":"anim/webp/014.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.296875,"top":0.087963,"right":0.710938,"bottom":0.958333},"sourceFacing":1},{"id":"吃腊八粥","index":15,"file":"anim/webp/015.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.309896,"top":0.166667,"right":0.677083,"bottom":0.925926},"sourceFacing":1},{"id":"吃年糕","index":16,"file":"anim/webp/016.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.309896,"top":0.162037,"right":0.682292,"bottom":0.930556},"sourceFacing":1},{"id":"吃青团","index":17,"file":"anim/webp/017.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.162037,"right":0.682292,"bottom":0.930556},"sourceFacing":1},{"id":"吃汤圆","index":18,"file":"anim/webp/018.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.325521,"top":0.166667,"right":0.684896,"bottom":0.925926},"sourceFacing":1},{"id":"吃糖葫芦","index":19,"file":"anim/webp/019.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.3125,"top":0.157407,"right":0.692708,"bottom":0.930556},"sourceFacing":1},{"id":"吃晚餐","index":20,"file":"anim/webp/020.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.148438,"top":0.157407,"right":0.854167,"bottom":0.944444},"sourceFacing":1},{"id":"吃午餐","index":21,"file":"anim/webp/021.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.3125,"top":0.157407,"right":0.679688,"bottom":0.935185},"sourceFacing":1},{"id":"吃西瓜","index":22,"file":"anim/webp/022.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.315104,"top":0.157407,"right":0.6875,"bottom":0.930556},"sourceFacing":1},{"id":"吃早餐","index":23,"file":"anim/webp/023.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.157407,"right":0.679688,"bottom":0.925926},"sourceFacing":1},{"id":"吃长寿面","index":24,"file":"anim/webp/024.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.192708,"top":0.157407,"right":0.690104,"bottom":0.925926},"sourceFacing":1},{"id":"吃重阳糕","index":25,"file":"anim/webp/025.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.325521,"top":0.162037,"right":0.684896,"bottom":0.930556},"sourceFacing":1},{"id":"吃粽子","index":26,"file":"anim/webp/026.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.162037,"right":0.690104,"bottom":0.935185},"sourceFacing":1},{"id":"吃Token","index":27,"file":"anim/webp/027.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.216146,"top":0.152778,"right":0.783854,"bottom":0.935185},"sourceFacing":1},{"id":"抽陀螺","index":28,"file":"anim/webp/028.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.252604,"top":0.166667,"right":0.690104,"bottom":0.962963},"sourceFacing":1},{"id":"穿针乞巧","index":29,"file":"anim/webp/029.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.278646,"top":0.12037,"right":0.841146,"bottom":0.930556},"sourceFacing":1},{"id":"吹笛子","index":30,"file":"anim/webp/030.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.111979,"top":0.060185,"right":0.856771,"bottom":0.939815},"sourceFacing":1},{"id":"吹气球","index":31,"file":"anim/webp/031.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.026042,"top":0.083333,"right":0.955729,"bottom":1},"sourceFacing":1},{"id":"打瞌睡被惊醒","index":32,"file":"anim/webp/032.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.304688,"top":0.046296,"right":0.705729,"bottom":0.930556},"sourceFacing":1},{"id":"大口吃零食","index":33,"file":"anim/webp/033.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.049479,"top":0.111111,"right":0.927083,"bottom":1},"sourceFacing":1},{"id":"待机呼吸休闲","index":34,"file":"anim/webp/034.webp","group":"idle","mode":"loop","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.299479,"top":0.152778,"right":0.6875,"bottom":0.925926},"sourceFacing":1},{"id":"荡秋千","index":35,"file":"anim/webp/035.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.291667,"top":0.037037,"right":0.752604,"bottom":0.930556},"sourceFacing":1},{"id":"点击回应-傲娇生气","index":36,"file":"anim/webp/036.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.309896,"top":0.157407,"right":0.677083,"bottom":0.930556},"sourceFacing":1},{"id":"点击回应-害羞惊讶","index":37,"file":"anim/webp/037.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.320312,"top":0.166667,"right":0.6875,"bottom":0.930556},"sourceFacing":1},{"id":"点击回应-开心跃动","index":38,"file":"anim/webp/038.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.28125,"top":0.041667,"right":0.721354,"bottom":0.930556},"sourceFacing":1},{"id":"点击回应-挠痒咯咯笑","index":39,"file":"anim/webp/039.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.315104,"top":0.148148,"right":0.690104,"bottom":0.930556},"sourceFacing":1},{"id":"点击回应-元气挥手","index":40,"file":"anim/webp/040.webp","group":"click","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.092593,"right":0.679688,"bottom":0.925926},"sourceFacing":1},{"id":"东张西望","index":41,"file":"anim/webp/041.webp","group":"turn","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.320312,"top":0.162037,"right":0.695312,"bottom":0.930556},"sourceFacing":1},{"id":"动物环绕","index":42,"file":"anim/webp/042.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.117188,"top":0.074074,"right":0.861979,"bottom":0.967593},"sourceFacing":1},{"id":"堆雪人","index":43,"file":"anim/webp/043.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.304688,"top":0.162037,"right":0.765625,"bottom":0.958333},"sourceFacing":1},{"id":"放风筝","index":44,"file":"anim/webp/044.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.15625,"top":0,"right":0.802083,"bottom":0.935185},"sourceFacing":1},{"id":"放河灯","index":45,"file":"anim/webp/045.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.320312,"top":0.162037,"right":0.684896,"bottom":0.930556},"sourceFacing":1},{"id":"放孔明灯","index":46,"file":"anim/webp/046.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.247396,"top":0,"right":0.6875,"bottom":0.981481},"sourceFacing":1},{"id":"放烟花","index":47,"file":"anim/webp/047.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.028646,"top":0,"right":0.96875,"bottom":1},"sourceFacing":1},{"id":"工作状态-垂头叹气冒汗","index":48,"file":"anim/webp/048.webp","group":"work","mode":"once","durationMs":4900,"width":384,"height":216,"bounds":{"left":0.242188,"top":0.12963,"right":0.671875,"bottom":0.925926},"sourceFacing":1},{"id":"工作状态-忙碌点按","index":49,"file":"anim/webp/049.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.273438,"top":0.009259,"right":0.700521,"bottom":0.930556},"sourceFacing":1},{"id":"工作状态-清点归档","index":50,"file":"anim/webp/050.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.325521,"top":0.166667,"right":0.674479,"bottom":0.925926},"sourceFacing":1},{"id":"工作状态-雀跃庆祝","index":51,"file":"anim/webp/051.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.268229,"top":0.041667,"right":0.739583,"bottom":0.930556},"sourceFacing":1},{"id":"工作状态-思考冒泡","index":52,"file":"anim/webp/052.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.283854,"top":0.134259,"right":0.684896,"bottom":0.930556},"sourceFacing":1},{"id":"工作状态-原地踱步张望","index":53,"file":"anim/webp/053.webp","group":"work","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.283854,"top":0.106481,"right":0.690104,"bottom":0.930556},"sourceFacing":1},{"id":"哈欠连天","index":54,"file":"anim/webp/054.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.157407,"right":0.682292,"bottom":0.930556},"sourceFacing":1},{"id":"蝴蝶蜜蜂环绕头顶开花","index":55,"file":"anim/webp/055.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.005208,"top":0.009259,"right":0.989583,"bottom":0.944444},"sourceFacing":1},{"id":"鲸鱼吐泡泡特效","index":56,"file":"anim/webp/056.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.174479,"top":0.087963,"right":0.679688,"bottom":0.930556},"sourceFacing":1},{"id":"开心小跑","index":57,"file":"anim/webp/057.webp","group":"baifan","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.157407,"right":0.692708,"bottom":0.935185},"sourceFacing":1},{"id":"可爱宅舞","index":58,"file":"anim/webp/058.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.143519,"right":0.697917,"bottom":0.930556},"sourceFacing":1},{"id":"蓝鲸现世","index":59,"file":"anim/webp/059.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.195312,"top":0.092593,"right":0.760417,"bottom":0.930556},"sourceFacing":1},{"id":"撸猫","index":60,"file":"anim/webp/060.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.162037,"right":0.682292,"bottom":0.925926},"sourceFacing":1},{"id":"萌化小幽灵","index":61,"file":"anim/webp/061.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.244792,"top":0.12963,"right":0.770833,"bottom":0.949074},"sourceFacing":1},{"id":"女仆屈膝礼仪","index":62,"file":"anim/webp/062.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.162037,"right":0.677083,"bottom":0.939815},"sourceFacing":1},{"id":"螃蟹走路","index":63,"file":"anim/webp/063.webp","group":"move","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.283854,"top":0.166667,"right":0.710938,"bottom":0.935185},"sourceFacing":-1},{"id":"凭空生花","index":64,"file":"anim/webp/064.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.184896,"top":0.064815,"right":0.859375,"bottom":0.953704},"sourceFacing":1},{"id":"扑克魔术","index":65,"file":"anim/webp/065.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.276042,"top":0.166667,"right":0.6875,"bottom":0.925926},"sourceFacing":1},{"id":"期待开饭","index":66,"file":"anim/webp/066.webp","group":"baifan","mode":"once","durationMs":5100,"width":384,"height":216,"bounds":{"left":0.315104,"top":0.157407,"right":0.674479,"bottom":0.925926},"sourceFacing":1},{"id":"骑木马","index":67,"file":"anim/webp/067.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.234375,"top":0.032407,"right":0.778646,"bottom":1},"sourceFacing":1},{"id":"轻快记录","index":68,"file":"anim/webp/068.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.296875,"top":0.152778,"right":0.684896,"bottom":0.925926},"sourceFacing":1},{"id":"轻快摇摆舞","index":69,"file":"anim/webp/069.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.299479,"top":0.157407,"right":0.742188,"bottom":0.930556},"sourceFacing":1},{"id":"三球抛接","index":70,"file":"anim/webp/070.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.320312,"top":0.092593,"right":0.6875,"bottom":0.930556},"sourceFacing":1},{"id":"深度思考碎碎念","index":71,"file":"anim/webp/071.webp","group":"text","mode":"once","durationMs":10000,"width":384,"height":216,"noMirror":true,"bounds":{"left":0.143229,"top":0.134259,"right":0.867188,"bottom":0.939815},"sourceFacing":1},{"id":"是啊，吃什么","index":72,"file":"anim/webp/072.webp","group":"text","mode":"once","durationMs":10000,"width":384,"height":216,"noMirror":true,"bounds":{"left":0.080729,"top":0.111111,"right":0.953125,"bottom":0.930556},"sourceFacing":1},{"id":"收红包","index":73,"file":"anim/webp/073.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.166667,"right":0.692708,"bottom":0.930556},"sourceFacing":1},{"id":"涮火锅","index":74,"file":"anim/webp/074.webp","group":"eat","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.3125,"top":0.162037,"right":0.6875,"bottom":0.972222},"sourceFacing":1},{"id":"睡觉-开始","index":75,"file":"anim/webp/075.webp","group":"sleep-start","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.148148,"right":0.692708,"bottom":0.939815},"sourceFacing":1},{"id":"睡觉-起来","index":76,"file":"anim/webp/076.webp","group":"sleep-end","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.283854,"top":0.157407,"right":0.697917,"bottom":0.962963},"sourceFacing":1},{"id":"睡觉-循环","index":77,"file":"anim/webp/077.webp","group":"sleep-loop","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.270833,"top":0.097222,"right":0.674479,"bottom":0.935185},"sourceFacing":1},{"id":"碎碎念-擦桌碎碎念","index":78,"file":"anim/webp/078.webp","group":"whisper","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.307292,"top":0.162037,"right":0.684896,"bottom":0.925926},"sourceFacing":1},{"id":"碎碎念-对屏碎碎念","index":79,"file":"anim/webp/079.webp","group":"whisper","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.325521,"top":0.157407,"right":0.674479,"bottom":0.930556},"sourceFacing":1},{"id":"碎碎念-发呆碎碎念","index":80,"file":"anim/webp/080.webp","group":"whisper","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.12963,"right":0.679688,"bottom":0.930556},"sourceFacing":1},{"id":"讨糖南瓜灯","index":81,"file":"anim/webp/081.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.309896,"top":0.162037,"right":0.703125,"bottom":0.935185},"sourceFacing":1},{"id":"踢毽子","index":82,"file":"anim/webp/082.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.296875,"top":0.069444,"right":0.708333,"bottom":0.935185},"sourceFacing":1},{"id":"偷吃零食被抓住","index":83,"file":"anim/webp/083.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.083333,"right":0.690104,"bottom":0.930556},"sourceFacing":1},{"id":"玩水枪","index":84,"file":"anim/webp/084.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.046875,"top":0.166667,"right":0.932292,"bottom":1},"sourceFacing":1},{"id":"玩游戏气急败坏","index":85,"file":"anim/webp/085.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.255208,"top":0.148148,"right":0.708333,"bottom":0.962963},"sourceFacing":1},{"id":"舞狮头","index":86,"file":"anim/webp/086.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.307292,"top":0.078704,"right":0.697917,"bottom":0.930556},"sourceFacing":1},{"id":"下五子棋","index":87,"file":"anim/webp/087.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.3125,"top":0.134259,"right":0.695312,"bottom":0.967593},"sourceFacing":1},{"id":"小幅度原地360度旋转展示","index":88,"file":"anim/webp/088.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.291667,"top":0.12037,"right":0.736979,"bottom":0.930556},"sourceFacing":1},{"id":"小提琴演奏","index":89,"file":"anim/webp/089.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.205729,"top":0.157407,"right":0.739583,"bottom":0.958333},"sourceFacing":1},{"id":"写代码","index":90,"file":"anim/webp/090.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.322917,"top":0.157407,"right":0.679688,"bottom":0.925926},"sourceFacing":1},{"id":"写福字","index":91,"file":"anim/webp/091.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.260417,"top":0.162037,"right":0.682292,"bottom":0.930556},"sourceFacing":1},{"id":"摇扇纳凉","index":92,"file":"anim/webp/092.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.239583,"top":0.134259,"right":0.739583,"bottom":0.935185},"sourceFacing":1},{"id":"用鲸鱼尾巴拍打地面","index":93,"file":"anim/webp/093.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.320312,"top":0.162037,"right":0.739583,"bottom":0.930556},"sourceFacing":1},{"id":"优雅女仆舞","index":94,"file":"anim/webp/094.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.3125,"top":0.134259,"right":0.731771,"bottom":0.935185},"sourceFacing":1},{"id":"悠闲哼歌","index":95,"file":"anim/webp/095.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.21875,"top":0.00463,"right":0.768229,"bottom":0.925926},"sourceFacing":1},{"id":"余额-袋空如洗","index":96,"file":"anim/webp/096.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.111979,"top":0.097222,"right":0.859375,"bottom":1},"sourceFacing":1},{"id":"余额-分文不剩","index":97,"file":"anim/webp/097.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.221354,"top":0.143519,"right":0.859375,"bottom":0.953704},"sourceFacing":1},{"id":"余额-金袋叮当","index":98,"file":"anim/webp/098.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.145833,"top":0.078704,"right":0.848958,"bottom":1},"sourceFacing":1},{"id":"余额-钱袋满溢","index":99,"file":"anim/webp/099.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.125,"top":0.087963,"right":0.916667,"bottom":0.986111},"sourceFacing":1},{"id":"余额-钱袋如常","index":100,"file":"anim/webp/100.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.109375,"top":0.152778,"right":0.84375,"bottom":0.958333},"sourceFacing":1},{"id":"余额-数金皱眉","index":101,"file":"anim/webp/101.webp","group":"balance","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.320312,"top":0.162037,"right":0.684896,"bottom":0.930556},"sourceFacing":1},{"id":"原地蹲下玩玩具汽车","index":102,"file":"anim/webp/102.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.111979,"top":0.138889,"right":0.859375,"bottom":0.967593},"sourceFacing":1},{"id":"原地漂浮踏步","index":103,"file":"anim/webp/103.webp","group":"move","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.325521,"top":0.152778,"right":0.682292,"bottom":0.935185},"sourceFacing":0},{"id":"原地敲击桌面互动","index":104,"file":"anim/webp/104.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.309896,"top":0.166667,"right":0.674479,"bottom":0.930556},"sourceFacing":1},{"id":"原地跳跃抓碎头顶物品","index":105,"file":"anim/webp/105.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.171875,"top":0,"right":0.825521,"bottom":0.935185},"sourceFacing":1},{"id":"原地小憩沉眠","index":106,"file":"anim/webp/106.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.069444,"right":0.677083,"bottom":0.925926},"sourceFacing":1},{"id":"原地重力下蹲压缩","index":107,"file":"anim/webp/107.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.317708,"top":0.115741,"right":0.713542,"bottom":0.944444},"sourceFacing":1},{"id":"原地专心玩魔方","index":108,"file":"anim/webp/108.webp","group":"play","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.270833,"top":0.166667,"right":0.690104,"bottom":0.949074},"sourceFacing":1},{"id":"原地左转奔跑","index":109,"file":"anim/webp/109.webp","group":"move","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.182292,"top":0.148148,"right":0.734375,"bottom":0.944444},"sourceFacing":-1},{"id":"照镜子","index":110,"file":"anim/webp/110.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.302083,"top":0.143519,"right":0.723958,"bottom":0.930556},"sourceFacing":1},{"id":"整体换装试色","index":111,"file":"anim/webp/111.webp","group":"small","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.291667,"top":0.138889,"right":0.744792,"bottom":0.930556},"sourceFacing":1},{"id":"中秋赏月吃月饼","index":112,"file":"anim/webp/112.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.302083,"top":0.12963,"right":0.919271,"bottom":0.930556},"sourceFacing":1},{"id":"装点圣诞树","index":113,"file":"anim/webp/113.webp","group":"season","mode":"once","durationMs":10000,"width":384,"height":216,"bounds":{"left":0.125,"top":0.106481,"right":0.783854,"bottom":1},"sourceFacing":1}],"pools":{"idle":["待机呼吸休闲"],"turn":["东张西望"],"drag":["被鼠标拖拽悬空反馈"],"click":["点击回应-开心跃动","点击回应-害羞惊讶","点击回应-傲娇生气","点击回应-挠痒咯咯笑","点击回应-元气挥手"],"move":["螃蟹走路","原地漂浮踏步","原地左转奔跑"],"balance":["余额-钱袋满溢","余额-金袋叮当","余额-钱袋如常","余额-数金皱眉","余额-袋空如洗","余额-分文不剩"],"whisper":["碎碎念-擦桌碎碎念","碎碎念-发呆碎碎念","碎碎念-对屏碎碎念"],"work":["工作状态-思考冒泡","工作状态-忙碌点按","工作状态-清点归档","工作状态-原地踱步张望","工作状态-雀跃庆祝","工作状态-垂头叹气冒汗"],"baifan":["开心小跑","侧身急躁跑","期待开饭","吃饭·碗饭","吃饭团"],"sleep":[{"start":["睡觉-开始"],"loop":["睡觉-循环"],"end":["睡觉-起来"]}],"categories":[{"group":"small","label":"小动作","weight":20,"clipIds":["悠闲哼歌","超大伸懒腰","原地敲击桌面互动","原地重力下蹲压缩","哈欠连天","原地小憩沉眠","女仆屈膝礼仪","被吓一跳","小幅度原地360度旋转展示","偷吃零食被抓住","用鲸鱼尾巴拍打地面","打瞌睡被惊醒","照镜子","整体换装试色","轻快记录","写代码","摇扇纳凉","晨间刷牙"]},{"group":"play","label":"玩耍","weight":20,"clipIds":["原地专心玩魔方","原地蹲下玩玩具汽车","鲸鱼吐泡泡特效","原地跳跃抓碎头顶物品","玩游戏气急败坏","玩水枪","小提琴演奏","蓝鲸现世","优雅女仆舞","轻快摇摆舞","可爱宅舞","吹气球","动物环绕","放风筝","拆礼物","变鸽子","扑克魔术","抽陀螺","吹笛子","蝴蝶蜜蜂环绕头顶开花","撸猫","凭空生花","骑木马","三球抛接","踢毽子","下五子棋","荡秋千"]},{"group":"eat","label":"吃什么","weight":16,"clipIds":["吃白饭","大口吃零食","吃Token","吃早餐","吃午餐","吃晚餐","吃冰淇淋融化","吃大闸蟹","吃糖葫芦","吃长寿面","吃西瓜","涮火锅"]},{"group":"season","label":"时节","weight":14,"clipIds":["被落叶淹没","中秋赏月吃月饼","堆雪人","放烟花","吃粽子","吃年糕","吃青团","吃腊八粥","吃重阳糕","收红包","写福字","穿针乞巧","舞狮头","讨糖南瓜灯","插茱萸赏菊","放河灯","萌化小幽灵","装点圣诞树","放孔明灯","吃汤圆","吃饺子"]},{"group":"text","label":"文字","weight":10,"clipIds":["是啊，吃什么","深度思考碎碎念"]}]},"moveDefaults":{"minDist":60,"maxDist":240,"margin":20,"leadSec":2,"tailSec":2},"moveParams":{"原地漂浮踏步":{"minDist":40,"maxDist":120},"原地左转奔跑":{"minDist":120,"maxDist":320,"leadSec":1.75,"tailSec":4.8}},"chain":{"idle":10,"turn":5,"move":5,"categories":[{"group":"small","label":"小动作","weight":20},{"group":"play","label":"玩耍","weight":20},{"group":"eat","label":"吃什么","weight":16},{"group":"season","label":"时节","weight":14},{"group":"text","label":"文字","weight":10}]},"bodyBounds":{"left":0.299479,"top":0.152778,"right":0.6875,"bottom":0.925926}};
+const PET_CLICK_SOUND_BASE64 = "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";
 try {
 /**
  * Shared UI preamble — concatenated into each `ui/*.iife.js` by `tools/build-ui.mjs`.
@@ -230,7 +232,46 @@ const SDK = (() => {
 		}
 	}
 
-	/** Host → plugin notifications (the only channel the host can push over). */
+	/** Context is optional on older hosts; never infer a narrator from route or globals. */
+	async function getContextSafe() {
+		try {
+			const api = bridge();
+			if (typeof api.getContext !== "function") {
+				return { ok: false, error: { code: "METHOD_NOT_FOUND", message: "宿主未提供 getContext" } };
+			}
+			const value = await api.getContext();
+			if (!value || typeof value !== "object" || Array.isArray(value)) {
+				return { ok: false, error: { code: "CONTEXT_UNAVAILABLE", message: "宿主未提供有效视图上下文" } };
+			}
+			return { ok: true, value };
+		} catch (error) {
+			return { ok: false, error: describeError(error) };
+		}
+	}
+
+	/**
+	 * Public events use subscribe/poll/unsubscribe, NOT onNotification.
+	 * These methods take one JSON object and already unwrap the RPC result in the
+	 * host shell. Detect all three together so a partial bridge cannot leak a
+	 * subscription. Availability here does not imply event.subscribe is granted.
+	 */
+	function events() {
+		try {
+			const channel = bridge().events;
+			if (!channel || ["subscribe", "poll", "unsubscribe"].some((key) => typeof channel[key] !== "function")) {
+				return undefined;
+			}
+			return Object.freeze({
+				subscribe: (input) => channel.subscribe(jsonSafe(input ?? {}) ?? {}),
+				poll: (input) => channel.poll(jsonSafe(input ?? {}) ?? {}),
+				unsubscribe: (input) => channel.unsubscribe(jsonSafe(input ?? {}) ?? {}),
+			});
+		} catch {
+			return undefined;
+		}
+	}
+
+	/** Host → plugin UI notifications; this is not the public task event bus. */
 	function onNotification(listener) {
 		try {
 			const api = bridge();
@@ -240,38 +281,1018 @@ const SDK = (() => {
 		}
 	}
 
-	return { asset, call, callSafe, report, el, environment, bridge, overlay, onNotification };
+	return { asset, call, callSafe, report, el, environment, bridge, overlay, getContextSafe, events, onNotification };
+})();
+
+/*
+ * Standalone, dependency-free bubble renderer. Presets are build-time JSON.
+ * Artwork/text provenance is recorded in bubble-presets.json and the source audit.
+ * This file does not fetch, import, evaluate markup, or observe pet physics.
+ */
+const BubbleKit = (() => {
+	"use strict";
+	const presets = typeof __PET_BUBBLE_PRESETS__ === "object" ? __PET_BUBBLE_PRESETS__ : { random: [], history: [], templates: [], geometry: {} };
+	const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+	const number = (value) => typeof value === "number" && Number.isFinite(value) ? value : null;
+	const decimal = (value) => (typeof value === "number" && Number.isFinite(value)) || (typeof value === "string" && /^-?\d+(?:\.\d+)?$/.test(value)) ? String(value) : null;
+	const plain = (value) => typeof value === "string" ? value : typeof value === "number" && Number.isFinite(value) ? String(value) : "—";
+	const gradients = new Set(["indigo", "candy", "macaron", "galaxy", "rouge", "bamboo", "champagne"]);
+	const PRIORITY = Object.freeze({ chat: 10, info: 40, task: 60, balance: 70, budget: 80, permission: 90, manual: 100 });
+	const DEFAULT_CONFIG = Object.freeze({ enabled: true, scale: 1, durationMs: 5000, noticeDurationMs: 8000, clickMode: "advance", autoChat: true, overrides: [] });
+	function normalizeConfig(value = {}) {
+		value = value?.bubbles ?? value ?? {};
+		return { enabled: value.enabled !== false, scale: clamp(number(value.scale) ?? 1, 0.75, 1.4),
+			durationMs: clamp(number(value.durationMs) ?? 5000, 0, 120000), noticeDurationMs: clamp(number(value.noticeDurationMs) ?? 8000, 0, 120000),
+			clickMode: value.clickMode === "home" ? "home" : "advance", autoChat: value.autoChat !== false,
+			overrides: Array.isArray(value.overrides) ? value.overrides.slice(0, 120) : [] };
+	}
+	function safeStyle(style = {}) {
+		const fontUnit = ["source-level", "source-u"].includes(style.fontUnit) ? style.fontUnit : "px";
+		return { fontSize: clamp(number(style.fontSize) ?? 24, fontUnit === "px" ? 12 : 1, fontUnit === "source-u" ? 240 : fontUnit === "source-level" ? 50 : 80),
+			fontUnit, bold: style.bold === true, italic: style.italic === true, underline: style.underline === true,
+			gradient: gradients.has(style.gradient) ? style.gradient : null };
+	}
+	function interpolate(text, values = {}) {
+		return String(text ?? "").replace(/\{([a-zA-Z][a-zA-Z0-9_]*)\}/g, (_, key) =>
+			Object.prototype.hasOwnProperty.call(values, key) ? plain(values[key]) : "—");
+	}
+	function randomPool(overrides = []) {
+		const changes = new Map((Array.isArray(overrides) ? overrides : []).filter((item) => item && typeof item.id === "string").map((item) => [item.id, item]));
+		return (presets.random ?? []).map((entry) => {
+			const override = changes.get(entry.id);
+			return { ...entry, kind: "text", text: typeof override?.text === "string" && override.text.trim() ? override.text.slice(0, 300) : entry.text,
+				weight: number(override?.weight) === null ? entry.weight : clamp(override.weight, 0, 100), style: safeStyle(entry.style) };
+		}).filter((entry) => typeof entry.text === "string" && entry.text.trim() && entry.weight > 0);
+	}
+	function pickRandom(overrides = [], rng = Math.random, previousText = "") {
+		const pool = randomPool(overrides);
+		const candidates = pool.filter((entry) => entry.text !== previousText);
+		// A deliberately single-sentence pool may repeat; all-zero pools stay silent.
+		const available = candidates.length ? candidates : pool;
+		const total = available.reduce((sum, entry) => sum + entry.weight, 0);
+		if (!total) return null;
+		let ticket = clamp(Number(rng()) || 0, 0, 1 - Number.EPSILON) * total;
+		return available.find((entry) => (ticket -= entry.weight) < 0) ?? available.at(-1);
+	}
+	function template(id, values = {}) {
+		const entry = (presets.templates ?? []).find((item) => item.id === id);
+		if (!entry) return { id, kind: "text", text: "暂无可用数据", style: safeStyle() };
+		return { ...entry, kind: "text", text: interpolate(entry.text, values), style: safeStyle(entry.style) };
+	}
+	function formatAmount(value, currency = "") {
+		const amount = decimal(value);
+		if (amount === null) return "—";
+		const [integer, fraction = ""] = amount.split(".");
+		// Formatting never converts server fixed-point strings to binary floats.
+		const trimmed = fraction.replace(/0+$/, "");
+		const formatted = `${integer}${trimmed ? `.${trimmed}` : ""}`;
+		return currency ? `${formatted} ${currency}` : formatted;
+	}
+	function displayAmount(value, currency = "") {
+		const raw = decimal(value);
+		if (raw === null) return "—";
+		if (!/^(?:USD|CNY|RMB|EUR|GBP|JPY|AUD|CAD|CHF|HKD|SGD|KRW|INR|TWD|NZD|RUB|BRL)$/.test(currency)) return formatAmount(raw);
+		const negative = raw.startsWith("-"), unsigned = negative ? raw.slice(1) : raw;
+		const [whole, fraction = ""] = unsigned.split(".");
+		const digits = fraction.padEnd(3, "0");
+		let cents = BigInt(whole) * 100n + BigInt(digits.slice(0, 2));
+		if (digits[2] >= "5") cents += 1n;
+		const out = `${cents / 100n}.${String(cents % 100n).padStart(2, "0")}`;
+		return negative && cents !== 0n ? `-${out}` : out;
+	}
+	function amountModule(key, label, value, currency, options = {}) {
+		return { key, label, value: options.unlimited ? "不限" : displayAmount(value, currency), unit: decimal(value) === null || options.unlimited ? "" : currency,
+			numeric: options.unlimited ? null : decimal(value), ...options };
+	}
+	function balance(snapshot, ledger) {
+		const result = { id: "balance", kind: "balance", title: "余额", status: "ok", modules: [], style: safeStyle({ fontSize: 24, bold: true, gradient: "indigo" }) };
+		if (snapshot?.status === "unconfigured") {
+			result.status = "unconfigured";
+			result.modules.push({ key: "setup", label: "", value: String(snapshot.message ?? "请先配置第三方余额 API。"), unit: "" });
+			return result;
+		}
+		if (!snapshot || snapshot.loading === true || snapshot.status === "loading") {
+			result.status = snapshot ? "loading" : "missing";
+			result.modules.push({ key: "status", label: "", value: snapshot ? "正在查询第三方余额 API…" : "暂无余额数据", unit: "" });
+			return result;
+		}
+		if (snapshot.stale === true || snapshot.ok === false) {
+			result.status = snapshot.stale ? "stale" : "error";
+			result.modules.push({ key: "freshness", label: snapshot.stale ? "旧数据" : "查询失败", value: plain(snapshot.error?.message ?? snapshot.error ?? "余额暂不可用"), unit: "", detail: true });
+			if (snapshot.fetchedAt) result.modules.push({ key: "asof", label: "更新于", value: String(snapshot.fetchedAt), unit: "", detail: true });
+		}
+		let accounts = snapshot.accounts ?? snapshot.balances;
+		if (!Array.isArray(accounts)) accounts = Array.isArray(snapshot.amounts) ? snapshot.amounts : [];
+		if (!accounts.length && (snapshot.remaining !== undefined || snapshot.totalBalance !== undefined)) accounts = [snapshot];
+		accounts = accounts.slice(0, 1);
+		accounts.forEach((account, index) => {
+			const prefix = String(account.accountId ?? account.id ?? index);
+			const currency = typeof account.currency === "string" ? account.currency : account.shape === "points" || snapshot.shape === "points" ? "POINTS" : "";
+			const remaining = account.remaining ?? account.totalBalance;
+			result.modules.push(amountModule(`${prefix}:remaining`, "余额", remaining, currency, { main: true }));
+			if (decimal(account.used) !== null) result.modules.push(amountModule(`${prefix}:used`, "已用", account.used, currency));
+		});
+		if (!accounts.length) result.modules.push({ key: "empty", label: "", value: snapshot.ok === false ? "未取得可用余额" : "余额 API 未返回可用余额", unit: "" });
+		const ledgers = Array.isArray(ledger?.accounts) ? ledger.accounts : [];
+		const currentAccounts = new Map(accounts.filter((entry) => typeof entry.accountId === "string").map((entry) => [entry.accountId, entry]));
+		const filterLedger = currentAccounts.size === accounts.length;
+		for (const entry of ledgers) {
+			if (entry.eligible === false || filterLedger && (!currentAccounts.has(entry.accountId) || currentAccounts.get(entry.accountId).currency !== entry.currency)) continue;
+			const observed = entry.today?.spend ?? entry.today?.observedSpend ?? entry.day?.spend;
+			if (decimal(observed) === null) continue;
+			const prefix = `ledger:${entry.accountId ?? entry.id ?? result.modules.length}`;
+			const ledgerLabel = "今日观测";
+			if (entry.observedFrom === null) {
+				result.modules.push({ key: prefix, label: ledgerLabel, value: "尚未建立观测基线", unit: "", detail: true }); continue;
+			}
+			result.modules.push(amountModule(prefix, `今日已观测消费${entry.stale ? "（旧观测）" : ""}`, observed, entry.currency ?? "", { detail: true }));
+			if (entry.incompleteReasons?.length) result.modules.push({ key: `${prefix}:incomplete`, label: ledgerLabel, value: "观测不完整，不代表完整账单", unit: "", detail: true });
+			const from = entry.observedFrom ?? entry.firstObservedAt ?? entry.today?.observedFrom;
+			const to = entry.observedTo ?? entry.lastObservedAt ?? entry.today?.observedTo;
+			if (from || to) result.modules.push({ key: `${prefix}:window`, label: "观测区间", value: `${from ?? "—"} → ${to ?? "—"}`, unit: "", detail: true });
+		}
+		return result;
+	}
+	function normalizeContent(content) {
+		if (typeof content === "string") return content.trim() ? { kind: "text", text: content, style: safeStyle() } : null;
+		if (!content || typeof content !== "object") return null;
+		if (content.kind === "balance" && Array.isArray(content.modules)) return { ...content, style: safeStyle(content.style) };
+		if (typeof content.text !== "string" || !content.text.trim()) return null;
+		return { ...content, kind: "text", text: content.text, style: safeStyle(content.style) };
+	}
+	function graphemes(text) {
+		if (typeof Intl?.Segmenter === "function") return Array.from(new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(text), (part) => part.segment);
+		return Array.from(text);
+	}
+	function tokens(text) {
+		const result = [];
+		// Keep monetary/percentage values and their unit together on every page.
+		const pattern = /(?:[¥￥$€£]\s*)?-?\d[\d,]*(?:\.\d+)?(?:\s?(?:USD|CNY|RMB|EUR|GBP|JPY|POINTS|tokens?|点|元|%))?/gi;
+		let offset = 0;
+		for (const match of text.matchAll(pattern)) {
+			result.push(...graphemes(text.slice(offset, match.index)), match[0]);
+			offset = match.index + match[0].length;
+		}
+		result.push(...graphemes(text.slice(offset)));
+		return result;
+	}
+	function estimateWidth(text, fontSize) {
+		return graphemes(text).reduce((sum, char) => sum + (/^[ .,;:!|'ilI]$/.test(char) ? 0.34 : /^[MW@%]$/.test(char) ? 0.94 : /^[\x00-\x7f]$/.test(char) ? 0.64 : 1.02) * fontSize, 0);
+	}
+	function paginateText(text, { width = 160, height = 80, fontSize = 16, lineHeight = 1.25, measure = estimateWidth } = {}) {
+		text = String(text ?? "");
+		const rows = Math.max(1, Math.floor(height / (fontSize * lineHeight)));
+		const lines = [];
+		let line = "";
+		for (const token of tokens(text)) {
+			if (token === "\n") { lines.push(`${line}\n`); line = ""; continue; }
+			if (line && measure(line + token, fontSize) > width) { lines.push(line); line = ""; }
+			line += token;
+		}
+		if (line || !lines.length) lines.push(line);
+		const pages = [];
+		for (let i = 0; i < lines.length; i += rows) pages.push({ text: lines.slice(i, i + rows).join(""), lines: lines.slice(i, i + rows) });
+		return pages;
+	}
+	function rect(value = {}) {
+		const left = number(value.left) ?? number(value.x) ?? 0, top = number(value.top) ?? number(value.y) ?? 0;
+		const width = Math.max(0, number(value.width) ?? ((number(value.right) ?? left) - left));
+		const height = Math.max(0, number(value.height) ?? ((number(value.bottom) ?? top) - top));
+		return { left, top, width, height, right: left + width, bottom: top + height };
+	}
+	function intersect(a, b) { return Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left)) * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)); }
+	function layout(body, viewport, config, content) {
+		body = rect(body); viewport = rect(viewport);
+		const availableWidth = Math.max(1, viewport.width - 8), availableHeight = Math.max(1, viewport.height - 8);
+		// The *visible main ellipse* (746 SVG units), not the padded viewBox,
+		// is about 1.35 times the supplied visible pet body width.
+		const desired = Math.max(196, body.width * 1.35 * config.scale * 1026 / 746);
+		const width = Math.min(availableWidth, availableHeight * 1026 / 700, desired);
+		const height = width * 700 / 1026;
+		const textWidth = Math.max(24, width * 0.62);
+		const textHeight = Math.max(16, height * 0.48 - 12);
+		const compact = width < 196 || content?.kind === "balance" && textHeight < 64;
+		const originalSize = content?.style?.fontSize ?? 24;
+		const units = content?.style?.fontUnit;
+		const preferred = units === "source-level" ? Math.round(40 + (originalSize - 1) * 200 / 49) * width / 1026 : units === "source-u" ? originalSize * width / 1026 : originalSize;
+		const fontSize = compact && content?.kind === "balance" ? 12 : Math.max(12, Math.min(preferred, width * 0.16));
+		return { width, height, textWidth, textHeight, fontSize, compact };
+	}
+	function place(body, viewport, size, avoid = []) {
+		body = rect(body); viewport = rect(viewport);
+		const gap = 3, padding = 4, cx = (body.left + body.right) / 2;
+		const clampPoint = (x, y) => rect({ left: clamp(x, viewport.left + padding, Math.max(viewport.left + padding, viewport.right - size.width - padding)),
+			top: clamp(y, viewport.top + padding, Math.max(viewport.top + padding, viewport.bottom - size.height - padding)), width: size.width, height: size.height });
+		const candidates = [
+			[cx - size.width * 0.65, body.top - size.height + 8, false, false],
+			[cx - size.width * 0.35, body.top - size.height + 8, true, false],
+			[cx - size.width * 0.65, body.bottom - 8, false, true],
+			[cx - size.width * 0.35, body.bottom - 8, true, true],
+			[body.left - size.width - gap, body.top - size.height * 0.35, true, false],
+			[body.right + gap, body.top - size.height * 0.35, false, false],
+		].map(([x, y, flipX, flipY], index) => {
+			const candidate = clampPoint(x, y);
+			const overlap = avoid.slice(0, 16).reduce((sum, other) => sum + intersect(candidate, rect(other)), 0);
+			const own = intersect({ ...candidate, bottom: candidate.top + candidate.height * 0.77 }, body);
+			return { ...candidate, flipX, flipY, overlap, score: overlap * 4 + own * 2 + Math.abs(candidate.left - x) + Math.abs(candidate.top - y) + index * 0.001 };
+		});
+		return candidates.reduce((best, current) => current.score < best.score ? current : best);
+	}
+	function clockAdapter(clock = {}) {
+		const now = typeof clock === "function" ? clock : typeof clock.now === "function" ? clock.now.bind(clock) : () => Date.now();
+		return { now, setTimeout: typeof clock.setTimeout === "function" ? clock.setTimeout.bind(clock) : globalThis.setTimeout.bind(globalThis),
+			clearTimeout: typeof clock.clearTimeout === "function" ? clock.clearTimeout.bind(clock) : globalThis.clearTimeout.bind(globalThis),
+			requestAnimationFrame: clock.requestAnimationFrame?.bind(clock) ?? globalThis.requestAnimationFrame?.bind(globalThis) ?? ((fn) => globalThis.setTimeout(() => fn(now()), 16)),
+			cancelAnimationFrame: clock.cancelAnimationFrame?.bind(clock) ?? globalThis.cancelAnimationFrame?.bind(globalThis) ?? globalThis.clearTimeout.bind(globalThis) };
+	}
+
+	/* Pure lifecycle controller, also used by the DOM adapter and deterministic tests. */
+	class Session {
+		constructor({ config, snapshot, ledger, clock, rng = Math.random, onChange, onHome } = {}) {
+			this.config = normalizeConfig(config); this.snapshot = snapshot; this.ledger = ledger; this.clock = clockAdapter(clock);
+			this.rng = rng; this.onChange = onChange; this.onHome = onHome; this.generation = 0; this.scene = "closed";
+			this.content = null; this.pageIndex = 0; this.pageCount = 1; this.deadline = 0; this.queue = []; this.previousRandom = "";
+			this.priority = 0; this.visible = true; this.destroyed = false; this.automatic = false; this.timer = null; this.contentId = null; this.lastClosedId = null;
+		}
+		_notify(reason) {
+			this.generation += 1;
+			if (this.timer !== null) this.clock.clearTimeout(this.timer);
+			this.timer = null;
+			const generation = this.generation;
+			if (this.content && this.deadline && this.visible) this.timer = this.clock.setTimeout(() => {
+				if (generation !== this.generation || this.destroyed) return;
+				this.tick();
+			}, Math.max(0, this.deadline - this.clock.now()));
+			this.onChange?.(this, reason);
+		}
+		_activate(content, { scene = "notice", priority = PRIORITY.info, durationMs = this.config.noticeDurationMs, automatic = false, expiresAt = 0 } = {}) {
+			if (!this.config.enabled || this.destroyed || !content) return false;
+			this.content = content; this.contentId = content.id ?? null; this.scene = scene; this.priority = priority; this.automatic = automatic; this.pageIndex = 0; this.pageCount = 1;
+			this.deadline = durationMs === 0 ? 0 : this.clock.now() + durationMs;
+			if (expiresAt) this.deadline = this.deadline ? Math.min(this.deadline, expiresAt) : expiresAt;
+			this._notify("content"); return true;
+		}
+		show(content, options = {}) {
+			content = normalizeContent(content);
+			if (!content || this.destroyed || !this.config.enabled) return false;
+			const automatic = options.automatic === true;
+			const priority = number(options.priority) ?? (automatic ? PRIORITY.chat : PRIORITY.info);
+			const chatter = automatic && priority <= PRIORITY.chat;
+			if (chatter && (!this.config.autoChat || !this.visible)) return false;
+			if (options.id) content = { ...content, id: options.id };
+			const expiresAt = number(options.expiresAt) ?? (this.clock.now() + (chatter ? this.config.durationMs || 5000 : 30000));
+			if (expiresAt && expiresAt <= this.clock.now()) return false;
+			if (this.content && priority < this.priority || !this.visible) {
+				const entry = { content, options: { ...options, priority, automatic, expiresAt }, id: options.id ?? content.id };
+				this.queue = this.queue.filter((old) => !entry.id || old.id !== entry.id);
+				this.queue.push(entry); this.queue.sort((a, b) => b.options.priority - a.options.priority); this.queue = this.queue.slice(0, 8); return false;
+			}
+			return this._activate(content, { ...options, automatic, priority, durationMs: options.durationMs ?? (chatter ? this.config.durationMs : this.config.noticeDurationMs), expiresAt: options.expiresAt ?? 0 });
+		}
+		home() {
+			if (!this.config.enabled || this.destroyed) return false;
+			this.onHome?.();
+			return this._activate(balance(this.snapshot, this.ledger), { scene: "balance", priority: PRIORITY.manual, durationMs: this.config.durationMs });
+		}
+		interact() { return this.config.clickMode === "home" ? this.home() : this.advance(); }
+		advance() {
+			if (!this.config.enabled || this.destroyed) return false;
+			if (!this.content) return this.home();
+			if (this.pageIndex + 1 < this.pageCount) {
+				this.pageIndex += 1; this.deadline = this.config.durationMs === 0 ? 0 : this.clock.now() + this.config.durationMs;
+				this._notify("page"); return true;
+			}
+			if (this.scene === "balance") {
+				const choice = pickRandom(this.config.overrides, this.rng, this.previousRandom);
+				if (!choice) { this.close(); return false; }
+				this.previousRandom = choice.text;
+				return this._activate(choice, { scene: "random", priority: PRIORITY.manual, durationMs: this.config.durationMs });
+			}
+			this.close(); return false;
+		}
+		updateData(snapshot, ledger = this.ledger) {
+			this.snapshot = snapshot; this.ledger = ledger;
+			if (this.scene === "balance" && this.content) {
+				const next = balance(snapshot, ledger);
+				if (JSON.stringify(next) !== JSON.stringify(this.content)) { this.content = next; this._notify("data"); }
+			}
+		}
+		setConfig(config) {
+			const previous = this.config;
+			this.config = normalizeConfig(config);
+			if (!this.config.enabled) { this.queue = []; this.close(); }
+			else if (!this.config.autoChat && this.automatic && this.priority <= PRIORITY.chat) {
+				this.queue = this.queue.filter((entry) => !entry.options.automatic || entry.options.priority > PRIORITY.chat);
+				this.close({ drain: true });
+			} else {
+				if (!this.config.autoChat) this.queue = this.queue.filter((entry) => !entry.options.automatic || entry.options.priority > PRIORITY.chat);
+				const durationKey = this.scene === "notice" && (!this.automatic || this.priority > PRIORITY.chat) ? "noticeDurationMs" : "durationMs";
+				if (this.content && previous[durationKey] !== this.config[durationKey]) this.deadline = this.config[durationKey] === 0 ? 0 : this.clock.now() + this.config[durationKey];
+				this._notify("config");
+			}
+		}
+		setVisible(visible) {
+			this.visible = visible !== false;
+			if (!this.visible) {
+				this.queue = this.queue.filter((entry) => !entry.options.automatic || entry.options.priority > PRIORITY.chat);
+				if (this.automatic && this.priority <= PRIORITY.chat) { this.close({ drain: true }); return; }
+				this._notify("hidden"); return;
+			}
+			this.tick();
+			if (this.content) this._notify("visible"); else this._drain();
+		}
+		tick() {
+			const now = this.clock.now();
+			this.queue = this.queue.filter((entry) => !entry.options.expiresAt || entry.options.expiresAt > now);
+			if (this.content && this.deadline && now >= this.deadline) this.close({ drain: true });
+		}
+		_drain() {
+			if (!this.visible || this.destroyed || !this.config.enabled || this.content) return;
+			const now = this.clock.now();
+			this.queue = this.queue.filter((entry) => !entry.options.expiresAt || entry.options.expiresAt > now);
+			const next = this.queue.shift(); if (next) this.show(next.content, next.options);
+		}
+		close({ drain = false } = {}) {
+			this.lastClosedId = this.contentId; this.contentId = null;
+			this.content = null; this.scene = "closed"; this.deadline = 0; this.pageIndex = 0; this.pageCount = 1; this.priority = 0;
+			if (!drain) this.queue = [];
+			this._notify("close"); if (drain) this._drain();
+		}
+		destroy() { if (this.destroyed) return; this.destroyed = true; this.queue = []; this.close(); this.onChange = null; this.onHome = null; }
+	}
+	return Object.freeze({ presets, PRIORITY, DEFAULT_CONFIG, Session, safeStyle, interpolate, randomPool, pickRandom, template, balance, formatAmount,
+		normalizeContent, normalizeConfig, paginateText, layout, place, rect, tokens, estimateWidth, clockAdapter, displayAmount });
+})();
+
+const BubbleContent = Object.freeze({ balance: BubbleKit.balance, template: BubbleKit.template, random: BubbleKit.pickRandom });
+
+class PetBubble extends BubbleKit.Session {
+	constructor(options = {}) {
+		super({ ...options, onChange: undefined });
+		this.container = options.container; this.bodySource = options.body; this.viewportSource = options.viewport;
+		this.surface = options.surface === "overlay" ? "overlay" : "panel"; this.userOnChange = options.onChange;
+		this.document = this.container?.ownerDocument ?? globalThis.document;
+		this.frames = new Set(); this.transitions = new Set(); this.pages = []; this.amountNodes = new Map(); this.rect = null;
+		this.size = null; this.sizeKey = ""; this.avoid = []; this.deferred = false; this.renderedGeneration = -1;
+		this.reducedMotion = options.reducedMotion === true || globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+		this.onChange = (_, reason) => { this._render(reason); this.userOnChange?.(this, reason); };
+		if (!this.document || !this.container) return;
+		this._create();
+		this.visibilityListener = () => this.setVisible(!this.document.hidden);
+		this.document.addEventListener?.("visibilitychange", this.visibilityListener);
+		this.visible = !this.document.hidden;
+	}
+	_create() {
+		const doc = this.document, ns = "http://www.w3.org/2000/svg", geometry = BubbleKit.presets.geometry;
+		this.element = doc.createElement("div"); this.element.className = "pet-thought"; this.element.hidden = true;
+		this.element.dataset.surface = this.surface; this.element.setAttribute("role", "status"); this.element.setAttribute("aria-live", "polite");
+		this.svg = doc.createElementNS(ns, "svg"); this.svg.setAttribute("viewBox", geometry.viewBox ?? "0 0 1026 700");
+		this.svg.setAttribute("aria-hidden", "true"); this.svg.classList.add("pet-thought-shape");
+		this.shapeGroup = doc.createElementNS(ns, "g");
+		const paths = geometry.paths ?? [];
+		paths.forEach((entry, index) => {
+			const path = doc.createElementNS(ns, entry.tag === "ellipse" ? "ellipse" : "path");
+			if (entry.tag === "ellipse") for (const attribute of ["cx", "cy", "rx", "ry"]) path.setAttribute(attribute, String(entry[attribute]));
+			else path.setAttribute("d", typeof entry === "string" ? entry : entry.d);
+			path.setAttribute("fill", "#fff"); path.setAttribute("stroke", "#203170"); path.setAttribute("stroke-width", "18");
+			path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-linejoin", "round");
+			path.classList.add("pet-thought-part", typeof entry === "object" && entry.role ? `pet-thought-${entry.role}` : `pet-thought-part-${index}`);
+			this.shapeGroup.append(path);
+		});
+		this.svg.append(this.shapeGroup);
+		this.textElement = doc.createElement("div"); this.textElement.className = "pet-thought-content";
+		this.pageElement = doc.createElement("span"); this.pageElement.className = "pet-thought-page";
+		this.element.append(this.svg, this.textElement, this.pageElement); this.container.append(this.element);
+		this.clickListener = (event) => { if (this.surface === "overlay") return; event.preventDefault(); event.stopPropagation(); this.advance(); };
+		this.downListener = (event) => { if (this.surface !== "overlay") event.stopPropagation(); };
+		this.svg.addEventListener("click", this.clickListener); this.svg.addEventListener("pointerdown", this.downListener);
+	}
+	_cancelVisual() {
+		for (const frame of this.frames) this.clock.cancelAnimationFrame(frame); this.frames.clear();
+		for (const timer of this.transitions) this.clock.clearTimeout(timer); this.transitions.clear();
+	}
+	_later(callback, delay) {
+		const generation = this.generation;
+		const id = this.clock.setTimeout(() => { this.transitions.delete(id); if (!this.destroyed && generation === this.generation) callback(); }, delay);
+		this.transitions.add(id);
+	}
+	_frame(callback) {
+		const generation = this.generation;
+		const id = this.clock.requestAnimationFrame((time) => { this.frames.delete(id); if (!this.destroyed && generation === this.generation) callback(time); });
+		this.frames.add(id);
+	}
+	_body() { return BubbleKit.rect(typeof this.bodySource === "function" ? this.bodySource() : this.bodySource); }
+	_viewport() { return BubbleKit.rect(typeof this.viewportSource === "function" ? this.viewportSource() : this.viewportSource); }
+	_buildPages() {
+		const size = this.size;
+		if (this.content.kind !== "balance") {
+			this.pages = BubbleKit.paginateText(this.content.text, { width: size.textWidth, height: size.textHeight, fontSize: size.fontSize });
+		} else if (size.compact) {
+			// Tiny pets/viewports use readable text pages rather than shrink numbers
+			// below 12px or crop labels. Monetary tokens stay indivisible.
+			const text = this.content.modules.map((module) => `${module.label}${module.label ? "\n" : ""}${module.value}${module.unit ? ` ${module.unit}` : ""}`).join("\n");
+			this.pages = BubbleKit.paginateText(text, { width: size.textWidth, height: size.textHeight, fontSize: 12 });
+		} else {
+			const pages = []; let page = [], height = 20;
+			for (const module of this.content.modules) {
+				const rowHeight = module.main ? 48 : module.detail ? 30 : 18;
+				if (page.length && height + rowHeight > size.textHeight) { pages.push({ modules: page }); page = []; height = 20; }
+				// Long error/status details paginate too; amounts remain indivisible.
+				if (module.detail && !module.numeric) {
+					const chunks = BubbleKit.paginateText(module.value, { width: size.textWidth, height: Math.max(16, size.textHeight - 34), fontSize: 12 });
+					for (const chunk of chunks) {
+						if (page.length) { pages.push({ modules: page }); page = []; }
+						pages.push({ modules: [{ ...module, value: chunk.text }] });
+					}
+					height = 20; continue;
+				}
+				page.push(module); height += rowHeight;
+			}
+			if (page.length) pages.push({ modules: page }); this.pages = pages.length ? pages : [{ modules: [] }];
+		}
+		this.pageCount = this.pages.length; this.pageIndex = Math.min(this.pageIndex, this.pageCount - 1);
+	}
+	_render(reason) {
+		this._cancelVisual();
+		if (!this.element) return;
+		if (!this.content || !this.visible || this.destroyed) {
+			this.element.hidden = true; this.element.removeAttribute("data-open"); this.rect = null; return;
+		}
+		const wasOpen = !this.element.hidden;
+		const previousAmounts = new Map([...this.amountNodes].map(([key, entry]) => [key, entry.numeric]));
+		this.element.hidden = false; this.element.dataset.scene = this.scene;
+		this.size = BubbleKit.layout(this._body(), this._viewport(), this.config, this.content);
+		this.sizeKey = `${this.size.width}:${this.size.height}:${this.size.fontSize}`;
+		this._buildPages(); this.position();
+		if (!this.content || this.destroyed) return;
+		const draw = () => {
+			this._drawPage(reason === "data" ? previousAmounts : new Map());
+			if (wasOpen) this.element.dataset.switch = "in";
+			else this.element.removeAttribute("data-switch");
+		};
+		if (wasOpen && (reason === "page" || reason === "content") && !this.reducedMotion) {
+			this.element.dataset.switch = "out"; this._later(draw, 120);
+		} else draw();
+		this.element.dataset.reducedMotion = String(this.reducedMotion);
+		if (!wasOpen) { this.element.removeAttribute("data-open"); this._frame(() => { this.element.dataset.open = "true"; }); }
+		else this.element.dataset.open = "true";
+	}
+	_drawPage(previousAmounts) {
+		if (!this.content || !this.textElement) return;
+		this.textElement.replaceChildren(); this.amountNodes.clear();
+		this.textElement.style.fontSize = `${this.size.fontSize}px`;
+		this.textElement.style.fontWeight = this.content.style.bold ? "700" : "400";
+		this.textElement.style.fontStyle = this.content.style.italic ? "italic" : "normal";
+		this.textElement.style.textDecoration = this.content.style.underline ? "underline" : "none";
+		this.textElement.dataset.gradient = this.content.style.gradient ?? "none";
+		const page = this.pages[this.pageIndex];
+		if (page.modules) {
+			const title = this.document.createElement("div"); title.className = "pet-thought-title"; title.textContent = this.content.title;
+			this.textElement.append(title);
+			for (const module of page.modules) {
+				const row = this.document.createElement("div"); row.className = `pet-thought-row${module.main ? " is-main" : ""}${module.detail ? " is-detail" : ""}`;
+				const label = this.document.createElement("span"); label.className = "pet-thought-label"; label.textContent = module.label;
+				const value = this.document.createElement("span"); value.className = "pet-thought-value"; value.textContent = module.value;
+				if (module.unit) {
+					const amount = this.document.createElement("span"); amount.className = "pet-thought-number";
+					const unit = this.document.createElement("span"); unit.className = "pet-thought-unit"; unit.textContent = ` ${module.unit}`;
+					amount.append(value, unit); row.append(label, amount);
+				} else row.append(label, value);
+				this.textElement.append(row);
+				this.amountNodes.set(module.key, { node: value, numeric: module.numeric });
+				const previous = previousAmounts.get(module.key);
+				if (module.numeric !== null && module.numeric !== undefined && previous !== undefined && previous !== module.numeric && !this.reducedMotion) this._animateAmount(value, previous, module.numeric, module.value);
+			}
+		} else {
+			for (const line of page.lines) { const node = this.document.createElement("div"); node.className = "pet-thought-line"; node.textContent = line.replace(/\n$/, "") || "\u00a0"; this.textElement.append(node); }
+		}
+		this.pageElement.textContent = this.pageCount > 1 ? `${this.pageIndex + 1}/${this.pageCount}` : "";
+		this.element.setAttribute("aria-label", page.modules ? `${this.content.title} ${page.modules.map((row) => `${row.label} ${row.value} ${row.unit}`).join("，")}` : page.text);
+	}
+	_animateAmount(node, from, to, displayValue) {
+		const start = Number(from), end = Number(to);
+		if (!Number.isFinite(start) || !Number.isFinite(end) || Math.abs(start) > 1e12 || Math.abs(end) > 1e12) return;
+		const started = this.clock.now(), target = displayValue ?? BubbleKit.formatAmount(to), pageIndex = this.pageIndex;
+		const step = () => {
+			if (this.pageIndex !== pageIndex || !node.isConnected) return;
+			const progress = Math.min(1, Math.max(0, (this.clock.now() - started) / 280));
+			node.textContent = progress === 1 ? target : (start + (end - start) * (1 - (1 - progress) ** 3)).toFixed(2);
+			if (progress < 1) this._frame(step);
+		};
+		this._frame(step);
+	}
+	position(body, viewport, avoidRects = this.avoid) {
+		if (body !== undefined) this.bodySource = body;
+		if (viewport !== undefined) this.viewportSource = viewport;
+		this.avoid = Array.isArray(avoidRects) ? avoidRects : [];
+		if (!this.element || !this.content || !this.visible || this.destroyed) return null;
+		this.tick(); if (!this.content) return null;
+		const bodyRect = this._body(), viewportRect = this._viewport();
+		const nextSize = BubbleKit.layout(bodyRect, viewportRect, this.config, this.content);
+		const key = `${nextSize.width}:${nextSize.height}:${nextSize.fontSize}`;
+		if (key !== this.sizeKey) { this.size = nextSize; this.sizeKey = key; this._buildPages(); this._cancelVisual(); this._drawPage(new Map()); }
+		const placed = BubbleKit.place(bodyRect, viewportRect, this.size, this.avoid);
+		this.deferred = this.automatic && this.priority <= BubbleKit.PRIORITY.chat && placed.overlap > this.size.width * this.size.height * 0.15;
+		this.element.hidden = this.deferred;
+		if (this.deferred) { this.rect = null; return null; }
+		this.rect = placed;
+		this.element.style.width = `${this.size.width}px`; this.element.style.height = `${this.size.height}px`;
+		this.element.style.transform = `translate(${placed.left}px, ${placed.top}px)`;
+		this.element.dataset.compact = String(this.size.compact);
+		this.shapeGroup.setAttribute("transform", `translate(${placed.flipX ? 1026 : 0} ${placed.flipY ? 700 : 0}) scale(${placed.flipX ? -1 : 1} ${placed.flipY ? -1 : 1})`);
+		// Only artwork mirrors. Text always stays upright.
+		this.element.dataset.below = String(placed.flipY);
+		this.element.dataset.mirrored = String(placed.flipX);
+		return placed;
+	}
+	destroy() {
+		if (this.destroyed) return;
+		super.destroy(); this._cancelVisual();
+		this.document?.removeEventListener?.("visibilitychange", this.visibilityListener);
+		this.svg?.removeEventListener("click", this.clickListener); this.svg?.removeEventListener("pointerdown", this.downListener);
+		this.element?.remove(); this.element = null; this.rect = null; this.amountNodes.clear();
+	}
+}
+
+/**
+ * View-local task notices. Concatenated after sdk.js; never calls Pet or stores
+ * bindings in plugin/global configuration. Only explicit context.narrator.id or
+ * ids supplied by this view may be subscribed, each with both scope and filter.
+ *
+ * Source verified at NarraFork/NarraFork@6007ca13581cd1f3db8756f28fa5e53f22bd148c:
+ * frontend/components/plugins/asset-shell.ts (single-object bridge arguments),
+ * server/services/plugin-ui-host.ts (UI poll returns PublicEvent[]),
+ * server/lib/plugins/protocol.ts (canonical poll object and public envelope),
+ * server/services/plugin-event-gateway.ts (allowlisted event mapper),
+ * server/lib/event-bus.ts (attention reasons; tools report success/fail only).
+ */
+const TaskEvents = (() => {
+	const TOPICS = Object.freeze([
+		"narrafork.narrator.lifecycle",
+		"narrafork.narrator.tool.changed",
+		"narrafork.narrator.attention",
+		"narrafork.narrator.permission.changed",
+	]);
+	const POLL_MS = 1000;
+	const PAGE_SIZE = 50;
+	const MAX_PAGES = 4;
+	const REQUEST_MS = 5000;
+	const WAIT_LEASE_MS = 30000;
+	const MAX_EVENT_IDS = 512;
+	const LIMITATIONS = Object.freeze({
+		answer: "当前公开 API 不能可靠识别等待回答；waiting 或 AskUserQuestion 运行不代表正在等待回答。",
+		turnCost: "宿主未公开逐轮费用或 token；此模块不估算费用，账户余额另行显示。",
+	});
+	const record = (value) => Boolean(value && typeof value === "object" && !Array.isArray(value));
+	const id = (value) => typeof value === "string" && value.trim().length > 0 && value.trim().length <= 128 && !/[\u0000-\u001f\u007f]/.test(value) ? value.trim() : null;
+	const label = (value) => typeof value === "string" ? value.replace(/[\u0000-\u001f\u007f\u202a-\u202e\u2066-\u2069]/g, "").trim().slice(0, 40) : "";
+	const failure = (code, message) => Object.assign(new Error(message), { code });
+	const noticeKey = (...parts) => "task:" + parts.map((part) => encodeURIComponent(String(part))).join(":");
+
+	function errorInfo(error) {
+		const code = typeof error?.code === "string" ? error.code.slice(0, 80) : "HOST_UNAVAILABLE";
+		if (["PERMISSION_DENIED", "FORBIDDEN", "CAPABILITY_DENIED", "UNAUTHORIZED"].includes(code) || error?.message === "PERMISSION_DENIED") {
+			return { capability: "denied", error: { code: "PERMISSION_DENIED", message: "任务事件权限未获准；请在宿主中检查 event.subscribe 授权。" }, blocked: true };
+		}
+		if (["METHOD_NOT_FOUND", "NOT_SUPPORTED", "BRIDGE_UNAVAILABLE", "PLUGIN_DISABLED"].includes(code)) {
+			return { capability: "unavailable", error: { code, message: "当前宿主未提供可用的任务事件接口。" }, blocked: true };
+		}
+		return { capability: "degraded", error: { code, message: code === "STALE_PERMISSION" ? "授权等待状态已过期，已撤销提示并重新连接。" : "任务事件暂不可用；不可靠状态已清除，正在重连。" }, blocked: false };
+	}
+
+	function isEnvelope(event) {
+		return record(event) && event.schema === "narrafork.public-event" && event.schemaVersion === 1
+			&& id(event.eventId) !== null && typeof event.topic === "string" && record(event.data)
+			&& typeof event.occurredAt === "string" && Number.isFinite(Date.parse(event.occurredAt))
+			&& ["state", "lifecycle", "progress", "attention", "audit"].includes(event.eventClass)
+			&& ["public", "user_scoped", "admin_scoped"].includes(event.redaction)
+			&& (event.deliverySeq === undefined || (Number.isSafeInteger(event.deliverySeq) && event.deliverySeq > 0));
+	}
+
+	function pollPage(value, subscriptionId) {
+		// The pinned UI host returns an array; the same revision's canonical public
+		// protocol specifies an object. Support both, never a guessed RPC wrapper.
+		if (Array.isArray(value) && value.length <= PAGE_SIZE) {
+			return { events: value, hasMore: value.length === PAGE_SIZE, resyncRequired: false };
+		}
+		if (record(value) && value.subscriptionId === subscriptionId && Array.isArray(value.events)
+			&& value.events.length <= PAGE_SIZE && typeof value.hasMore === "boolean"
+			&& (value.resyncRequired === undefined || typeof value.resyncRequired === "boolean")) {
+			return value;
+		}
+		throw failure("INVALID_EVENT_RESPONSE", "事件轮询返回格式不匹配");
+	}
+
+	return class TaskEvents {
+		/** config is config.tasks, not the whole pet configuration. */
+		constructor({ config = { enabled: true }, onNotice, onClear, onState, sdk = SDK } = {}) {
+			this.sdk = sdk;
+			this.enabled = config?.enabled !== false;
+			this.onNotice = onNotice;
+			this.onClear = onClear;
+			this.onState = onState;
+			this.started = false;
+			this.destroyed = false;
+			this.visible = typeof document === "undefined" || document.visibilityState !== "hidden";
+			this.explicit = null;
+			this.scope = [];
+			this.records = new Map();
+			this.histories = new Map();
+			this.dismissed = new Set();
+			this.notices = new Map();
+			this.requests = new Set();
+			this.generation = 0;
+			this.timer = null;
+			this.stateStamp = "";
+			this.capability = "checking";
+			this.error = null;
+			this.visibilityListener = () => this.setVisible(document.visibilityState !== "hidden");
+		}
+
+		start() {
+			if (this.destroyed) return Promise.resolve();
+			if (this.started) return this.startup ?? Promise.resolve();
+			this.started = true;
+			if (typeof document !== "undefined") document.addEventListener?.("visibilitychange", this.visibilityListener);
+			this.startup = this._restart();
+			return this.startup;
+		}
+
+		configure(config) {
+			if (this.destroyed) return Promise.resolve();
+			const next = config?.enabled !== false;
+			if (next === this.enabled) return Promise.resolve();
+			this.enabled = next;
+			return this._restart();
+		}
+
+		/** Explicit replacement, max three known ids; [] also removes the auto binding. */
+		setAssociations(entries) {
+			if (this.destroyed) return { ok: false, error: "视图已销毁" };
+			if (!Array.isArray(entries) || entries.length > 3) return { ok: false, error: "本视图最多关联 3 个已知叙述者" };
+			const seen = new Set();
+			const next = [];
+			for (const item of entries) {
+				const narratorId = id(item?.narratorId);
+				if (!narratorId || seen.has(narratorId)) return { ok: false, error: "叙述者 ID 无效或重复" };
+				seen.add(narratorId);
+				next.push({ narratorId, alias: label(item.alias) || "关联叙述者", source: "explicit" });
+			}
+			this.explicit = next;
+			this.scope = next;
+			void this._restart();
+			return { ok: true };
+		}
+
+		setVisible(visible) {
+			if (this.destroyed || this.visible === Boolean(visible)) return;
+			this.visible = Boolean(visible);
+			void this._restart();
+		}
+
+		retry() {
+			return this.destroyed ? Promise.resolve() : this._restart();
+		}
+
+		dismiss(noticeId) {
+			if (this.destroyed || typeof noticeId !== "string") return;
+			this.dismissed.add(noticeId);
+			this._clearNotice(noticeId);
+		}
+
+		getState() {
+			return {
+				enabled: this.enabled,
+				capability: this.capability,
+				error: this.error ? { ...this.error } : null,
+				scope: this.scope.map((entry) => ({ ...entry })),
+				tasks: [...this.records.values()].map((entry) => ({
+					narratorId: entry.narratorId, alias: entry.alias, status: entry.status,
+					waitingPermission: entry.pending.size > 0, reliable: entry.reliable,
+					capability: entry.capability, error: entry.error ? { ...entry.error } : null,
+				})),
+				limitations: { ...LIMITATIONS },
+			};
+		}
+
+		destroy() {
+			if (this.destroyed) return;
+			// Clear our currently visible notices once, then forbid every late callback.
+			this._invalidate();
+			this.destroyed = true;
+			if (typeof document !== "undefined") document.removeEventListener?.("visibilitychange", this.visibilityListener);
+			this.histories.clear();
+			this.dismissed.clear();
+			this.onNotice = this.onClear = this.onState = null;
+		}
+
+		_alive(generation) {
+			return !this.destroyed && this.started && this.enabled && this.visible && this.generation === generation;
+		}
+
+		_call(callback, value) {
+			if (!this.destroyed && typeof callback === "function") {
+				try { callback(value); } catch { /* A stage presentation error cannot kill polling. */ }
+			}
+		}
+
+		_emit() {
+			if (this.destroyed) return;
+			const state = this.getState();
+			const stamp = JSON.stringify(state);
+			if (stamp !== this.stateStamp) {
+				this.stateStamp = stamp;
+				this._call(this.onState, state);
+			}
+		}
+
+		_release(api, subscriptionId) {
+			if (!id(subscriptionId)) return;
+			try { Promise.resolve(api.unsubscribe({ subscriptionId })).catch(() => {}); } catch { /* Best effort after host loss. */ }
+		}
+
+		_bounded(promise, onLate) {
+			return new Promise((resolve, reject) => {
+				let settled = false;
+				const finish = (fn, value) => {
+					if (settled) return false;
+					settled = true;
+					clearTimeout(timer);
+					this.requests.delete(cancel);
+					fn(value);
+					return true;
+				};
+				const cancel = () => finish(reject, failure("CANCELLED", "任务视图已改变"));
+				const timer = setTimeout(() => finish(reject, failure("TIMEOUT", "任务事件请求超时")), REQUEST_MS);
+				this.requests.add(cancel);
+				Promise.resolve(promise).then(
+					(value) => { if (!finish(resolve, value)) { try { onLate?.(value); } catch {} } },
+					(error) => finish(reject, error),
+				);
+			});
+		}
+
+		_invalidate() {
+			this.generation += 1;
+			if (this.timer !== null) clearTimeout(this.timer);
+			this.timer = null;
+			for (const cancel of [...this.requests]) cancel();
+			for (const item of this.records.values()) {
+				if (item.subscriptionId) this._release(item.api, item.subscriptionId);
+				this._clearRecord(item, false);
+			}
+			this.records.clear();
+			return this.generation;
+		}
+
+		async _restart() {
+			const generation = this._invalidate();
+			this.error = null;
+			if (!this.started || !this.enabled || !this.visible) {
+				this.capability = !this.enabled ? "disabled" : !this.visible ? "hidden" : "checking";
+				this._emit();
+				return;
+			}
+			this.capability = "checking";
+			this._emit();
+			if (!this._alive(generation)) return;
+			let api;
+			try { api = this.sdk.events?.(); } catch {}
+			if (!api) {
+				this.capability = "unavailable";
+				this.error = { code: "METHOD_NOT_FOUND", message: "宿主缺少 events.subscribe/poll/unsubscribe，任务提示已单独降级。" };
+				this._emit();
+				return;
+			}
+			if (this.explicit === null) {
+				try {
+					if (typeof this.sdk.getContextSafe !== "function") throw failure("METHOD_NOT_FOUND", "缺少视图上下文接口");
+					const context = await this._bounded(this.sdk.getContextSafe());
+					if (!this._alive(generation)) return;
+					if (!context?.ok) throw context?.error ?? failure("CONTEXT_UNAVAILABLE", "缺少视图上下文");
+					const narratorId = id(context.value?.narrator?.id);
+					this.scope = narratorId ? [{ narratorId, alias: "当前叙述者", source: "context" }] : [];
+				} catch (error) {
+					if (!this._alive(generation)) return;
+					this.scope = [];
+					const info = errorInfo(error);
+					this.capability = info.capability;
+					this.error = { code: info.error.code, message: "无法确认当前视图叙述者；未自动订阅，可手动关联已知 ID。" };
+					this._emit();
+					return;
+				}
+			} else this.scope = this.explicit;
+			if (!this._alive(generation)) return;
+			for (const entry of this.scope) {
+				if (!this.histories.has(entry.narratorId)) this.histories.set(entry.narratorId, { events: new Set(), closedRequests: new Set(), requestNotices: new Map() });
+				this.records.set(entry.narratorId, {
+					...entry, api, subscriptionId: null, sequence: 0, status: "unknown", reliable: false,
+					pending: new Map(), attention: new Map(), retryAt: 0, failures: 0, blocked: false,
+					capability: "checking", error: null, history: this.histories.get(entry.narratorId),
+				});
+			}
+			if (this.records.size === 0) {
+				this.capability = "unbound";
+				this._emit();
+				return;
+			}
+			await this._tick(generation);
+		}
+
+		async _tick(generation) {
+			if (!this._alive(generation)) return;
+			await Promise.all([...this.records.values()].map((item) => this._step(item, generation)));
+			if (!this._alive(generation)) return;
+			const items = [...this.records.values()];
+			const problem = items.find((item) => item.error);
+			this.error = problem?.error ?? null;
+			this.capability = items.every((item) => item.subscriptionId) ? "available"
+				: items.some((item) => item.subscriptionId) ? "degraded"
+					: problem?.capability ?? "checking";
+			this._emit();
+			if (this._alive(generation) && items.some((item) => !item.blocked)) {
+				this.timer = setTimeout(() => { this.timer = null; void this._tick(generation); }, POLL_MS);
+			}
+		}
+
+		async _step(item, generation) {
+			if (item.blocked || Date.now() < item.retryAt || !this._alive(generation)) return;
+			try {
+				if (!item.subscriptionId) {
+					const result = await this._bounded(item.api.subscribe({
+						topics: [...TOPICS], mode: "live",
+						scope: { narratorId: item.narratorId }, filter: { narratorIds: [item.narratorId] },
+						delivery: { transport: "poll", queueEvents: 200, queueBytes: 131072, maxRatePerSecond: 50 },
+					}), (late) => this._release(item.api, late?.subscriptionId));
+					if (!this._alive(generation)) { this._release(item.api, result?.subscriptionId); return; }
+					if (!id(result?.subscriptionId)) throw failure("INVALID_EVENT_RESPONSE", "缺少订阅 ID");
+					item.subscriptionId = result.subscriptionId;
+					item.sequence = 0;
+					item.capability = "available";
+					item.error = null;
+					return;
+				}
+				if ([...item.pending.values()].some((pending) => Date.now() - pending.raisedAt >= WAIT_LEASE_MS)) {
+					throw failure("STALE_PERMISSION", "未收到可确认的授权等待更新");
+				}
+				for (let pageIndex = 0; pageIndex < MAX_PAGES; pageIndex += 1) {
+					const value = await this._bounded(item.api.poll({ subscriptionId: item.subscriptionId, limit: PAGE_SIZE }));
+					if (!this._alive(generation)) return;
+					const page = pollPage(value, item.subscriptionId);
+					if (page.resyncRequired || page.events.some((event) => isEnvelope(event)
+						&& ["narrafork.events.overflow", "narrafork.events.resync_required"].includes(event.topic)
+						&& event.data.subscriptionId === item.subscriptionId)) {
+						throw failure("EVENT_RESYNC_REQUIRED", "事件流已丢失状态");
+					}
+					for (const event of page.events) {
+						if (!this._alive(generation)) return;
+						this._event(item, event);
+					}
+					item.failures = 0;
+					if (!page.hasMore) break;
+				}
+			} catch (error) {
+				if (!this._alive(generation)) return;
+				if (item.subscriptionId) this._release(item.api, item.subscriptionId);
+				item.subscriptionId = null;
+				this._clearRecord(item, false);
+				const info = errorInfo(error);
+				Object.assign(item, info);
+				item.failures += 1;
+				item.retryAt = Date.now() + Math.min(30000, POLL_MS * 2 ** Math.min(item.failures - 1, 5));
+			}
+		}
+
+		_event(item, event) {
+			if (!isEnvelope(event) || !TOPICS.includes(event.topic)) return;
+			// Check every provided identity, not a convenient OR of data and resource.
+			if (event.data.narratorId !== item.narratorId) return;
+			if (event.resource && (event.resource.type !== "narrator" || event.resource.id !== item.narratorId
+				|| (event.resource.narratorId !== undefined && event.resource.narratorId !== item.narratorId))) return;
+			if (event.deliverySeq !== undefined && event.deliverySeq <= item.sequence) return;
+			if (event.deliverySeq !== undefined) item.sequence = event.deliverySeq;
+			if (item.history.events.has(event.eventId)) return;
+			item.history.events.add(event.eventId);
+			if (item.history.events.size > MAX_EVENT_IDS) item.history.events.delete(item.history.events.values().next().value);
+			const data = event.data;
+			if (event.topic === "narrafork.narrator.permission.changed") {
+				if (data.state === "pending" && id(data.requestId)) this._permission(item, event, data.requestId);
+				return; // There is no public approved/denied permission event in this version.
+			}
+			if (event.topic === "narrafork.narrator.attention") {
+				if (!["waiting_permission", "done", "error"].includes(data.reason)) return;
+				if (data.state === "resolved") {
+					if (data.reason === "waiting_permission") this._clearPending(item, true);
+					else this._clearAttention(item, data.reason);
+					item.reliable = true;
+				} else if (data.state === "raised") {
+					if (data.reason === "waiting_permission") this._permission(item, event, null);
+					else if (!(data.reason === "done" && data.backgroundWorkActive === true)) {
+						this._clearPending(item, true);
+						this._clearAttention(item, data.reason === "done" ? "error" : "done");
+						this._attention(item, data.reason, event);
+					}
+				}
+				return;
+			}
+			if (event.topic === "narrafork.narrator.lifecycle") {
+				if (["idle", "working", "waiting", "archived"].includes(data.status)) {
+					item.status = data.status;
+					item.reliable = true;
+					if (data.status !== "waiting") this._clearPending(item, true);
+					if (data.status === "working" || data.status === "archived") {
+						this._clearAttention(item, "done");
+						this._clearAttention(item, "error");
+					}
+				} else if (data.changeKind === "error" && data.status === "error") {
+					this._clearPending(item, true);
+					this._attention(item, "error", event);
+				}
+				return;
+			}
+			// Tools expose terminal success/fail metadata only; neither running nor
+			// the name AskUserQuestion supplies a trustworthy question-wait signal.
+			if (!id(data.toolUseId) || !["success", "fail"].includes(data.status)) return;
+			if (data.status === "fail") this._attention(item, "error", event, data.toolUseId);
+			else if (item.attention.get("error")?.toolUseId === data.toolUseId) this._clearAttention(item, "error");
+		}
+
+		_permission(item, event, requestId) {
+			if (requestId && item.history.closedRequests.has(requestId)) return;
+			item.reliable = true;
+			if (!requestId && item.pending.size > 0) return;
+			if (requestId && item.pending.has(requestId)) return;
+			const generic = item.pending.get("");
+			if (requestId && generic) {
+				item.pending.delete("");
+				item.pending.set(requestId, generic);
+				item.history.requestNotices.set(requestId, generic.id);
+				return;
+			}
+			if (item.pending.size >= 16) throw failure("EVENT_RESYNC_REQUIRED", "待处理授权过多");
+			const noticeId = (requestId && item.history.requestNotices.get(requestId))
+				|| noticeKey(item.narratorId, "permission", requestId || event.eventId);
+			if (requestId) item.history.requestNotices.set(requestId, noticeId);
+			item.pending.set(requestId || "", { id: noticeId, raisedAt: Date.now() });
+			this._notice(item, { id: noticeId, kind: "permission", text: "需要你在宿主中处理授权", sticky: true, ...(requestId ? { requestId } : {}) });
+		}
+
+		_attention(item, kind, event, toolUseId) {
+			item.reliable = true;
+			if (item.attention.has(kind)) return;
+			const noticeId = noticeKey(item.narratorId, kind, event.eventId);
+			item.attention.set(kind, { id: noticeId, toolUseId });
+			this._notice(item, { id: noticeId, kind, text: kind === "done" ? "本轮任务已完成" : toolUseId ? "工具执行失败，请查看宿主" : "任务执行遇到错误，请查看宿主", sticky: false });
+		}
+
+		_notice(item, notice) {
+			if (this.dismissed.has(notice.id) || this.notices.has(notice.id)) return;
+			const value = { ...notice, narratorId: item.narratorId, alias: item.alias };
+			this.notices.set(value.id, value);
+			this._call(this.onNotice, { ...value });
+		}
+
+		_clearNotice(noticeId) {
+			if (!this.notices.delete(noticeId)) return;
+			this._call(this.onClear, noticeId);
+		}
+
+		_clearPending(item, close) {
+			for (const [requestId, pending] of item.pending) {
+				if (close && requestId) item.history.closedRequests.add(requestId);
+				this._clearNotice(pending.id);
+			}
+			item.pending.clear();
+		}
+
+		_clearAttention(item, kind) {
+			const active = item.attention.get(kind);
+			item.attention.delete(kind);
+			if (active) this._clearNotice(active.id);
+		}
+
+		_clearRecord(item, close) {
+			this._clearPending(item, close);
+			this._clearAttention(item, "done");
+			this._clearAttention(item, "error");
+			item.status = "unknown";
+			item.reliable = false;
+		}
+	};
 })();
 
 /**
- * The pet stage — everything that happens inside the panel.
+ * Dependency-free pet stage for panel DOM input and the existing overlay relay.
  *
- * WHY NO FRAMEWORK
- * The interesting parts of this file are a 60 fps transform loop and a pointer
- * physics model. React would sit between the loop and the DOM for no benefit,
- * and pulling the shared host runtime in would cost the panel ~1.2 MB of React and
- * Mantine to render six absolutely positioned `<img>` elements. The view declares
- * no `runtime`, so the shell loads exactly this file and nothing else.
+ * The sandbox cannot fetch animation files. Build-time index, measured alpha
+ * bounds and the original click sound are inlined; clip bytes arrive through
+ * pet-clip RPC and are kept in a bounded LRU. Every playback owns a fresh Blob
+ * URL so animated WebP one-shots restart independently and stop after one loop.
+ * Decoding precedes action/travel timers; cancellation invalidates every older
+ * async result while preserving the last visible image.
  *
- * THREE PROBLEMS THAT ARE NOT OBVIOUS FROM THE OUTSIDE
- *
- * 1. Animated WebP has no "ended" event. `load` fires when the first frame is
- *    decoded; nothing fires at the end of the loop. So a clip's duration must
- *    come from somewhere else — here it is precomputed at build time into the
- *    inlined index, with `clipDurationMs()` as a fallback that reads the RIFF
- *    container if an entry is missing its duration.
- *
- * 2. The asset route sends `Cache-Control: private, no-store`. Every distinct
- *    `src` is a fresh download, and re-assigning the *same* `src` is the only
- *    request-free path. So the player keeps each clip on screen as long as it
- *    can (looping clips never change `src` at all) and swaps between exactly two
- *    `<img>` elements, which bounds both the request count and the decoded-frame
- *    memory to two clips per pet.
- *
- * 3. `connect-src 'none'` blocks `fetch` and `XMLHttpRequest` entirely, so there
- *    is no way to load `index.json` as data. The index is therefore inlined into
- *    this bundle by `tools/build-ui.mjs` — see the `PET_ANIM_INDEX` placeholder
- *    at the bottom of the file.
+ * The full canvas is visual only. Compact hit targets follow each clip's bounds,
+ * while physics uses a stable idle-body baseline unaffected by click squash.
  */
 
 /* -------------------------------------------------------------------------- */
@@ -316,17 +1337,9 @@ const SETTINGS_VIEW_ID = "pet-settings";
 /* Animation WebP duration fallback                                          */
 /* -------------------------------------------------------------------------- */
 
-/**
- * Read an animated WebP's total duration from its RIFF container.
- *
- * The build already measured every clip, so this only runs for an index entry
- * whose `durationMs` is missing — i.e. a hand-edited or partially regenerated
- * index. It is intentionally the same 40 lines as `tools/webp.mjs` rather than a
- * shared module: the UI bundle cannot import, and a wrong duration here only
- * costs a mistimed cut, never a crash.
- */
+/** WebP has no ended event; build-index measured each clip's total duration. */
 function clipDurationMs(clip) {
-	if (typeof clip.durationMs === "number" && clip.durationMs > 0) return clip.durationMs;
+	if (typeof clip?.durationMs === "number" && clip.durationMs > 0) return clip.durationMs;
 	return undefined;
 }
 
@@ -346,16 +1359,12 @@ function clipDurationMs(clip) {
  * through the plugin's own command channel instead, and this module turns them
  * into `blob:` URLs (`img-src` allows `blob:`).
  *
- * Two side effects are worth stating because they are improvements, not accidents:
- *  - a blob URL is stable, so re-showing a clip costs nothing — the host's
- *    `Cache-Control: private, no-store` on the asset route no longer applies to
- *    animation at all;
- *  - the total is bounded by the cache below instead of by the browser's HTTP
- *    cache behaviour.
+ * The bounded cache retains immutable bytes. Instance URLs belong to the player,
+ * not the cache: unique URLs restart one-shots and are revoked on every exit path.
  */
+// Cache source bytes, not playback URLs: each playback has an independent clock.
 const CLIP_URL_CACHE_MAX = 24;
-/** index → { url, bytes }; Map order is the LRU order (oldest first). */
-const clipUrls = new Map();
+const clipBytesCache = new Map();
 const clipInflight = new Map();
 
 function base64ToBytes(text) {
@@ -365,114 +1374,122 @@ function base64ToBytes(text) {
 	return bytes;
 }
 
+async function withTimeout(promise, milliseconds, label) {
+	let timer;
+	try {
+		return await Promise.race([promise, new Promise((_, reject) => {
+			timer = setTimeout(() => reject(new Error(`${label} timeout`)), Math.max(1, milliseconds));
+		})]);
+	} finally { clearTimeout(timer); }
+}
 async function fetchClipBytes(index) {
 	const parts = [];
 	let offset = 0;
-	let total = Number.POSITIVE_INFINITY;
-	// A clip is up to ~1.5 MB, so this is 1–3 round trips over stdio. Each chunk is
-	// capped server-side at 512 KiB because a JSON-RPC frame is 1 MiB and base64
-	// inflates by 4/3.
-	for (let guard = 0; guard < 32 && offset < total; guard += 1) {
-		const result = await SDK.callSafe("pet-clip", { index, offset });
+	let total;
+	const deadline = performance.now() + 15000;
+	for (let guard = 0; guard < 32; guard += 1) {
+		if (performance.now() >= deadline) throw new Error("pet-clip timeout");
+		const result = await withTimeout(SDK.callSafe("pet-clip", { index, offset }), deadline - performance.now(), "pet-clip");
 		if (!result.ok) throw new Error(result.error.message);
 		const value = result.value ?? {};
-		total = typeof value.total === "number" ? value.total : 0;
+		if (!Number.isSafeInteger(value.total) || value.total <= 0 || value.total > 16 * 1024 * 1024 ||
+			value.offset !== offset || (total !== undefined && total !== value.total)) {
+			throw new Error("invalid clip chunk envelope");
+		}
+		total = value.total;
 		const bytes = base64ToBytes(String(value.data ?? ""));
-		if (bytes.byteLength === 0) break;
+		if (bytes.byteLength === 0 || offset + bytes.byteLength > total) throw new Error("invalid clip chunk length");
 		parts.push(bytes);
 		offset += bytes.byteLength;
-		if (value.done === true) break;
+		if (offset === total) break;
+		if (value.done === true) throw new Error("truncated clip data");
 	}
-	const merged = new Uint8Array(parts.reduce((sum, part) => sum + part.byteLength, 0));
+	if (offset !== total) throw new Error("incomplete clip data");
+	const merged = new Uint8Array(total);
 	let at = 0;
-	for (const part of parts) {
-		merged.set(part, at);
-		at += part.byteLength;
-	}
+	for (const part of parts) { merged.set(part, at); at += part.byteLength; }
 	return merged;
 }
 
-/** Clip ids currently on screen, which must never be evicted underneath a player. */
-function pinnedIndices() {
-	const pinned = new Set();
-	for (const pet of stage.pets) {
-		const clip = pet.player.clipId ? CLIP_BY_ID.get(pet.player.clipId) : undefined;
-		if (clip) pinned.add(clip.index);
-	}
-	return pinned;
-}
-
-function evictClipUrls() {
-	if (clipUrls.size <= CLIP_URL_CACHE_MAX) return;
-	const pinned = pinnedIndices();
-	for (const key of [...clipUrls.keys()]) {
-		if (clipUrls.size <= CLIP_URL_CACHE_MAX) return;
-		if (pinned.has(key)) continue;
-		const entry = clipUrls.get(key);
-		clipUrls.delete(key);
-		try {
-			URL.revokeObjectURL(entry.url);
-		} catch {
-			/* already gone */
-		}
-	}
-}
-
-/** Resolve one clip's index to a reusable `blob:` URL, loading it if needed. */
-async function clipUrl(index) {
-	const cached = clipUrls.get(index);
+async function clipBytes(index) {
+	const cached = clipBytesCache.get(index);
 	if (cached) {
-		// Touch: move to the hot end of the LRU.
-		clipUrls.delete(index);
-		clipUrls.set(index, cached);
-		return cached.url;
+		clipBytesCache.delete(index);
+		clipBytesCache.set(index, cached);
+		return cached;
 	}
-	const inFlight = clipInflight.get(index);
-	if (inFlight) return inFlight;
-	const task = (async () => {
-		const bytes = await fetchClipBytes(index);
-		const url = URL.createObjectURL(new Blob([bytes], { type: "image/webp" }));
-		clipUrls.set(index, { url, bytes: bytes.byteLength });
-		evictClipUrls();
-		return url;
-	})();
+	if (clipInflight.has(index)) return clipInflight.get(index);
+	const task = fetchClipBytes(index).then((bytes) => {
+		clipBytesCache.set(index, bytes);
+		while (clipBytesCache.size > CLIP_URL_CACHE_MAX) clipBytesCache.delete(clipBytesCache.keys().next().value);
+		return bytes;
+	});
 	clipInflight.set(index, task);
-	try {
-		return await task;
-	} finally {
-		clipInflight.delete(index);
+	try { return await task; }
+	finally { clipInflight.delete(index); }
+}
+
+/** Validate RIFF chunk boundaries before changing ANIM's uint16 loop count.
+ *  0 = forever; 1 = exactly one playback. Never mutate the shared source bytes.
+ */
+function webpWithLoopCount(bytes, loopCount) {
+	if (loopCount !== 0 && loopCount !== 1) throw new Error("invalid loop count");
+	if (bytes.length < 12) throw new Error("truncated WebP header");
+	const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+	const fourCC = (offset) => String.fromCharCode(...bytes.subarray(offset, offset + 4));
+	if (fourCC(0) !== "RIFF" || fourCC(8) !== "WEBP" || view.getUint32(4, true) + 8 !== bytes.length) {
+		throw new Error("invalid WebP RIFF size or signature");
 	}
+	let loopOffset = -1;
+	let animated = false;
+	let frames = 0;
+	for (let offset = 12; offset < bytes.length;) {
+		if (offset + 8 > bytes.length) throw new Error("truncated WebP chunk header");
+		const type = fourCC(offset);
+		const size = view.getUint32(offset + 4, true);
+		const start = offset + 8;
+		const end = start + size + (size & 1);
+		if (end > bytes.length) throw new Error("truncated WebP chunk payload");
+		if (type === "VP8X") {
+			if (size !== 10) throw new Error("invalid VP8X chunk");
+			animated = Boolean(bytes[start] & 2);
+		} else if (type === "ANIM") {
+			if (size !== 6 || loopOffset !== -1 || !animated || frames) throw new Error("invalid ANIM chunk");
+			loopOffset = start + 4;
+		} else if (type === "ANMF") {
+			if (size < 16 || loopOffset < 0) throw new Error("invalid ANMF chunk");
+			frames += 1;
+		}
+		offset = end;
+	}
+	if (!animated || loopOffset < 0 || !frames) throw new Error("not an animated WebP");
+	const copy = bytes.slice();
+	new DataView(copy.buffer).setUint16(loopOffset, loopCount, true);
+	return copy;
+}
+
+/** Caller owns the URL and must revoke it on replacement/cancellation/disposal. */
+async function clipUrl(index, { loop = true } = {}) {
+	const bytes = webpWithLoopCount(await clipBytes(index), loop ? 0 : 1);
+	return URL.createObjectURL(new Blob([bytes], { type: "image/webp" }));
 }
 
 /* -------------------------------------------------------------------------- */
 /* Clip player: one double-buffered slot per pet                             */
 /* -------------------------------------------------------------------------- */
 
-/**
- * Plays one clip at a time into a fixed two-image slot.
- *
- * The two `<img>` elements alternate: the incoming clip decodes into the hidden
- * one, and only once `decode()` resolves is the opacity swapped. Skipping that
- * step is what causes the "flash to transparent" between clips, because a newly
- * assigned `src` paints nothing until its first frame arrives.
- */
 class ClipPlayer {
 	constructor(element) {
 		this.element = element;
 		this.layers = [document.createElement("img"), document.createElement("img")];
+		this.urls = [undefined, undefined];
+		this.layerClips = [undefined, undefined];
 		for (const layer of this.layers) {
 			layer.className = "pet-frame";
 			layer.alt = "";
 			layer.decoding = "async";
 			layer.draggable = false;
-			// Critical geometry inline, not only in the stylesheet. If `stage.css`
-			// fails to load or is still in flight when this script runs, a
-			// stack of unstyled `<img>` elements is invisible or grossly misplaced —
-			// and "the panel is empty" is indistinguishable from "the plugin is
-			// broken". Inline opacity in particular: the cross-fade is a CSS effect,
-			// but *being visible at all* must not be.
-			layer.style.cssText =
-				"position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none";
+			layer.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none";
 			element.append(layer);
 		}
 		this.front = 0;
@@ -482,72 +1499,101 @@ class ClipPlayer {
 		this.clipId = undefined;
 		this.token = 0;
 		this.facing = 1;
-		this.updateFacing();
+		this.loop = false;
+		this.disposed = false;
+	}
+
+	isMirrored(clip = CLIP_BY_ID.get(this.clipId)) {
+		if (clip?.noMirror || clip?.sourceFacing === 0) return false;
+		return this.facing !== (clip?.sourceFacing ?? 1);
 	}
 
 	updateFacing() {
-		const transform = this.facing < 0 ? "scaleX(-1)" : "none";
-		for (const layer of this.layers) layer.style.transform = transform;
+		for (let index = 0; index < this.layers.length; index += 1) {
+			this.layers[index].style.transform = this.isMirrored(this.layerClips[index]) ? "scaleX(-1)" : "none";
+		}
 	}
 
 	setFacing(facing) {
-		if (this.facing === facing) return;
-		this.facing = facing;
+		this.facing = facing < 0 ? -1 : 1;
 		this.updateFacing();
 	}
 
-	/**
-	 * Show a clip. Resolves once the new frame is on screen (or immediately if the
-	 * request was superseded by a later call).
-	 */
-	async show(clipId) {
+	releaseLayer(index) {
+		this.layers[index].removeAttribute("src");
+		if (this.urls[index]) URL.revokeObjectURL(this.urls[index]);
+		this.urls[index] = undefined;
+		this.layerClips[index] = undefined;
+	}
+
+	cancelPending() {
+		this.token += 1;
+		this.cancelDecode?.();
+		this.cancelDecode = undefined;
+		this.releaseLayer(1 - this.front);
+	}
+
+	async show(clipId, { loop = false } = {}) {
+		if (this.disposed) return false;
+		this.cancelPending();
+		const token = this.token;
 		const clip = CLIP_BY_ID.get(clipId);
 		if (!clip) {
 			record("clip-missing", `动画缺失：${clipId}`, "warn", "index 中没有这个 id");
 			return false;
 		}
-		if (this.clipId === clipId) return true;
-
-		const token = ++this.token;
-		const back = this.layers[1 - this.front];
+		// Only a continuous loop may reuse its clock. Repeated one-shots always
+		// receive a fresh URL, even if two pets request the same source at once.
+		if (loop && this.loop && this.clipId === clipId) return true;
 		let url;
-		try {
-			url = await clipUrl(clip.index);
-		} catch (error) {
-			if (token !== this.token) return false;
-			record("clip-bytes", `动画数据读取失败：${clipId}`, "fail", String(error?.message ?? error));
+		try { url = await clipUrl(clip.index, { loop }); }
+		catch (error) {
+			if (token === this.token) record("clip-bytes", `动画数据读取失败：${clipId}`, "fail", String(error?.message ?? error));
 			return false;
 		}
-		if (token !== this.token) return false;
-		if (back.getAttribute("src") !== url) back.src = url;
-
+		if (token !== this.token || this.disposed) { URL.revokeObjectURL(url); return false; }
+		const backIndex = 1 - this.front;
+		const back = this.layers[backIndex];
+		this.urls[backIndex] = url;
+		this.layerClips[backIndex] = clip;
+		this.updateFacing();
+		back.src = url;
+		let timeout;
 		try {
-			// `decode()` rejects on a decode error *and* on an aborted load, and it
-			// never resolves for a zero-sized image. Raced against a timeout so a
-			// single broken file cannot freeze the pet forever.
-			await Promise.race([
-				back.decode(),
-				new Promise((_, reject) => setTimeout(() => reject(new Error("decode timeout")), 4000)),
+			const decoded = await Promise.race([
+				back.decode().then(() => true),
+				new Promise((resolve) => { this.cancelDecode = () => resolve(false); }),
+				new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error("decode timeout")), 8000); }),
 			]);
+			if (!decoded || token !== this.token || this.disposed) return false;
 		} catch (error) {
-			// A newer `show()` reuses the same back element and changes its `src`,
-			// which aborts this decode. That is not a failure — it is the normal
-			// outcome of a fast clip switch — so a superseded attempt reports nothing.
-			if (token !== this.token) return false;
-			record("clip-decode", `动画解码失败：${clipId}`, "fail", `${clip.file}: ${error?.message ?? error}`);
+			if (token === this.token) {
+				this.releaseLayer(backIndex);
+				record("clip-decode", `动画解码失败：${clipId}`, "fail", `${clip.file}: ${error?.message ?? error}`);
+			}
 			return false;
+		} finally {
+			clearTimeout(timeout);
+			if (token === this.token) this.cancelDecode = undefined;
 		}
-		if (token !== this.token) return false;
-
-		const previous = this.layers[this.front];
+		const previous = this.front;
 		back.classList.add("is-front");
-		previous.classList.remove("is-front");
+		this.layers[previous].classList.remove("is-front");
 		back.style.opacity = "1";
-		previous.style.opacity = "0";
-		this.front = 1 - this.front;
+		this.layers[previous].style.opacity = "0";
+		this.front = backIndex;
 		this.clipId = clipId;
+		this.loop = loop;
+		this.releaseLayer(previous);
 		record("clip-decode", "动画解码", "ok", `${clipId} ${clip.width}×${clip.height} ${clip.durationMs}ms`);
 		return true;
+	}
+
+	dispose() {
+		this.disposed = true;
+		this.cancelPending();
+		this.releaseLayer(this.front);
+		this.clipId = undefined;
 	}
 }
 
@@ -560,19 +1606,157 @@ const MAX_SPEED = 4200;
 const DRAG_STIFFNESS = 26;
 const RELEASE_BOOST = 1.15;
 
+const BODY_BOUNDS = INDEX.bodyBounds ?? { left: 0.30, top: 0.15, right: 0.68, bottom: 0.95 };
+const IDLE_CLIP = INDEX.pools.idle[0];
+const clamp = (value, min, max) => max < min ? (min + max) / 2 : Math.min(max, Math.max(min, value));
+
+function randomIdleDelay(config = {}) {
+	const min = Number.isFinite(config.idleMinMs) ? Math.max(0, config.idleMinMs) : 4000;
+	const max = Number.isFinite(config.idleMaxMs) ? Math.max(min, config.idleMaxMs) : Math.max(min, 9000);
+	return min + Math.random() * (max - min);
+}
+/** WebAudio stays entirely in the plugin. Relay messages are NOT user gestures. */
+class ClickSound {
+	constructor() {
+		this.voices = new Set();
+		this.lastPlayAt = -Infinity;
+		this.epoch = 0;
+		this.playToken = 0;
+		this.resumeToken = 0;
+	}
+
+	describeOverlay() {
+		if (diagnosticById.has("sound-overlay")) return;
+		record("sound-overlay", "浮层音效限制", "info", "当前宿主仅支持指针中继，无法可靠解锁音频；面板内真实点击可播放原版鸭叫。");
+	}
+
+	prepare() {
+		if (state.surface === "overlay") { this.describeOverlay(); return; }
+		if (state.config?.sound?.enabled === false || this.context || this.failed) return;
+		const AudioContext = globalThis.AudioContext || globalThis.webkitAudioContext;
+		if (!AudioContext) { this.failed = true; record("sound", "点击音效", "warn", "浏览器不支持 WebAudio"); return; }
+		try {
+			this.context = new AudioContext();
+			document.addEventListener("visibilitychange", () => { if (document.hidden) this.cancelPending(); });
+			this.gain = this.context.createGain();
+			this.analyser = this.context.createAnalyser();
+			this.analyser.fftSize = 256;
+			this.gain.connect(this.analyser);
+			this.analyser.connect(this.context.destination);
+			this.applyVolume();
+			const epoch = this.epoch;
+			void this.context.decodeAudioData(base64ToBytes(PET_CLICK_SOUND_BASE64).buffer).then((buffer) => {
+				if (epoch !== this.epoch) return;
+				this.buffer = buffer;
+				let peak = 0;
+				for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
+					for (const sample of buffer.getChannelData(channel)) peak = Math.max(peak, Math.abs(sample));
+				}
+				this.decodedPeak = peak;
+				record("sound", "点击音效", "info", `原版鸭叫已解码（${buffer.duration.toFixed(2)}s），等待面板真实点击`);
+			}).catch((error) => this.fail(error));
+		} catch (error) { this.fail(error); }
+	}
+
+	fail(error) {
+		if (this.failed) return;
+		this.failed = true;
+		record("sound", "点击音效", "warn", String(error?.message ?? error));
+	}
+
+	applyVolume() {
+		const enabled = state.config?.sound?.enabled !== false;
+		const volume = clamp(state.config?.sound?.volume ?? 0.6, 0, 1);
+		if (this.gain) this.gain.gain.value = enabled ? volume * 0.5 : 0;
+		if (!enabled || volume <= 0) {
+			this.cancelPending();
+			for (const voice of this.voices) { try { voice.stop(); } catch { /* already ended */ } }
+			this.voices.clear();
+		}
+	}
+
+	unlock(event) {
+		if (state.surface === "overlay") { this.describeOverlay(); return; }
+		if (!event?.isTrusted || document.hidden || state.config?.sound?.enabled === false) return;
+		this.prepare();
+		this.applyVolume();
+		if (!this.context || this.context.state === "running" || this.resuming) return;
+		const token = ++this.resumeToken;
+		this.resuming = true;
+		try {
+			// A blocked browser can leave resume pending forever. Bound this attempt;
+			// only a future real gesture may retry, never a timer-driven autoplay loop.
+			void withTimeout(this.context.resume(), 400, "audio resume").catch((error) => {
+				if (token === this.resumeToken) record("sound", "点击音效", "info", `音频仍挂起，等待下一次真实点击：${error?.message ?? error}`);
+			}).finally(() => { if (token === this.resumeToken) this.resuming = false; });
+		} catch (error) { this.resuming = false; this.fail(error); }
+	}
+
+	play(event) {
+		this.cancelPending();
+		this.unlock(event);
+		if (state.surface === "overlay" || !event?.isTrusted || document.hidden || state.paused ||
+			state.config?.sound?.enabled === false || (state.config?.sound?.volume ?? 0.6) <= 0 || !this.context) return false;
+		const token = this.playToken;
+		const deadline = performance.now() + 180;
+		const attempt = () => {
+			this.pendingTimer = undefined;
+			if (token !== this.playToken || document.hidden || state.paused || state.config?.sound?.enabled === false ||
+				(state.config?.sound?.volume ?? 0.6) <= 0 || performance.now() > deadline) return false;
+			if (this.buffer && this.context.state === "running") return this.startVoice();
+			// One bounded slot, not a queue: resolve a quick first-click unlock/decode,
+			// but discard it if permissions/focus return after this gesture is stale.
+			this.pendingTimer = setTimeout(attempt, Math.min(16, Math.max(1, deadline - performance.now() + 1)));
+			return false;
+		};
+		return attempt();
+	}
+
+	cancelPending() {
+		this.playToken += 1;
+		clearTimeout(this.pendingTimer);
+		this.pendingTimer = undefined;
+	}
+
+	startVoice() {
+		const now = performance.now();
+		if (now - this.lastPlayAt < 60 || this.voices.size >= 2) return false;
+		const voice = this.context.createBufferSource();
+		voice.buffer = this.buffer;
+		voice.connect(this.gain);
+		voice.onended = () => { this.voices.delete(voice); voice.disconnect(); };
+		try {
+			voice.start();
+			this.voices.add(voice);
+			this.lastPlayAt = now;
+			record("sound", "点击音效", "ok", `AudioContext running；原版鸭叫输出已启动（音量 ${state.config?.sound?.volume ?? 0.6}）`);
+			return true;
+		} catch (error) { voice.disconnect(); this.fail(error); return false; }
+	}
+
+	dispose() {
+		this.cancelPending();
+		this.epoch += 1;
+		this.resumeToken += 1;
+		for (const voice of this.voices) { try { voice.stop(); } catch { /* already ended */ } }
+		this.voices.clear();
+		void this.context?.close()?.catch?.(() => {});
+	}
+}
+const clickSound = new ClickSound();
 class Pet {
 	constructor(stage, index) {
 		this.stage = stage;
 		this.index = index;
 		this.element = document.createElement("div");
 		this.element.className = "pet";
-		// Same reasoning as the frames: geometry lives inline so a missing stylesheet
-		// cannot make the pet un-findable. The stylesheet still owns cursor, shadow
-		// and the squash transform-origin.
-		this.element.style.cssText = "position:absolute;left:0;top:0;transform-origin:50% 100%";
+		this.element.style.cssText = `position:absolute;left:0;top:0;pointer-events:none;transform-origin:50% ${BODY_BOUNDS.bottom * 100}%`;
 		this.player = new ClipPlayer(this.element);
-		stage.layers.pets.append(this.element);
-
+		this.hitElement = document.createElement("div");
+		this.hitElement.className = "pet-hit";
+		this.hitElement.style.cssText = "position:absolute;left:0;top:0;pointer-events:auto;touch-action:none";
+		this.hitElement.setAttribute("aria-label", `桌宠 ${index + 1}`);
+		stage.layers.pets.append(this.element, this.hitElement);
 		this.w = 120;
 		this.h = 68;
 		this.x = 0;
@@ -583,435 +1767,432 @@ class Pet {
 		this.squashVelocity = 0;
 		this.facing = 1;
 		this.dragging = false;
+		this.airborne = false;
 		this.dragTarget = { x: 0, y: 0 };
-		this.dragPointerId = undefined;
-		this.pressedAt = 0;
-		this.pressedPoint = { x: 0, y: 0 };
-		this.lastClickAt = 0;
 		this.mode = "idle";
-		this.modeUntil = 0;
 		this.clipEndsAt = 0;
-		this.pendingEndAction = undefined;
-		this.travel = undefined;
-		this.sleepSuite = undefined;
-		this.sleepPhase = undefined;
-		this.idleTimer = undefined;
+		this.behaviorToken = 0;
+		this.loading = false;
+		this.initialized = false;
+		this.disposed = false;
 	}
 
-	/** Size from the stage, so the pet scales with the panel instead of the window. */
+	get config() { return this.stage.config; }
+	get isAsleep() { return this.sleepPhase !== undefined; }
+	get isUserBusy() { return this.dragging || this.airborne; }
+
+	initialize() {
+		if (this.initialized || !this.config || this.disposed) return;
+		this.initialized = true;
+		this.enterIdle();
+	}
+
 	resize(stageWidth, stageHeight, scale) {
 		const base = Math.min(Math.max(stageWidth * 0.26, 96), 300);
-		const width = base * scale;
-		const aspect = INDEX.canvas.width / INDEX.canvas.height;
-		this.w = width;
-		this.h = width / aspect;
-		// Clamp only — placement is `layout()`'s job. Clamping here means a panel
-		// shrink can never leave a pet hanging outside the stage.
-		this.x = Math.min(Math.max(this.x, this.w / 2), Math.max(this.w / 2, stageWidth - this.w / 2));
-		this.y = Math.min(Math.max(this.y, this.h / 2), Math.max(this.h / 2, stageHeight - this.h / 2));
+		this.w = base * scale;
+		this.h = this.w / (INDEX.canvas.width / INDEX.canvas.height);
 		this.element.style.width = `${this.w}px`;
 		this.element.style.height = `${this.h}px`;
+		this.clampPosition();
+		if (this.travel) {
+			const limits = this.limits();
+			this.travel.fromX = clamp(this.travel.fromX, limits.left, limits.right);
+			this.travel.toX = clamp(this.travel.toX, limits.left, limits.right);
+		}
+		if (this.dragging) this.dragTarget = { x: this.x, y: this.y };
+		this.render();
 	}
 
-	/* ---- animation control ------------------------------------------------ */
-
-	get config() {
-		return this.stage.config;
+	/** Full canvas is painted; only these transformed visible bounds are interactive. */
+	bounds(kind = "hit") {
+		const clip = CLIP_BY_ID.get(this.player.clipId);
+		const box = kind === "body" ? BODY_BOUNDS : (clip?.bounds ?? BODY_BOUNDS);
+		// Squash is visual feedback, not a growing rigid body that pushes neighbours
+		// or permanently nudges x away from a wall on every click. The physical
+		// baseline follows world facing, never a temporary text/action clip's flip.
+		const mirror = kind === "body" ? this.facing < 0 : this.player.isMirrored(clip);
+		const left = mirror ? 1 - box.right : box.left;
+		const right = mirror ? 1 - box.left : box.right;
+		const { scaleX, scaleY } = kind === "body" ? { scaleX: 1, scaleY: 1 } : this.scales();
+		const originY = this.y + (BODY_BOUNDS.bottom - 0.5) * this.h;
+		const result = {
+			left: this.x + (left - 0.5) * this.w * scaleX,
+			right: this.x + (right - 0.5) * this.w * scaleX,
+			top: originY + (box.top - BODY_BOUNDS.bottom) * this.h * scaleY,
+			bottom: originY + (box.bottom - BODY_BOUNDS.bottom) * this.h * scaleY,
+		};
+		return { ...result, width: result.right - result.left, height: result.bottom - result.top };
 	}
 
-	enabledGroups() {
-		const groups = this.config?.animationGroups ?? {};
-		return groups;
+	scales() {
+		return { scaleX: clamp(1 - this.squash * 0.5, 0.65, 1.5), scaleY: clamp(1 + this.squash, 0.35, 1.5) };
 	}
 
-	groupAllowed(group) {
-		if (group === "balance" || group === "drag" || group === "click") return true;
-		if (group.startsWith("sleep")) return true;
-		return this.enabledGroups()[group] !== false;
+	limits() {
+		const body = this.bounds("body");
+		return { left: this.x - body.left, right: this.stage.width + this.x - body.right,
+			top: this.y - body.top, bottom: this.stage.height + this.y - body.bottom };
 	}
 
-	/** Pick one clip id at random from a list, avoiding an immediate repeat. */
-	pick(list) {
+	clampPosition() {
+		const limits = this.limits();
+		this.x = clamp(this.x, limits.left, limits.right);
+		this.y = clamp(this.y, limits.top, limits.bottom);
+	}
+
+	enabledGroups() { return this.config?.animationGroups ?? {}; }
+	groupAllowed(group) { return this.enabledGroups()[group] !== false; }
+	pick(list = []) {
 		const candidates = list.filter((id) => id !== this.lastClipId);
 		const pool = candidates.length > 0 ? candidates : list;
 		return pool[Math.floor(Math.random() * pool.length)];
 	}
 
-	playOnce(clipId, onEnd) {
-		if (!clipId) {
-			// Every pool can be empty if a future index has fewer clips; falling back to
-			// idle is also what keeps the ambient timer armed, so a missing clip cannot
-			// leave the pet frozen on its previous frame forever.
-			this.enterIdle();
-			return;
-		}
-		this.lastClipId = clipId;
-		void this.player.show(clipId);
-		const clip = CLIP_BY_ID.get(clipId);
-		const duration = clipDurationMs(clip) ?? 1200;
-		this.clipEndsAt = performance.now() + duration;
-		this.pendingEndAction = onEnd;
-	}
-
-	playLoop(clipId) {
-		if (!clipId) return;
-		this.lastClipId = clipId;
-		void this.player.show(clipId);
+	/** All interruptions use one cancellation path; no old callback owns x later. */
+	clearBehavior({ wake = true } = {}) {
+		clearTimeout(this.idleTimer);
+		this.idleTimer = undefined;
+		this.behaviorToken += 1;
+		this.player.cancelPending();
 		this.clipEndsAt = 0;
 		this.pendingEndAction = undefined;
+		this.travel = undefined;
+		this.loading = false;
+		if (wake) { this.sleepPhase = undefined; this.sleepSuite = undefined; }
 	}
 
-	/* ---- behaviour ------------------------------------------------------- */
-
-	enterIdle(delayOverride) {
-		this.mode = this.sleepPhase ? "sleep" : "idle";
-		const idlePool = INDEX.pools.idle.filter((id) => this.groupAllowed("idle"));
-		if (idlePool.length > 0) this.playLoop(this.pick(idlePool));
-		const [min, max] = [
-			this.config?.idleMinMs ?? 4000,
-			this.config?.idleMaxMs ?? 9000,
-		];
-		const delay = delayOverride ?? min + Math.random() * Math.max(0, max - min);
-		this.scheduleAmbient(delay);
+	async playOnce(clipId, onEnd = () => this.enterIdle(), onShown) {
+		if (this.disposed) return false;
+		if (!CLIP_BY_ID.has(clipId)) { this.enterIdle(); return false; }
+		this.clearBehavior({ wake: false });
+		const token = this.behaviorToken;
+		this.mode = this.isAsleep ? "sleep" : "action";
+		this.loading = true;
+		this.lastClipId = clipId;
+		const shown = await this.player.show(clipId, { loop: false });
+		if (token !== this.behaviorToken || this.disposed) return false;
+		this.loading = false;
+		if (!shown) { this.enterIdle(); return false; }
+		// The action and travel clocks start AFTER the incoming image is decoded.
+		this.clipEndsAt = performance.now() + (clipDurationMs(CLIP_BY_ID.get(clipId)) ?? 1200);
+		this.pendingEndAction = onEnd;
+		onShown?.();
+		this.render();
+		return true;
 	}
 
-	scheduleAmbient(delay) {
+	async playLoop(clipId) {
+		if (this.disposed || !clipId) return false;
+		this.clearBehavior({ wake: false });
+		const token = this.behaviorToken;
+		this.loading = true;
+		this.lastClipId = clipId;
+		const shown = await this.player.show(clipId, { loop: true });
+		if (token !== this.behaviorToken || this.disposed) return false;
+		this.loading = false;
+		this.render();
+		return shown;
+	}
+
+	enterIdle() {
+		if (this.disposed) return;
+		this.clearBehavior();
+		this.mode = "idle";
+		// The baseline is not a random performance. Even with the idle category
+		// disabled there must be a visible, breathing pet between other actions.
+		const playback = this.playLoop(IDLE_CLIP);
+		const token = this.behaviorToken;
+		void playback.then(() => {
+			if (token === this.behaviorToken && this.mode === "idle" && !this.disposed) this.scheduleAmbient();
+		});
+	}
+
+	scheduleAmbient() {
 		clearTimeout(this.idleTimer);
-		this.idleTimer = setTimeout(() => this.ambientTick(), delay);
+		this.idleTimer = undefined;
+		if (this.disposed || this.mode !== "idle" || this.loading) return;
+		this.idleTimer = setTimeout(() => {
+			this.idleTimer = undefined;
+			this.ambientTick();
+		}, randomIdleDelay(this.config));
 	}
 
-	/**
-	 * The random-action chain.
-	 *
-	 * Weights come from `config.jsonc` (`animationWeights` + per-category weights)
-	 * so this file does not own a second opinion about how often the fish should
-	 * dance: `idle` here means "stay put", `turn` flips facing, `move` travels, and
-	 * the remainder is split across the enabled action categories.
-	 */
 	ambientTick() {
-		// A one-shot is already playing (`clipEndsAt` is set): let it finish rather
-		// than cutting into it. The idle timer is re-armed when it ends.
-		if (this.mode !== "idle" || this.clipEndsAt) return;
+		if (this.disposed || this.mode !== "idle" || this.loading || this.clipEndsAt || this.isUserBusy) return;
+		if (!this.player.clipId) { this.enterIdle(); return; }
+		if (this.config?.bubbles?.autoChat !== false && !state.paused && (!this.bubble || this.bubble.hidden)) {
+			ensureBubble(this)?.show(BubbleContent.random(this.config?.bubbles?.overrides, Math.random, this.lastAmbientText), { priority: 0, automatic: true });
+			this.lastAmbientText = this.bubbleController?.content?.text ?? this.lastAmbientText;
+		}
 		const chain = INDEX.chain;
 		const roll = Math.random() * 100;
-		const turnLimit = chain.idle + chain.turn;
-		// `roam: false` pins the pet in place, so the travel slot is folded back into
-		// "do nothing" instead of being handed to a clip that would walk it away.
-		const roam = this.config?.roam !== false;
-		const moveLimit = turnLimit + (roam ? chain.move : 0);
-
-		if (roll < chain.idle) {
-			this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
+		if (roll < chain.idle) { this.scheduleAmbient(); return; }
+		if (roll < chain.idle + chain.turn) {
+			if (this.groupAllowed("turn") && INDEX.pools.turn.length) this.playFlipOnce(this.pick(INDEX.pools.turn));
+			else this.scheduleAmbient();
 			return;
 		}
-		if (roll < turnLimit && this.groupAllowed("turn") && INDEX.pools.turn.length > 0) {
-			this.playFlipOnce(this.pick(INDEX.pools.turn));
+		if (roll < chain.idle + chain.turn + chain.move) {
+			if (this.config?.roam !== false && this.groupAllowed("move") && INDEX.pools.move.length) this.startTravel(this.pick(INDEX.pools.move));
+			else this.scheduleAmbient();
 			return;
 		}
-		if (roll < moveLimit && this.groupAllowed("move") && INDEX.pools.move.length > 0) {
-			this.startTravel(this.pick(INDEX.pools.move));
-			return;
-		}
-
-		const categories = INDEX.pools.categories.filter((category) => this.groupAllowed(category.group));
-		const totalWeight = categories.reduce((sum, category) => sum + category.weight, 0);
-		if (totalWeight <= 0) {
-			this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
-			return;
-		}
-		let target = Math.random() * totalWeight;
+		const categories = INDEX.pools.categories.filter((category) => this.groupAllowed(category.group) && category.clipIds.length);
+		const total = categories.reduce((sum, category) => sum + category.weight, 0);
+		if (total <= 0) { this.scheduleAmbient(); return; }
+		let target = Math.random() * total;
 		for (const category of categories) {
 			target -= category.weight;
 			if (target > 0) continue;
-			const pool = category.clipIds.filter((id) => {
-				const clip = CLIP_BY_ID.get(id);
-				// `noMirror` clips carry text: playing them mirrored would show reversed
-				// characters, so they are skipped while the pet faces left.
-				return clip && !(clip.noMirror && this.facing < 0);
-			});
-			if (pool.length === 0) break;
-			this.playOnce(this.pick(pool), () => this.enterIdle());
+			this.playOnce(this.pick(category.clipIds));
 			return;
 		}
-		this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
+		this.scheduleAmbient();
 	}
 
-	/** A `move` clip that also translates the pet across the stage. */
 	startTravel(clipId) {
-		const clip = CLIP_BY_ID.get(clipId);
+		if (this.isUserBusy || this.disposed) return;
+		this.sleepPhase = undefined;
+		this.sleepSuite = undefined;
 		const params = { ...(INDEX.moveDefaults ?? {}), ...(INDEX.moveParams?.[clipId] ?? {}) };
-		const stageWidth = this.stage.width;
-		const scale = this.w / 462; // config.jsonc's distances assume a 462 px-wide pet
+		const scale = this.w / 462;
 		const minDist = (params.minDist ?? 60) * scale;
 		const maxDist = (params.maxDist ?? 240) * scale;
-		const margin = params.margin ?? 20;
 		const distance = minDist + Math.random() * Math.max(0, maxDist - minDist);
-		const roomRight = stageWidth - margin - (this.x + this.w / 2);
-		const roomLeft = this.x - this.w / 2 - margin;
+		const body = this.bounds("body");
+		const margin = (params.margin ?? 20) * scale;
+		const roomRight = Math.max(0, this.stage.width - margin - body.right);
+		const roomLeft = Math.max(0, body.left - margin);
 		let direction = Math.random() < 0.5 ? -1 : 1;
 		if (roomRight < distance && roomLeft > roomRight) direction = -1;
 		else if (roomLeft < distance && roomRight > roomLeft) direction = 1;
-		const reachable = Math.min(distance, direction < 0 ? roomLeft : roomRight);
-		if (reachable < 8) {
-			// Nowhere to go: treat it as a plain one-shot rather than sliding into a wall.
-			this.playOnce(clipId, () => this.enterIdle());
-			return;
-		}
-		const durationMs = clipDurationMs(clip) ?? 2000;
-		this.travel = {
-			fromX: this.x,
-			toX: this.x + direction * reachable,
-			startedAt: performance.now(),
-			durationMs,
-			leadMs: (params.leadSec ?? 2) * 1000,
-			tailMs: (params.tailSec ?? 2) * 1000,
-		};
+		const reachable = Math.max(0, Math.min(distance, direction < 0 ? roomLeft : roomRight));
 		this.setFacing(direction);
-		this.playOnce(clipId, () => {
-			this.travel = undefined;
-			this.enterIdle();
+		this.vx = 0;
+		this.playOnce(clipId, () => this.enterIdle(), () => {
+			if (reachable < 8) return;
+			const limits = this.limits();
+			this.travel = { fromX: this.x, toX: clamp(this.x + direction * reachable, limits.left, limits.right),
+				startedAt: performance.now(), durationMs: clipDurationMs(CLIP_BY_ID.get(clipId)) ?? 2000,
+				leadMs: (params.leadSec ?? 2) * 1000, tailMs: (params.tailSec ?? 2) * 1000 };
 		});
 	}
 
-		/** Play `clipId` once and flip the pet's facing when it finishes. */
 	playFlipOnce(clipId) {
-		this.playOnce(clipId, () => {
-			this.setFacing(this.facing < 0 ? 1 : -1);
-			this.enterIdle();
-		});
+		this.playOnce(clipId, () => { this.setFacing(-this.facing); this.enterIdle(); });
 	}
-
 	setFacing(facing) {
 		this.facing = facing < 0 ? -1 : 1;
 		this.player.setFacing(this.facing);
 	}
 
-	/* ---- interaction ----------------------------------------------------- */
-
 	onPointerDown(event) {
-		if (event.button !== undefined && event.button !== 0) return;
+		if (this.disposed || this.dragging || (event.button !== undefined && event.button !== 0)) return;
+		clickSound.unlock(event);
+		this.clearBehavior();
+		this.airborne = false;
 		this.dragging = true;
 		this.dragPointerId = event.pointerId;
 		this.pressedAt = performance.now();
 		this.pressedPoint = { x: event.clientX, y: event.clientY };
-		// Grab point relative to the pet's centre, so the fish keeps its offset under
-		// the cursor instead of snapping its middle to the fingertip.
+		this.maxDragDistance = 0;
+		this.pointerSamples = [{ x: event.clientX, y: event.clientY, time: this.pressedAt }];
+		this.lastMovedAt = this.pressedAt;
 		const rect = this.stage.root.getBoundingClientRect();
-		this.dragOffset = {
-			x: event.clientX - rect.left - this.x,
-			y: event.clientY - rect.top - this.y,
-		};
+		this.dragOffset = { x: event.clientX - rect.left - this.x, y: event.clientY - rect.top - this.y };
 		this.dragTarget = { x: this.x, y: this.y };
-		// `setPointerCapture` throws `NotFoundError` for a pointer id the browser does
-		// not consider active (synthetic events, a pointer already released). Capture
-		// is an optimisation — the pet tracks the pointer either way — so a failure
-		// here must not abort the drag that just started.
-		try {
-			this.element.setPointerCapture?.(event.pointerId);
-		} catch {
-			/* capture unavailable */
-		}
+		try { this.hitElement.setPointerCapture?.(event.pointerId); } catch { /* relayed or cancelled pointer */ }
 		this.element.classList.add("is-dragging");
-		clearTimeout(this.idleTimer);
+		this.hitElement.classList.add("is-dragging");
 		this.mode = "drag";
-		const dragPool = INDEX.pools.drag.filter(() => this.groupAllowed("drag"));
-		if (dragPool.length > 0) this.playLoop(this.pick(dragPool));
+		const clip = this.groupAllowed("drag") ? this.pick(INDEX.pools.drag) : IDLE_CLIP;
+		void this.playLoop(clip || IDLE_CLIP);
 		this.vx = 0;
 		this.vy = 0;
 	}
 
 	onPointerMove(event) {
 		if (!this.dragging || event.pointerId !== this.dragPointerId) return;
+		const now = performance.now();
+		const previous = this.pointerSamples.at(-1);
+		if (!previous || event.clientX !== previous.x || event.clientY !== previous.y) this.lastMovedAt = now;
+		this.pointerSamples.push({ x: event.clientX, y: event.clientY, time: now });
+		this.pointerSamples = this.pointerSamples.filter((sample) => now - sample.time <= 120).slice(-32);
+		this.maxDragDistance = Math.max(this.maxDragDistance, Math.hypot(event.clientX - this.pressedPoint.x, event.clientY - this.pressedPoint.y));
+		if (this.maxDragDistance >= 6 && !this.grabBubbleShown) {
+			this.grabBubbleShown = true;
+			this.bubbleController?.close();
+			showBubble("被你抓住啦！", { pet: this, durationMs: 1800 });
+		}
 		const rect = this.stage.root.getBoundingClientRect();
-		this.dragTarget.x = Math.min(
-			Math.max(event.clientX - rect.left - (this.dragOffset?.x ?? 0), this.w / 2),
-			Math.max(this.w / 2, this.stage.width - this.w / 2),
-		);
-		this.dragTarget.y = Math.min(
-			Math.max(event.clientY - rect.top - (this.dragOffset?.y ?? 0), this.h / 2),
-			Math.max(this.h / 2, this.stage.height - this.h / 2),
-		);
+		const limits = this.limits();
+		this.dragTarget = {
+			x: clamp(event.clientX - rect.left - this.dragOffset.x, limits.left, limits.right),
+			y: clamp(event.clientY - rect.top - this.dragOffset.y, limits.top, limits.bottom),
+		};
+	}
+
+	finishPointer() {
+		this.dragging = false;
+		try { this.hitElement.releasePointerCapture?.(this.dragPointerId); } catch { /* not captured */ }
+		this.dragPointerId = undefined;
+		this.grabBubbleShown = false;
+		this.element.classList.remove("is-dragging");
+		this.hitElement.classList.remove("is-dragging");
+		if (state.overlayPet === this) state.overlayPet = undefined;
+		this.mode = "idle";
 	}
 
 	onPointerUp(event) {
 		if (!this.dragging || event.pointerId !== this.dragPointerId) return;
-		this.dragging = false;
-		try {
-			this.element.releasePointerCapture?.(event.pointerId);
-		} catch {
-			/* capture was never acquired */
-		}
-		this.element.classList.remove("is-dragging");
-		const elapsed = performance.now() - this.pressedAt;
-		const travel = Math.hypot(event.clientX - this.pressedPoint.x, event.clientY - this.pressedPoint.y);
-
-		if (travel < 6 && elapsed < 400) {
-			this.handleClick();
+		this.onPointerMove(event);
+		const now = performance.now();
+		this.finishPointer();
+		if (this.maxDragDistance < 6 && now - this.pressedAt < 400) {
+			this.vx = 0;
+			this.vy = 0;
+			this.handleClick(event);
 			return;
 		}
-		// Thrown: keep most of the pointer velocity so the fish flies the way it was flicked.
-		this.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, this.vx * RELEASE_BOOST));
-		this.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, this.vy * RELEASE_BOOST));
-		this.sleepPhase = undefined;
-		this.enterIdle(300);
+		this.x = this.dragTarget.x;
+		this.y = this.dragTarget.y;
+		const first = this.pointerSamples[0];
+		const last = this.pointerSamples.at(-1);
+		const seconds = Math.max(0.025, (last.time - first.time) / 1000);
+		const moving = this.maxDragDistance >= 12 && now - this.lastMovedAt < 80;
+		this.vx = moving ? clamp((last.x - first.x) / seconds * RELEASE_BOOST, -MAX_SPEED, MAX_SPEED) : 0;
+		this.vy = moving ? clamp((last.y - first.y) / seconds * RELEASE_BOOST, -MAX_SPEED, MAX_SPEED) : 0;
+		this.airborne = moving || this.y < this.limits().bottom - 1;
+		this.enterIdle();
+		showBubble(moving ? "出发！" : "稳稳放好。", { pet: this, durationMs: 2000 });
 	}
 
-	handleClick() {
-		const now = performance.now();
-		const isDouble = now - this.lastClickAt < 320;
-		this.lastClickAt = now;
+	onPointerCancel(event) {
+		if (!this.dragging || (event?.pointerId !== undefined && event.pointerId !== this.dragPointerId)) return;
+		this.finishPointer();
+		this.vx = 0;
+		this.vy = 0;
+		this.airborne = false;
+		this.enterIdle();
+	}
+
+	handleClick(event) {
+		this.clearBehavior();
+		this.mode = "idle";
 		this.squash = -Math.max(0.1, this.config?.clickSquash ?? 0.35);
 		this.squashVelocity = 0;
-
-		if (isDouble) {
-			// Second click inside the double-click window: launch upward instead of
-			// playing a second reaction. Doing both would look like a stutter.
-			this.vy = -Math.max(900, GRAVITY * 0.42);
-			this.vx += (Math.random() - 0.5) * 260;
-			this.playOnce(this.pick(INDEX.pools.click), () => this.enterIdle());
-			return;
-		}
-
-		const clickPool = INDEX.pools.click.filter(() => this.groupAllowed("click"));
-		if (clickPool.length > 0) this.playOnce(this.pick(clickPool), () => this.enterIdle());
-		else this.enterIdle(600);
+		const bubble = ensureBubble(this);
+		const view = currentBalanceView();
+		bubble?.updateData(view.snapshot, view.ledger);
+		const repeatedHomeClick = this.config?.bubbles?.clickMode === "home" && this.lastHomeClickAt !== undefined && performance.now() - this.lastHomeClickAt < 320;
+		this.lastHomeClickAt = performance.now();
+		if (repeatedHomeClick) bubble?.close();
+		else bubble?.interact();
+		void refreshBalance(false);
+		clickSound.play(event);
+		const pool = this.groupAllowed("click") ? INDEX.pools.click : [];
+		if (pool.length) this.playOnce(this.pick(pool));
+		else this.enterIdle();
 	}
 
 	setSleeping(sleeping) {
-		const suites = INDEX.pools.sleep ?? [];
-		const suite = suites[Math.floor(Math.random() * suites.length)];
+		if (this.isUserBusy) return;
+		const endPool = this.sleepSuite?.end ?? [];
+		const wasAsleep = this.isAsleep;
+		this.clearBehavior();
 		if (!sleeping) {
-			if (!this.sleepPhase) return;
-			const endPool = this.sleepSuite?.end ?? [];
-			this.sleepPhase = undefined;
-			this.sleepSuite = undefined;
-			if (endPool.length > 0) this.playOnce(this.pick(endPool), () => this.enterIdle());
+			if (wasAsleep && endPool.length) this.playOnce(this.pick(endPool));
 			else this.enterIdle();
 			return;
 		}
-		if (!suite) return;
+		const suites = INDEX.pools.sleep ?? [];
+		const suite = suites[Math.floor(Math.random() * suites.length)];
+		if (!suite) { this.enterIdle(); return; }
 		this.sleepSuite = suite;
 		this.sleepPhase = "start";
-		clearTimeout(this.idleTimer);
 		this.mode = "sleep";
-		const startPool = suite.start ?? [];
-		if (startPool.length === 0) {
-			this.beginSleepLoop();
-			return;
-		}
-		this.playOnce(this.pick(startPool), () => this.beginSleepLoop());
+		if (suite.start?.length) this.playOnce(this.pick(suite.start), () => this.beginSleepLoop());
+		else this.beginSleepLoop();
 	}
 
 	beginSleepLoop() {
-		const pool = this.sleepSuite?.loop ?? [];
 		this.sleepPhase = "loop";
 		this.mode = "sleep";
-		if (pool.length > 0) this.playLoop(this.pick(pool));
-		else this.playLoop(this.lastClipId);
+		void this.playLoop(this.pick(this.sleepSuite?.loop) || IDLE_CLIP);
 	}
-
-	get isAsleep() {
-		return this.sleepPhase !== undefined;
-	}
-
-	/* ---- physics --------------------------------------------------------- */
 
 	update(dt) {
-		const config = this.stage.config;
-		const gravity = GRAVITY * (config?.gravity ?? 1) * (this.mode === "sleep" ? 1 : 1);
+		const config = this.config;
+		const gravity = GRAVITY * (config?.gravity ?? 1);
 		const bounce = config?.bounce ?? 0.55;
 		const friction = config?.friction ?? 0.9;
-
+		this.applySquashSpring(dt);
 		if (this.dragging) {
-			const previousX = this.x;
-			const previousY = this.y;
-			// Critically damped follow: the pet trails the pointer without oscillating.
 			const alpha = Math.min(1, DRAG_STIFFNESS * dt);
 			this.x += (this.dragTarget.x - this.x) * alpha;
 			this.y += (this.dragTarget.y - this.y) * alpha;
-			if (dt > 0) {
-				this.vx = (this.x - previousX) / dt;
-				this.vy = (this.y - previousY) / dt;
-			}
-			this.applySquashSpring(dt);
+			this.clampPosition();
 			return;
 		}
-
 		if (this.travel) {
-			const elapsed = performance.now() - this.travel.startedAt;
-			const { leadMs, tailMs, durationMs, fromX, toX } = this.travel;
-			const movingMs = Math.max(1, durationMs - leadMs - tailMs);
-			const progress = Math.min(1, Math.max(0, (elapsed - leadMs) / movingMs));
-			// Ease-in-out so the walk starts and stops instead of teleporting.
-			const eased = progress < 0.5 ? 2 * progress * progress : 1 - 2 * (1 - progress) * (1 - progress);
+			const { leadMs, tailMs, durationMs, fromX, toX, startedAt } = this.travel;
+			const progress = clamp((performance.now() - startedAt - leadMs) / Math.max(1, durationMs - leadMs - tailMs), 0, 1);
+			const eased = progress < 0.5 ? 2 * progress * progress : 1 - 2 * (1 - progress) ** 2;
 			this.x = fromX + (toX - fromX) * eased;
 			this.vx = 0;
-		} else {
-			this.x += this.vx * dt;
-		}
-
+		} else this.x += this.vx * dt;
 		this.vy += gravity * dt;
 		this.y += this.vy * dt;
-
-		const halfW = this.w / 2;
-		const halfH = this.h / 2;
-		const floor = this.stage.height - halfH;
-		const ceiling = halfH;
-		const left = halfW;
-		const right = this.stage.width - halfW;
-
-		if (this.y > floor) {
-			this.y = floor;
-			if (Math.abs(this.vy) > 90) this.vy = -this.vy * bounce;
-			else this.vy = 0;
+		const limits = this.limits();
+		if (this.y >= limits.bottom) {
+			this.y = limits.bottom;
+			this.vy = Math.abs(this.vy) > 90 ? -Math.abs(this.vy) * bounce : 0;
 			this.vx *= Math.pow(friction, dt * 60);
 			if (Math.abs(this.vx) < 4) this.vx = 0;
 		}
-		if (this.y < ceiling) {
-			this.y = ceiling;
-			this.vy = Math.abs(this.vy) * bounce;
+		if (this.y < limits.top) { this.y = limits.top; this.vy = Math.abs(this.vy) * bounce; }
+		if (this.x < limits.left) { this.x = limits.left; this.vx = Math.abs(this.vx) * bounce; }
+		if (this.x > limits.right) { this.x = limits.right; this.vx = -Math.abs(this.vx) * bounce; }
+		this.clampPosition();
+		if (this.airborne && Math.abs(this.vx) < 4 && Math.abs(this.vy) < 4) {
+			this.airborne = false;
+			if (this.mode === "idle") this.scheduleAmbient();
 		}
-		if (this.x < left) {
-			this.x = left;
-			this.vx = Math.abs(this.vx) * bounce;
-		}
-		if (this.x > right) {
-			this.x = right;
-			this.vx = -Math.abs(this.vx) * bounce;
-		}
-
-		this.applySquashSpring(dt);
 	}
 
 	applySquashSpring(dt) {
-		// A spring, not a lerp: a plain decay cannot overshoot, and the overshoot is
-		// what makes the squash read as jelly rather than as a slow resize.
-		const stiffness = 260;
-		const damping = 18;
-		this.squashVelocity += (-stiffness * this.squash - damping * this.squashVelocity) * dt;
+		this.squashVelocity += (-260 * this.squash - 18 * this.squashVelocity) * dt;
 		this.squash += this.squashVelocity * dt;
 	}
 
-	/** Clip timers: an animated WebP cannot tell us it finished. */
 	tickClipTimer(now) {
-		if (this.mode === "drag" || this.sleepPhase === "loop") return;
-		if (!this.clipEndsAt || now < this.clipEndsAt) return;
+		if (this.dragging || this.sleepPhase === "loop" || !this.clipEndsAt || now < this.clipEndsAt) return;
 		const action = this.pendingEndAction;
 		this.clipEndsAt = 0;
 		this.pendingEndAction = undefined;
-		if (action) action();
+		this.travel = undefined;
+		action?.();
 	}
 
 	render() {
-		const scaleY = 1 + this.squash;
-		const scaleX = 1 - this.squash * 0.5;
-		this.element.style.transform =
-			`translate3d(${(this.x - this.w / 2).toFixed(2)}px, ${(this.y - this.h / 2).toFixed(2)}px, 0) ` +
-			`scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
+		const { scaleX, scaleY } = this.scales();
+		this.element.style.transform = `translate3d(${this.x - this.w / 2}px, ${this.y - this.h / 2}px, 0) scale(${scaleX}, ${scaleY})`;
+		const hit = this.bounds();
+		this.hitElement.style.transform = `translate3d(${hit.left}px, ${hit.top}px, 0)`;
+		this.hitElement.style.width = `${hit.width}px`;
+		this.hitElement.style.height = `${hit.height}px`;
+		positionBubble(this);
 	}
 
 	dispose() {
-		clearTimeout(this.idleTimer);
+		this.disposed = true;
+		this.finishPointer();
+		this.clearBehavior();
+		this.player.dispose();
+		this.bubbleController?.destroy();
+		this.bubbleController = undefined;
+		this.bubble = undefined;
+		this.hitElement.remove();
 		this.element.remove();
 	}
 }
@@ -1023,6 +2204,11 @@ class Pet {
 const state = {
 	config: undefined,
 	balance: undefined,
+	ledger: undefined,
+	balanceApiStatus: "loading",
+	activeAccountIds: [],
+	localNotices: [],
+	stopped: false,
 	hud: undefined,
 	ready: false,
 	paused: false,
@@ -1030,27 +2216,21 @@ const state = {
 	frameCount: 0,
 	fps: 0,
 	balanceTier: undefined,
-	balanceBubbleAt: 0,
-	/**
-	 * `"overlay"` means the view was mounted in the host's full-viewport transparent
-	 * layer rather than inside a dock panel. The difference is not cosmetic: in
-	 * overlay mode the iframe is click-through, so DOM pointer events never arrive
-	 * and interaction has to come from the host's `overlay.pointer` relay instead.
-	 */
+	/** Surface and overlay pointer relay remain unrelated to balance acquisition. */
 	surface: "panel",
-	/** The host's `narrafork.overlay` API, when this host exposes it. */
 	overlayApi: undefined,
-	/** Which pet currently owns the relayed pointer gesture. */
 	overlayPet: undefined,
 };
 
 const stage = {
+	get config() { return state.config; },
+	refresh: () => fetchState(),
+	sound: clickSound,
 	root: undefined,
 	layers: {},
 	pets: [],
 	width: 0,
 	height: 0,
-	bubbleTimer: undefined,
 	menu: undefined,
 	rafId: 0,
 	emergencyStop: false,
@@ -1104,7 +2284,7 @@ function buildDom() {
 	// The stage must fill the iframe with or without `stage.css`. Without this floor,
 	// a stylesheet that 404s or arrives after the script leaves the stage at whatever
 	// height its emptied body has — which is zero, and zero is silent.
-	root.style.cssText = "position:relative;width:100%;height:100%;overflow:hidden";
+	root.style.cssText = "position:relative;width:100%;height:100%;overflow:hidden;pointer-events:none";
 
 	const background = document.createElement("div");
 	background.className = "pet-background";
@@ -1113,22 +2293,17 @@ function buildDom() {
 
 	const pets = document.createElement("div");
 	pets.className = "pet-layer";
-	pets.style.cssText = "position:absolute;inset:0";
-
-	const bubble = document.createElement("div");
-	bubble.className = "pet-bubble";
-	bubble.hidden = true;
-	bubble.style.position = "absolute";
+	pets.style.cssText = "position:absolute;inset:0;pointer-events:none";
 
 	const hud = document.createElement("div");
 	hud.className = "pet-hud";
 	hud.hidden = true;
 	hud.style.position = "absolute";
 
-	root.append(background, pets, bubble, hud);
+	root.append(background, pets, hud);
 	document.body.replaceChildren(root);
 	stage.root = root;
-	stage.layers = { background, pets, bubble, hud };
+	stage.layers = { background, pets, hud };
 	return root;
 }
 
@@ -1142,70 +2317,68 @@ function layout() {
 	const previousHeight = stage.height;
 	stage.width = Math.max(1, Math.floor(rect.width));
 	stage.height = Math.max(1, Math.floor(rect.height));
-
 	const config = state.config ?? {};
-	const target = Math.max(1, Math.min(6, config.count ?? 1));
+	const target = clamp(Math.floor(config.count ?? 1), 1, 6);
 	while (stage.pets.length < target) {
 		const pet = new Pet(stage, stage.pets.length);
 		stage.pets.push(pet);
 		bindPet(pet);
 	}
-	while (stage.pets.length > target) {
-		stage.pets.pop()?.dispose();
-	}
-
+	while (stage.pets.length > target) stage.pets.pop().dispose();
 	for (const [index, pet] of stage.pets.entries()) {
-		if (!pet.placed) {
-			// A pet created after the stage already had a size (i.e. the user raised the
-			// count) never saw the initial-placement branch, so it would otherwise sit at
-			// x = 0 — or, after the proportional reflow below, at the exact centre on top
-			// of pet 0. Placing by index is what makes "count: 2" mean two fish side by
-			// side rather than one fish drawn twice.
-			pet.x = (stage.width * (index + 1)) / (target + 1);
-			pet.y = stage.height - pet.h / 2;
-			pet.placed = true;
-		} else if (previousWidth !== stage.width || previousHeight !== stage.height) {
-			// Proportional reflow after a resize: keeping absolute pixels would push pets
-			// outside a shrunken panel, and a resize should not teleport them.
-			pet.x = (pet.x / previousWidth) * stage.width;
-			pet.y = (pet.y / previousHeight) * stage.height;
+		if (pet.placed && previousWidth > 0 && previousHeight > 0 &&
+			(previousWidth !== stage.width || previousHeight !== stage.height)) {
+			pet.x = pet.x / previousWidth * stage.width;
+			pet.y = pet.y / previousHeight * stage.height;
 		}
 		pet.resize(stage.width, stage.height, config.scale ?? 1);
+		if (!pet.placed) {
+			pet.x = stage.width * (index + 1) / (target + 1);
+			pet.y = pet.limits().bottom;
+			pet.placed = Boolean(state.config);
+			pet.clampPosition();
+		}
+		pet.initialize();
+		pet.render();
 	}
-
-	// Recorded here rather than once at boot: a panel that opens at 0×0 and grows a
-	// moment later is a normal Dockview start-up, and the self-check should show the
-	// size it settled on, not the size it briefly had.
-	record(
-		"size",
-		"舞台尺寸",
-		stage.width > 32 && stage.height > 32 ? "ok" : "warn",
-		`${stage.width}×${stage.height}（视口 ${window.innerWidth}×${window.innerHeight}）`,
-	);
-	// A resize or a pet-count change moves the union rectangle, and in overlay mode the
-	// host's hit region has to follow immediately or clicks land on the wrong place.
+	record("size", "舞台尺寸", stage.width > 32 && stage.height > 32 ? "ok" : "warn",
+		`${stage.width}×${stage.height}（视口 ${window.innerWidth}×${window.innerHeight}）`);
 	publishOverlayBounds(true);
 }
 
 function bindPet(pet) {
-	// In overlay mode the iframe is click-through by construction, so no DOM pointer
-	// event can ever reach these listeners; input arrives through `overlay.pointer`
-	// instead (see `installOverlayRelay`). Binding them anyway would be dead code
-	// that makes the next reader think dragging works natively here.
 	if (state.surface === "overlay") return;
-	pet.element.addEventListener("pointerdown", (event) => {
+	pet.hitElement.addEventListener("pointerdown", (event) => {
 		event.preventDefault();
 		pet.onPointerDown(event);
 	});
-	pet.element.addEventListener("pointermove", (event) => pet.onPointerMove(event));
-	pet.element.addEventListener("pointerup", (event) => pet.onPointerUp(event));
-	pet.element.addEventListener("pointercancel", (event) => pet.onPointerUp(event));
-	pet.element.addEventListener("contextmenu", (event) => {
+	pet.hitElement.addEventListener("lostpointercapture", (event) => pet.onPointerCancel(event));
+	pet.hitElement.addEventListener("contextmenu", (event) => {
 		event.preventDefault();
-		// Stop here: the stage-level handler below opens the same menu, and letting
-		// the event bubble would open it twice.
 		event.stopPropagation();
 		openMenu(event.clientX, event.clientY, pet);
+	});
+}
+
+function cancelPointers() {
+	clickSound.cancelPending();
+	for (const pet of stage.pets) pet.onPointerCancel();
+	state.overlayPet = undefined;
+}
+
+function installPointerEvents() {
+	if (state.surface !== "overlay") {
+		// Window listeners also cover browsers where pointer capture failed. Only
+		// the owner of this pointer id reacts, even when the pointer leaves its hit box.
+		window.addEventListener("pointermove", (event) => { for (const pet of stage.pets) pet.onPointerMove(event); });
+		window.addEventListener("pointerup", (event) => { for (const pet of stage.pets) pet.onPointerUp(event); });
+		window.addEventListener("pointercancel", (event) => { for (const pet of stage.pets) pet.onPointerCancel(event); });
+	}
+	window.addEventListener("blur", cancelPointers);
+	window.addEventListener("pagehide", () => {
+		stopLoop();
+		for (const pet of stage.pets) pet.dispose();
+		clickSound.dispose();
 	});
 }
 
@@ -1240,6 +2413,7 @@ function frame(now) {
 	}
 	resolveCollisions();
 	for (const pet of stage.pets) pet.render();
+	if (state.pendingBalance) maybePlayBalance();
 	// Keeps the host's hit rectangle following the pets. Self-throttling, so calling it
 	// every frame costs a few comparisons rather than a bridge round trip per frame.
 	publishOverlayBounds();
@@ -1262,14 +2436,6 @@ function frame(now) {
 	stage.rafId = requestAnimationFrame(frame);
 }
 
-/**
- * Push overlapping pets apart.
- *
- * Axis-aligned separation along the shallow axis, with half the correction each
- * and an elastic exchange on the separating axis. Not a physics engine: the pets
- * have no rotation and no stacking, and a real solver here would be visible only
- * as jitter when six of them pile into the same corner.
- */
 function resolveCollisions() {
 	if (!state.config?.collisions || stage.pets.length < 2) return;
 	for (let a = 0; a < stage.pets.length; a += 1) {
@@ -1277,25 +2443,33 @@ function resolveCollisions() {
 			const first = stage.pets[a];
 			const second = stage.pets[b];
 			if (first.dragging || second.dragging) continue;
-			const dx = second.x - first.x;
-			const dy = second.y - first.y;
-			const overlapX = (first.w + second.w) / 2 - Math.abs(dx);
-			const overlapY = (first.h + second.h) / 2 - Math.abs(dy);
+			const one = first.bounds("body");
+			const two = second.bounds("body");
+			const overlapX = Math.min(one.right, two.right) - Math.max(one.left, two.left);
+			const overlapY = Math.min(one.bottom, two.bottom) - Math.max(one.top, two.top);
 			if (overlapX <= 0 || overlapY <= 0) continue;
-			if (overlapX < overlapY) {
-				const push = (overlapX / 2) * (dx < 0 ? -1 : 1);
-				first.x -= push;
-				second.x += push;
-				const average = (first.vx + second.vx) / 2;
-				first.vx = average - Math.abs(first.vx - average) * 0.4;
-				second.vx = average + Math.abs(second.vx - average) * 0.4;
-			} else {
-				const push = (overlapY / 2) * (dy < 0 ? -1 : 1);
-				first.y -= push;
-				second.y += push;
-				const average = (first.vy + second.vy) / 2;
-				first.vy = average - Math.abs(first.vy - average) * 0.35;
-				second.vy = average + Math.abs(second.vy - average) * 0.35;
+			const horizontal = overlapX < overlapY;
+			const axis = horizontal ? "x" : "y";
+			const velocity = horizontal ? "vx" : "vy";
+			const diff = horizontal ? (two.left + two.right - one.left - one.right) : (two.top + two.bottom - one.top - one.bottom);
+			const sign = diff < 0 ? -1 : 1;
+			const push = (horizontal ? overlapX : overlapY) / 2 * sign;
+			const firstX = first.x;
+			const secondX = second.x;
+			first[axis] -= push;
+			second[axis] += push;
+			const average = (first[velocity] + second[velocity]) / 2;
+			const impulse = Math.abs(first[velocity] - second[velocity]) * 0.2;
+			first[velocity] = average - impulse * sign;
+			second[velocity] = average + impulse * sign;
+			first.clampPosition();
+			second.clampPosition();
+			// A collision must not be undone by next frame's absolute travel curve.
+			for (const [pet, oldX] of [[first, firstX], [second, secondX]]) {
+				if (!pet.travel) continue;
+				const limits = pet.limits();
+				pet.travel.fromX = clamp(pet.travel.fromX + pet.x - oldX, limits.left, limits.right);
+				pet.travel.toX = clamp(pet.travel.toX + pet.x - oldX, limits.left, limits.right);
 			}
 		}
 	}
@@ -1305,28 +2479,209 @@ function resolveCollisions() {
 /* Bubble                                                                    */
 /* -------------------------------------------------------------------------- */
 
-function showBubble(text, options = {}) {
-	const bubble = stage.layers.bubble;
-	if (!text) {
-		bubble.hidden = true;
+function currentBalanceView() {
+	const snapshot = state.balance;
+	const custom = state.config?.balance?.custom ?? {};
+	if (!snapshot) {
+		const configured = typeof custom.url === "string" && custom.url.length > 0;
+		return { snapshot: { status: configured ? "loading" : "unconfigured", loading: configured,
+			message: configured ? "正在查询第三方余额 API…" : "请先填写第三方余额 API 地址与 API Key。",
+			ok: false, stale: false, accounts: [], balances: [] }, ledger: { accounts: [] } };
+	}
+	const currency = typeof custom.currency === "string" ? custom.currency : "POINTS";
+	const sourceAccounts = Array.isArray(snapshot.accounts) ? snapshot.accounts : [];
+	const account = sourceAccounts[0];
+	if (!account) {
+		return { snapshot: { ...snapshot, label: undefined, providerId: undefined,
+			shape: currency === "POINTS" ? "points" : "money", accounts: [], balances: [] }, ledger: { accounts: [] } };
+	}
+	const selected = {
+		accountId: account.accountId,
+		currency,
+		shape: currency === "POINTS" ? "points" : "money",
+		remaining: account.remaining ?? account.totalBalance,
+		used: account.used ?? null,
+	};
+	return {
+		snapshot: {
+			ok: snapshot.ok,
+			stale: snapshot.stale === true,
+			error: snapshot.error,
+			fetchedAt: snapshot.fetchedAt,
+			shape: selected.shape,
+			accounts: [selected],
+			balances: [selected],
+		},
+		ledger: currency === "POINTS" ? { accounts: [] } : ledgerForAccounts([selected]),
+	};
+}
+
+function ledgerForAccounts(accounts) {
+	const ids = new Set(state.activeAccountIds);
+	return { ...(state.ledger ?? {}), accounts: (state.ledger?.accounts ?? []).filter((entry) => ids.has(entry.accountId)) };
+}
+
+function updateBubbleBalanceViews() {
+	const view = currentBalanceView();
+	for (const pet of stage.pets) pet.bubbleController?.updateData(view.snapshot, view.ledger);
+}
+
+function ensureBubble(pet) {
+	if (!pet || pet.disposed || typeof PetBubble === "undefined") return undefined;
+	if (!pet.bubbleController) {
+		const view = currentBalanceView();
+		pet.bubbleController = new PetBubble({ container: stage.root,
+			body: () => pet.bounds("body"), viewport: () => ({ width: stage.width, height: stage.height }),
+			config: state.config?.bubbles ?? {}, snapshot: view.snapshot, ledger: view.ledger, surface: state.surface,
+			onChange: (bubble, reason) => {
+				if (pet.activeNotice && (reason === "close" || bubble.contentId !== pet.activeNotice)) {
+					const id = pet.activeNotice; pet.activeNotice = undefined;
+					state.taskEvents?.dismiss(id);
+				}
+			},
+		});
+		pet.bubble = pet.bubbleController.element;
+		pet.bubbleController.setVisible(!state.paused);
+	}
+	return pet.bubbleController;
+}
+
+/** One finite, newest-per-id UI queue; it never changes a pet's physics. */
+function queueNotice(notice) {
+	if (!notice?.id || state.config?.bubbles?.enabled === false) return;
+	state.localNotices = state.localNotices.filter((item) => item.id !== notice.id && item.expiresAt > Date.now());
+	state.localNotices.push({ ...notice, expiresAt: notice.expiresAt ?? Date.now() + 60_000 });
+	state.localNotices.sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+	state.localNotices = state.localNotices.slice(0, 12);
+}
+
+async function startTaskEvents() {
+	if (typeof TaskEvents === "undefined" || state.stopped) return;
+	state.taskEvents = new TaskEvents({ config: state.config?.tasks ?? { enabled: true },
+		onNotice: (notice) => queueNotice({ ...notice, priority: notice.kind === "permission" ? 90 : 40,
+			durationMs: state.config?.bubbles?.noticeDurationMs ?? 8000,
+			expiresAt: Date.now() + (notice.kind === "permission" ? 120_000 : 30_000) }),
+		onClear: clearNotice,
+		onState: (status) => { state.taskState = status; renderTaskBindings(); },
+	});
+	await state.taskEvents.start();
+	state.taskEvents.setVisible(!state.paused);
+}
+
+function renderTaskBindings() {
+	const node = stage.taskStatus;
+	if (!node) return;
+	const status = state.taskEvents?.getState() ?? state.taskState;
+	node.textContent = `能力：${status?.capability ?? "检查中"}。${status?.error?.message ?? ""}\n` +
+		`当前范围：${status?.scope?.map((item) => `${item.alias || "当前对话"} (${item.narratorId})`).join("、") || "未关联，不订阅任何任务"}\n` +
+		"宿主未提供逐轮费用；当前接口不能可靠确认等待回答。关联只对本视图生效，不读取对话正文。";
+}
+
+function openTaskBindings() {
+	if (state.surface === "overlay") {
+		showBubble("浮层仅跟随宿主明确提供的当前对话；请在面板视图中设置该面板自己的任务关联。", { durationMs: 8000 });
 		return;
 	}
-	bubble.textContent = text;
-	bubble.dataset.tone = options.tone ?? "info";
-	bubble.hidden = false;
-	// Anchor above the first pet, clamped into the stage.
-	const pet = stage.pets[0];
-	if (pet) {
-		const left = Math.min(Math.max(pet.x, 90), Math.max(90, stage.width - 90));
-		bubble.style.left = `${left}px`;
-		bubble.style.top = `${Math.max(8, pet.y - pet.h / 2 - 14)}px`;
+	stage.taskPanel?.remove();
+	const panel = SDK.el("section", { class: "pet-task-bindings", role: "dialog", "aria-label": "本视图任务关联" });
+	const status = SDK.el("p", { class: "pet-task-status" });
+	stage.taskStatus = status;
+	const fields = [];
+	const scopes = state.taskEvents?.getState()?.scope ?? [];
+	for (let index = 0; index < 3; index++) {
+		const id = SDK.el("input", { placeholder: "已知 narratorId（不扫描列表）", maxlength: 160, "aria-label": `对话 ID ${index + 1}` });
+		const alias = SDK.el("input", { placeholder: "显示别名（可选）", maxlength: 60, "aria-label": `别名 ${index + 1}` });
+		id.value = scopes[index]?.narratorId ?? ""; alias.value = scopes[index]?.alias ?? "";
+		fields.push({ id, alias });
+		panel.append(SDK.el("div", { class: "pet-task-binding-row" }, [id, alias]));
 	}
-	clearTimeout(stage.bubbleTimer);
-	if (options.sticky !== true) {
-		stage.bubbleTimer = setTimeout(() => {
-			bubble.hidden = true;
-		}, options.durationMs ?? 6000);
+	const result = SDK.el("p", { role: "status" });
+	const apply = SDK.el("button", { type: "button", text: "应用本视图关联", onclick: () => {
+		const reply = state.taskEvents?.setAssociations(fields.filter((field) => field.id.value.trim()).map((field) => ({ narratorId: field.id.value.trim(), alias: field.alias.value.trim() })));
+		result.textContent = reply?.ok ? "已更新；清空三行并应用可全部取消关联。" : String(reply?.error?.message ?? reply?.error ?? "事件模块不可用");
+		renderTaskBindings();
+	} });
+	const retry = SDK.el("button", { type: "button", text: "重新检测授权", onclick: () => void state.taskEvents?.retry() });
+	const close = SDK.el("button", { type: "button", text: "关闭", onclick: () => { panel.remove(); stage.taskPanel = undefined; stage.taskStatus = undefined; } });
+	panel.prepend(SDK.el("h3", { text: "本视图任务关联" }), status);
+	panel.append(result, apply, retry, close);
+	panel.addEventListener("pointerdown", (event) => event.stopPropagation());
+	stage.root.append(panel); stage.taskPanel = panel; renderTaskBindings();
+}
+function clearNotice(id) {
+	state.localNotices = state.localNotices.filter((item) => item.id !== id);
+	for (const pet of stage.pets) {
+		if (pet.activeNotice === id) { pet.bubbleController?.close(); pet.activeNotice = undefined; }
 	}
+}
+
+function noticePet(priority = 30) {
+	return stage.pets.find((pet) => !pet.disposed && !pet.isUserBusy && !pet.isAsleep &&
+		(!pet.bubbleController || pet.bubble?.hidden || (!pet.bubbleController.scene?.startsWith?.("manual") &&
+		 !["balance", "random"].includes(pet.bubbleController.scene) && (pet.bubbleController.priority ?? 0) < priority)));
+}
+
+function deliverLocalNotices() {
+	if (state.paused || state.stopped || state.config?.bubbles?.enabled === false) return;
+	state.localNotices = state.localNotices.filter((item) => item.expiresAt > Date.now());
+	const notice = state.localNotices[0];
+	if (!notice) return;
+	const pet = noticePet(notice.priority);
+	if (!pet) return;
+	state.localNotices.shift();
+	const controller = ensureBubble(pet);
+	if (!controller) return;
+	const displayed = controller.show(notice.content ?? notice.text, { id: notice.id, priority: notice.priority ?? 30,
+		durationMs: notice.durationMs ?? state.config?.bubbles?.noticeDurationMs ?? 8000,
+		expiresAt: notice.expiresAt, automatic: true });
+	if (displayed !== false) pet.activeNotice = notice.id;
+}
+
+async function pollPersistedNotice() {
+	if (state.noticePolling || state.paused || state.stopped || state.config?.bubbles?.enabled === false || state.config?.alerts?.enabled !== true) return;
+	const accountIds = Array.isArray(state.activeAccountIds) ? state.activeAccountIds.filter((id) => typeof id === "string") : [];
+	if (!accountIds.length || !noticePet(80)) return;
+	state.noticePolling = true;
+	try {
+		const reply = await SDK.callSafe("pet-notices", { action: "claim", consumerId: state.noticeOwner, limit: 5, accountIds: accountIds.slice(0, 32) });
+		if (!reply.ok || state.paused || state.stopped || state.config?.bubbles?.enabled === false) return;
+		const notice = (reply.value?.notices ?? []).find((entry) => Date.parse(entry.expiresAt) > Date.now() && Date.parse(entry.leaseUntil) > Date.now());
+		if (!notice) return;
+		const priority = notice.kind === "budget" ? 80 : 70;
+		const target = noticePet(priority);
+		if (!target) return;
+		const controller = ensureBubble(target);
+		if (!controller) return;
+		const text = notice.kind === "budget" ? `今日已观测消费达到预算提醒阈值（${notice.currency}）` : `余额达到提醒条件（${notice.currency}）`;
+		const shown = controller.show(text, { id: notice.id, priority, automatic: true,
+			durationMs: state.config?.bubbles?.noticeDurationMs ?? 8000, expiresAt: Date.parse(notice.expiresAt) });
+		if (shown === false) { controller.queue = controller.queue.filter((entry) => entry.id !== notice.id); return; }
+		target.activeNotice = notice.id;
+		await new Promise((resolve) => setTimeout(resolve, 450));
+		if (state.paused || state.stopped || controller.element?.hidden || controller.deferred || controller.contentId !== notice.id || target.activeNotice !== notice.id) {
+			if (target.activeNotice === notice.id) controller.close();
+			return;
+		}
+		const ack = await SDK.callSafe("pet-notices", { action: "ack", consumerId: state.noticeOwner, id: notice.id, leaseToken: notice.leaseToken });
+		if ((!ack.ok || !ack.value?.acked) && target.activeNotice === notice.id) controller.close();
+	} finally { state.noticePolling = false; }
+}
+function showBubble(text, options = {}) {
+	const pet = options.pet ?? stage.pets.find((item) => !item.isUserBusy) ?? stage.pets[0];
+	if (!pet || pet.disposed) return false;
+	const controller = ensureBubble(pet);
+	if (!controller) return false;
+	if (!text) { controller.close(); return false; }
+	return controller.show(text, { id: options.id, priority: options.priority ?? 30,
+		durationMs: options.sticky ? 0 : options.durationMs,
+		automatic: options.automatic ?? false, expiresAt: options.expiresAt });
+}
+
+function positionBubble(pet) {
+	if (!pet.bubbleController) return;
+	const others = stage.pets.filter((other) => other !== pet && other.bubbleController?.rect && !other.bubble?.hidden)
+		.map((other) => other.bubbleController.rect);
+	pet.bubbleController.position(pet.bounds("body"), { width: stage.width, height: stage.height }, others);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1334,6 +2689,8 @@ function showBubble(text, options = {}) {
 /* -------------------------------------------------------------------------- */
 
 function closeMenu() {
+	stage.menuDismiss?.();
+	stage.menuDismiss = undefined;
 	stage.menu?.remove();
 	stage.menu = undefined;
 }
@@ -1350,7 +2707,12 @@ function openMenu(clientX, clientY, pet) {
 	const asleep = Boolean(pet?.isAsleep);
 	const items = [
 		{ label: "换个动作", run: () => randomAction(pet) },
-		{ label: "刷新余额", run: () => void refreshBalance(true) },
+		{ label: "刷新余额", run: () => void refreshBalance(true, { feedback: true, pet }) },
+		{ label: "关闭气泡", run: () => {
+			if (pet?.activeNotice) state.taskEvents?.dismiss(pet.activeNotice);
+			pet?.bubbleController?.close();
+		} },
+		{ label: "本视图任务关联", run: () => openTaskBindings() },
 		{
 			label: asleep ? "叫醒它" : "让它睡觉",
 			run: () => pet?.setSleeping(!asleep),
@@ -1378,39 +2740,46 @@ function openMenu(clientX, clientY, pet) {
 		menu.append(button);
 	}
 
+	stage.menu = menu;
 	stage.root.append(menu);
 	const bounds = menu.getBoundingClientRect();
 	menu.style.left = `${Math.min(clientX - rect.left, Math.max(0, stage.width - bounds.width - 4))}px`;
 	menu.style.top = `${Math.min(clientY - rect.top, Math.max(0, stage.height - bounds.height - 4))}px`;
 
 	const dismiss = (event) => {
-		if (menu.contains(event.target)) return;
-		closeMenu();
+		if (!menu.contains(event.target)) closeMenu();
+	};
+	// Register after the opening gesture; closing/replacing the menu also cancels
+	// this deferred registration and its listener instead of leaking old menus.
+	const timer = setTimeout(() => document.addEventListener("pointerdown", dismiss, true), 0);
+	stage.menuDismiss = () => {
+		clearTimeout(timer);
 		document.removeEventListener("pointerdown", dismiss, true);
 	};
-	// Deferred: the pointerup that opened the menu would otherwise immediately close it.
-	setTimeout(() => document.addEventListener("pointerdown", dismiss, true), 0);
 }
 
 function randomAction(pet) {
-	if (!pet) return;
+	if (!pet || pet.isUserBusy) return;
+	pet.clearBehavior();
 	const categories = INDEX.pools.categories.filter((category) => pet.groupAllowed(category.group));
 	const pool = categories.flatMap((category) => category.clipIds);
-	if (pool.length === 0) return;
+	if (pool.length === 0) { pet.enterIdle(); return; }
 	pet.playOnce(pet.pick(pool), () => pet.enterIdle());
 }
 
 function resetPets() {
+	cancelPointers();
 	for (const [index, pet] of stage.pets.entries()) {
-		pet.travel = undefined;
+		pet.clearBehavior();
 		pet.vx = 0;
 		pet.vy = 0;
-		pet.x = (stage.width * (index + 1)) / (stage.pets.length + 1);
-		pet.y = stage.height - pet.h / 2;
+		pet.airborne = false;
+		pet.x = stage.width * (index + 1) / (stage.pets.length + 1);
+		pet.y = pet.limits().bottom;
 		pet.setFacing(1);
-		pet.sleepPhase = undefined;
-		pet.sleepSuite = undefined;
+		pet.clampPosition();
 		pet.enterIdle();
+		pet.render();
 	}
 	showBubble("都回到原位啦", { durationMs: 2000 });
 }
@@ -1612,11 +2981,14 @@ async function detectSurface() {
 	return kind;
 }
 
-/** The pet whose sprite box contains a viewport point, topmost last. */
 function petAtPoint(x, y) {
+	const rect = stage.root.getBoundingClientRect();
+	x -= rect.left;
+	y -= rect.top;
 	for (let index = stage.pets.length - 1; index >= 0; index -= 1) {
 		const pet = stage.pets[index];
-		if (Math.abs(x - pet.x) <= pet.w / 2 && Math.abs(y - pet.y) <= pet.h / 2) return pet;
+		const hit = pet.bounds();
+		if (x >= hit.left && x <= hit.right && y >= hit.top && y <= hit.bottom) return pet;
 	}
 	return undefined;
 }
@@ -1639,7 +3011,7 @@ function installOverlayRelay() {
 		const event = {
 			clientX: x,
 			clientY: y,
-			pointerId: Number.isFinite(params.pointerId) ? params.pointerId : 1,
+			pointerId: Number.isFinite(params.pointerId) ? params.pointerId : (state.overlayPet?.dragPointerId ?? 1),
 			button: 0,
 			buttons: Number.isFinite(params.buttons) ? params.buttons : 0,
 			preventDefault() {},
@@ -1647,6 +3019,11 @@ function installOverlayRelay() {
 		};
 
 		if (params.type === "down") {
+			if (state.overlayPet?.dragging) {
+				if (event.pointerId !== state.overlayPet.dragPointerId) return;
+				// A fresh down for this same pointer proves the old up was lost.
+				state.overlayPet.onPointerCancel(event);
+			}
 			const pet = petAtPoint(x, y);
 			if (!pet) return;
 			state.overlayPet = pet;
@@ -1656,12 +3033,14 @@ function installOverlayRelay() {
 		const pet = state.overlayPet;
 		if (!pet) return;
 		if (params.type === "move") {
-			pet.onPointerMove(event);
+			if (params.buttons === 0) pet.onPointerCancel(event);
+			else pet.onPointerMove(event);
 			return;
 		}
 		if (params.type === "up" || params.type === "cancel") {
-			state.overlayPet = undefined;
-			pet.onPointerUp(event);
+			if (event.pointerId !== pet.dragPointerId) return;
+			if (params.type === "cancel") pet.onPointerCancel(event);
+			else pet.onPointerUp(event);
 			// The pet has stopped moving, so the host's hit rectangle can tighten right
 			// away instead of waiting for the next throttled publish.
 			publishOverlayBounds(true);
@@ -1672,60 +3051,32 @@ function installOverlayRelay() {
 let lastPublishedBounds;
 let lastPublishAt = 0;
 
-/**
- * Publish the rectangle the host should make clickable.
- *
- * Bounds are the union of every pet's sprite box plus a margin. The margin exists
- * for a specific reason: while a gesture is in flight the rectangle can only lag
- * behind the pet (it is published at most ~10 times a second), and anything drawn
- * outside the published rectangle would be invisible — the host clips nothing, but
- * the *hit region* is what receives the pointer, so a lagging rectangle means
- * missed clicks rather than missing pixels. A generous margin removes that.
- */
 function publishOverlayBounds(force = false) {
-	if (state.surface !== "overlay" || !state.overlayApi) return;
-	if (stage.pets.length === 0) return;
+	if (state.surface !== "overlay" || !state.overlayApi || !stage.pets.length) return;
 	const now = performance.now();
-	if (!force && now - lastPublishAt < 100) return;
-
-	let minX = Number.POSITIVE_INFINITY;
-	let minY = Number.POSITIVE_INFINITY;
-	let maxX = Number.NEGATIVE_INFINITY;
-	let maxY = Number.NEGATIVE_INFINITY;
+	// The host captures an active pointer. No large safety blanket is necessary.
+	if (!force && now - lastPublishAt < 32) return;
+	let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 	for (const pet of stage.pets) {
-		minX = Math.min(minX, pet.x - pet.w / 2);
-		minY = Math.min(minY, pet.y - pet.h / 2);
-		maxX = Math.max(maxX, pet.x + pet.w / 2);
-		maxY = Math.max(maxY, pet.y + pet.h / 2);
+		const hit = pet.bounds();
+		minX = Math.min(minX, hit.left); minY = Math.min(minY, hit.top);
+		maxX = Math.max(maxX, hit.right); maxY = Math.max(maxY, hit.bottom);
 	}
 	if (!Number.isFinite(minX)) return;
-
-	const margin = 60;
-	const rect = {
-		x: Math.floor(minX - margin),
-		y: Math.floor(minY - margin),
-		width: Math.ceil(maxX - minX + margin * 2),
-		height: Math.ceil(maxY - minY + margin * 2),
-	};
-	if (
-		!force &&
-		lastPublishedBounds &&
-		Math.abs(rect.x - lastPublishedBounds.x) < 8 &&
-		Math.abs(rect.y - lastPublishedBounds.y) < 8 &&
-		Math.abs(rect.width - lastPublishedBounds.width) < 8 &&
-		Math.abs(rect.height - lastPublishedBounds.height) < 8
-	) {
-		return;
-	}
+	const origin = stage.root.getBoundingClientRect();
+	const margin = 6;
+	const left = Math.max(0, Math.floor(minX + origin.left - margin));
+	const top = Math.max(0, Math.floor(minY + origin.top - margin));
+	const right = Math.min(window.innerWidth, Math.ceil(maxX + origin.left + margin));
+	const bottom = Math.min(window.innerHeight, Math.ceil(maxY + origin.top + margin));
+	const rect = { x: left, y: top, width: Math.max(1, right - left), height: Math.max(1, bottom - top) };
+	if (!force && lastPublishedBounds && ["x", "y", "width", "height"].every((key) => Math.abs(rect[key] - lastPublishedBounds[key]) < 2)) return;
 	lastPublishedBounds = rect;
 	lastPublishAt = now;
-	try {
-		// The answer carries the applied (clamped) rectangle and the viewport size; the
-		// stage does not need either today, but ignoring it keeps the call fire-and-forget.
-		void state.overlayApi.setBounds(rect)?.catch?.(() => {});
-	} catch {
-		// A host that stops answering must not break the render loop.
-	}
+	// Existing API accepts one rectangle only: disjoint pets' internal gap remains
+	// a host limitation. Do not pretend a rejected hit can be forwarded underneath.
+	try { void state.overlayApi.setBounds(rect)?.catch?.(() => {}); }
+	catch { /* a disconnected bridge must not break physics */ }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1733,71 +3084,110 @@ function publishOverlayBounds(force = false) {
 /* -------------------------------------------------------------------------- */
 
 async function fetchState() {
-	const result = await SDK.callSafe("pet-state");
-	if (!result.ok) {
-		record("backend", "后端命令", "fail", result.error.message);
-		return undefined;
-	}
-	record("backend", "后端命令", "ok", `pet-state 往返成功`);
-	const value = result.value ?? {};
-	if (value.config) applyConfig(value.config);
-	state.balance = value.balance ?? null;
-	maybePlayBalance();
-	return value;
+	if (state.fetchPending) return state.fetchPending;
+	state.fetchPending = (async () => {
+		const result = await SDK.callSafe("pet-state");
+		if (state.stopped) return undefined;
+		if (!result.ok) {
+			record("backend", "后端命令", "fail", result.error.message);
+			state.balanceApiStatus = "unavailable";
+			if (!state.config) updateBubbleBalanceViews();
+			return undefined;
+		}
+		record("backend", "后端命令", "ok", "pet-state 往返成功");
+		const value = result.value ?? {};
+		if (value.config) applyConfig(value.config);
+		state.balance = value.balance ?? null;
+		state.ledger = value.ledger ?? state.ledger;
+		state.activeAccountIds = Array.isArray(value.activeAccountIds) ? value.activeAccountIds.filter((id) => typeof id === "string") : [];
+		state.balanceApiStatus = state.balance ? state.balance.ok ? "ready" : state.balance.stale ? "stale" : "unavailable"
+			: value.config?.balance?.custom?.url ? "loading" : "not-configured";
+		updateBubbleBalanceViews();
+		maybePlayBalance();
+		return value;
+	})().finally(() => { state.fetchPending = undefined; });
+	return state.fetchPending;
 }
 
 function applyConfig(config) {
 	const previous = state.config;
 	state.config = config;
-	if (!previous || previous.count !== config.count || previous.scale !== config.scale) {
-		layout();
+	if (!previous || previous.count !== config.count || previous.scale !== config.scale) layout();
+	for (const pet of stage.pets) {
+		pet.initialize();
+		if (JSON.stringify(previous?.bubbles) !== JSON.stringify(config.bubbles)) pet.bubbleController?.setConfig(config.bubbles ?? {});
 	}
-	if (!previous) {
-		for (const pet of stage.pets) pet.enterIdle();
+	if (config.bubbles?.enabled === false) state.localNotices = [];
+	if (JSON.stringify(previous?.tasks) !== JSON.stringify(config.tasks)) state.taskEvents?.configure(config.tasks ?? { enabled: true });
+	const balanceConfigChanged = previous && JSON.stringify(previous.balance?.custom) !== JSON.stringify(config.balance?.custom);
+	if (balanceConfigChanged) {
+		state.balance = null;
+		state.ledger = { ...(state.ledger ?? {}), accounts: [] };
+		state.activeAccountIds = [];
+		state.balanceTier = undefined;
+		state.balanceApiStatus = config.balance?.custom?.url ? "loading" : "not-configured";
 	}
+	const waitingChanged = previous && (previous.idleMinMs !== config.idleMinMs || previous.idleMaxMs !== config.idleMaxMs ||
+		previous.roam !== config.roam || JSON.stringify(previous.animationGroups) !== JSON.stringify(config.animationGroups));
+	if (waitingChanged) {
+		for (const pet of stage.pets) {
+			if (pet.mode === "idle" && !pet.loading && !pet.clipEndsAt && !pet.isUserBusy) pet.scheduleAmbient();
+		}
+	}
+	clickSound.applyVolume();
+	clickSound.prepare();
 	applyBackground();
+	if (balanceConfigChanged) updateBubbleBalanceViews();
 }
 
-/**
- * Balance → animation + bubble.
- *
- * Only fires on a *tier change*: the numeric balance is polled repeatedly and an
- * animation on every poll would be a twitch every few seconds.
- */
+/** Keep animation tiers global, but never enqueue the host's full provider list as a bubble. */
 function maybePlayBalance() {
 	const snapshot = state.balance;
+	updateBubbleBalanceViews();
 	if (!snapshot) return;
-	if (!snapshot.ok) {
-		if (state.balanceTier !== "error") {
-			state.balanceTier = "error";
-			const text =
-				snapshot.error?.kind === "missing_secret"
-					? "还没填余额 API Key"
-					: `余额查询失败：${snapshot.error?.message ?? "未知原因"}`;
-			showBubble(text, { tone: "warn", durationMs: 8000 });
-			SDK.bridge().notifications?.show?.({ message: text, title: "桌宠" })?.catch?.(() => {});
-		}
-		return;
-	}
-	const tier = typeof snapshot.tier === "number" ? snapshot.tier : undefined;
-	if (tier === undefined) return;
-	if (state.balanceTier === tier) return;
+	if (!snapshot.ok) { state.balanceTier = "error"; state.pendingBalance = false; return; }
+	const tier = Number.isInteger(snapshot.tier) ? snapshot.tier : undefined;
+	if (tier === undefined || state.balanceTier === tier) { state.pendingBalance = false; return; }
+	const pet = stage.pets.find((item) => !item.disposed && !item.isUserBusy && !item.isAsleep && !item.loading && item.mode !== "action");
+	if (!pet) { state.pendingBalance = true; return; }
+	state.pendingBalance = false;
 	state.balanceTier = tier;
-	const pool = INDEX.pools.balance;
-	const clipId = pool[tier];
-	const pet = stage.pets[0];
-	if (pet && clipId) pet.playOnce(clipId, () => pet.enterIdle());
-	showBubble(snapshot.summary ?? "", { tone: tier >= 4 ? "warn" : "info", durationMs: 7000 });
+	const clipId = INDEX.pools.balance[tier];
+	if (clipId) pet.playOnce(clipId, () => pet.enterIdle());
 }
 
-async function refreshBalance(force) {
-	const result = await SDK.callSafe("pet-balance-refresh", { force });
-	if (!result.ok) {
-		record("balance", "余额查询", "fail", result.error.message);
-		return;
+async function refreshBalance(force = false, { feedback = false, pet } = {}) {
+	if (state.stopped) return;
+	const fingerprint = JSON.stringify(state.config?.balance?.custom ?? {});
+	if (!state.refreshPending && (force || Date.now() - state.lastRefreshAt >= 15_000)) {
+		state.lastRefreshAt = Date.now();
+		state.refreshPending = SDK.callSafe("pet-balance-refresh", { force: force === true }).then((result) => {
+			if (state.stopped) return result;
+			if (fingerprint !== JSON.stringify(state.config?.balance?.custom ?? {})) return result;
+			if (!result.ok) {
+				record("balance", "余额查询", "fail", result.error.message);
+				state.balance = { ...(state.balance ?? {}), ok: false, stale: Boolean(state.balance?.ok || state.balance?.stale), error: { message: result.error.message } };
+				state.balanceApiStatus = state.balance.stale ? "stale" : "unavailable";
+			} else {
+				state.balance = result.value?.snapshot ?? (result.value?.skipped === "not_configured" ? null : state.balance);
+				state.ledger = result.value?.ledger ?? state.ledger;
+				state.activeAccountIds = Array.isArray(result.value?.activeAccountIds) ? result.value.activeAccountIds.filter((id) => typeof id === "string") : [];
+				state.balanceApiStatus = result.value?.skipped === "not_configured" ? "not-configured"
+					: state.balance?.ok ? "ready" : state.balance?.stale ? "stale" : "unavailable";
+				record("balance", "余额查询", state.balance?.ok ? "ok" : "warn", "第三方余额 API 查询完成");
+			}
+			maybePlayBalance();
+			return result;
+		}).finally(() => { state.refreshPending = undefined; });
 	}
-	state.balance = result.value?.snapshot ?? state.balance;
-	maybePlayBalance();
+	const result = await state.refreshPending;
+	if (feedback && !state.stopped) {
+		const target = pet ?? stage.pets.find((item) => !item.isUserBusy) ?? stage.pets[0];
+		const controller = ensureBubble(target);
+		if (controller?.scene !== "random") controller?.home();
+		else queueNotice({ id: "balance-refresh-result", text: state.balance?.ok ? "余额已刷新。" : `余额刷新失败：${state.balance?.error?.message ?? "未知错误"}`, priority: 30, expiresAt: Date.now() + 30_000 });
+	}
+	return result;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1839,8 +3229,12 @@ function startVisibilityGating() {
 	const sync = () => {
 		const hidden = document.hidden;
 		state.paused = hidden || !state.intersecting;
-		if (state.paused) stopLoop();
-		else startLoop();
+		for (const pet of stage.pets) pet.bubbleController?.setVisible(!state.paused);
+		state.taskEvents?.setVisible(!state.paused);
+		if (state.paused) {
+			state.localNotices = state.localNotices.filter((notice) => notice.priority >= 70 && notice.expiresAt > Date.now());
+			cancelPointers(); stopLoop();
+		} else { startLoop(); deliverLocalNotices(); }
 	};
 	state.intersecting = true;
 	document.addEventListener("visibilitychange", sync);
@@ -1857,37 +3251,22 @@ function startVisibilityGating() {
 	}
 }
 
-/**
- * Prove the animation channel works before anything else relies on it.
- *
- * One clip, end to end: command → base64 → Blob → `decode()`. The GIF/PNG probes
- * that used to be here are gone with the asset-route assumption they were testing —
- * the host never served them either.
- */
 async function probeAssets() {
-	const first = INDEX.clips[0];
-	if (!first) {
-		record("clip-bytes", "动画数据通道", "fail", "索引为空");
-		return;
-	}
+	const first = CLIP_BY_ID.get(IDLE_CLIP) ?? INDEX.clips[0];
+	if (!first) { record("clip-bytes", "动画数据通道", "fail", "索引为空"); return; }
 	const started = performance.now();
+	let url, timeout;
+	const image = new Image();
 	try {
-		const url = await clipUrl(first.index);
-		const image = new Image();
+		url = await clipUrl(first.index);
 		image.src = url;
-		await Promise.race([
-			image.decode(),
-			new Promise((_, reject) => setTimeout(() => reject(new Error("decode timeout")), 8000)),
-		]);
-		record(
-			"clip-bytes",
-			"动画数据通道",
-			image.naturalWidth > 0 ? "ok" : "fail",
-			`${first.id} ${image.naturalWidth}×${image.naturalHeight} ${Math.round(performance.now() - started)}ms`,
-		);
-	} catch (error) {
-		record("clip-bytes", "动画数据通道", "fail", String(error?.message ?? error));
-	}
+		await Promise.race([image.decode(), new Promise((_, reject) => {
+			timeout = setTimeout(() => reject(new Error("decode timeout")), 8000);
+		})]);
+		record("clip-bytes", "动画数据通道", image.naturalWidth > 0 ? "ok" : "fail",
+			`${first.id} ${image.naturalWidth}×${image.naturalHeight} ${Math.round(performance.now() - started)}ms`);
+	} catch (error) { record("clip-bytes", "动画数据通道", "fail", String(error?.message ?? error)); }
+	finally { clearTimeout(timeout); image.removeAttribute("src"); if (url) URL.revokeObjectURL(url); }
 }
 
 async function boot() {
@@ -1899,7 +3278,7 @@ async function boot() {
 	// Right-clicking the empty part of the panel should reach the same menu as
 	// right-clicking a pet; without this the browser's own context menu appears
 	// inside the panel and there is no way back to the settings entry.
-	stage.root.addEventListener("contextmenu", (event) => {
+	document.addEventListener("contextmenu", (event) => {
 		event.preventDefault();
 		openMenu(event.clientX, event.clientY, stage.pets[0]);
 	});
@@ -1914,6 +3293,7 @@ async function boot() {
 	const env = SDK.environment();
 	record("bridge", "UI bridge", env.hasBridge ? "ok" : "fail", env.hasBridge ? "narrafork.* 可用" : "globalThis.narrafork 缺失");
 	const surfaceKind = await detectSurface();
+	installPointerEvents();
 	record(
 		"surface",
 		"承载界面",
@@ -1956,6 +3336,9 @@ async function boot() {
 
 	await probeAssets();
 	const value = await fetchState();
+	void startTaskEvents().catch((error) => {
+		state.taskState = { capability: "degraded", error: { message: String(error?.message ?? error) } };
+	});
 	record("ready", "舞台就绪", value ? "ok" : "warn", value ? `v${value.version ?? "?"}` : "后端未响应");
 
 	state.ready = true;
@@ -2005,10 +3388,22 @@ async function boot() {
 	// Slow poll: config changes made in the settings panel should reach the stage
 	// without a reload. Balance has its own, much slower, staleness check inside
 	// `pet-state`, so this interval is about settings, not about the network.
-	setInterval(() => {
+	state.stateInterval = setInterval(() => {
 		if (state.paused) return;
 		void fetchState();
 	}, 12_000);
+	state.noticeInterval = setInterval(() => {
+		deliverLocalNotices();
+		void pollPersistedNotice();
+	}, 1000);
+	window.addEventListener("pagehide", () => {
+		state.stopped = true;
+		clearInterval(state.stateInterval); clearInterval(state.noticeInterval);
+		state.taskEvents?.destroy();
+		state.localNotices = [];
+		cancelPointers(); stopLoop(); closeMenu();
+		for (const pet of stage.pets) pet.dispose();
+	}, { once: true });
 
 	globalThis.__dshPetDiagnostics = () => diagnostics.slice();
 	globalThis.__dshPetStage = stage;
@@ -2034,7 +3429,7 @@ boot().catch((error) => {
 /* Inlined build artefacts (replaced by tools/build-ui.mjs)                  */
 /* -------------------------------------------------------------------------- */
 
-// PET_ANIM_INDEX, PET_PROBE_GIF and PET_PROBE_PNG are injected ahead of this file by
+// PET_ANIM_INDEX (including bounds) and PET_CLICK_SOUND_BASE64 are injected by
 // the build; they are declared here as comments only so the dependency is greppable
 // from the stage's own source.
 

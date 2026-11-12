@@ -34,6 +34,7 @@ body {
 	height: 100%;
 	overflow: hidden;
 	isolation: isolate;
+	pointer-events: none;
 }
 
 .pet-background {
@@ -48,29 +49,28 @@ body {
 .pet-layer {
 	position: absolute;
 	inset: 0;
+	pointer-events: none;
 }
 
 .pet {
 	position: absolute;
 	top: 0;
 	left: 0;
-	/* Squash and stretch scales from the feet, so the pet compresses against the
-	   floor instead of shrinking toward its middle. */
-	transform-origin: 50% 100%;
 	will-change: transform;
+	pointer-events: none;
+}
+
+/* Separate compact target: the full image canvas never swallows blank clicks. */
+.pet-hit {
+	position: absolute;
+	pointer-events: auto;
 	cursor: grab;
-	/* The sprite is a transparent rectangle much larger than the fish; without
-	   this the pet would swallow clicks across the whole panel. `pointer-events`
-	   stays on for the element itself, and the blank areas still catch the pointer
-	   — acceptable, because the sprite is the interactive object. */
+	touch-action: none;
 	-webkit-tap-highlight-color: transparent;
 }
 
-.pet.is-dragging {
-	cursor: grabbing;
-	/* Lifted: a slight shadow sells "held in the air" without an extra asset. */
-	filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
-}
+.pet-hit.is-dragging { cursor: grabbing; }
+.pet.is-dragging { filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)); }
 
 .pet-frame {
 	position: absolute;
@@ -79,7 +79,6 @@ body {
 	height: 100%;
 	object-fit: contain;
 	opacity: 0;
-	transition: opacity 90ms linear;
 	pointer-events: none;
 	/* An animated WebP is drawn one frame at a time; the browser already
 	   composites it, so no extra `image-rendering` hint is wanted. */
@@ -89,42 +88,18 @@ body {
 	opacity: 1;
 }
 
-.pet-bubble {
-	position: absolute;
-	transform: translate(-50%, -100%);
-	max-width: min(260px, 80%);
-	padding: 7px 11px;
-	border-radius: var(--mantine-radius-md, 8px);
-	background: var(--mantine-color-body, #1a1b1e);
-	color: var(--mantine-color-text, #e6e6e6);
-	border: 1px solid var(--mantine-color-default-border, rgba(255, 255, 255, 0.16));
-	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
-	font-size: 12px;
-	line-height: 1.45;
-	text-align: center;
-	pointer-events: none;
-	z-index: 3;
-	animation: pet-bubble-in 140ms ease-out;
+/* Shared SVG bubbles are composed by build-ui from bubbles.css. */
+.pet-task-bindings {
+	position: absolute; inset: 8px; margin: auto; max-width: 540px; max-height: 420px;
+	overflow: auto; pointer-events: auto; z-index: 8; padding: 14px;
+	background: var(--mantine-color-body, #202124); color: var(--mantine-color-text, #eee);
+	border: 1px solid #7388ba; border-radius: 10px; font: 13px/1.5 sans-serif;
+	user-select: text;
 }
-
-.pet-bubble[data-tone="warn"] {
-	border-color: var(--mantine-color-yellow-6, #f0b429);
-}
-
-.pet-bubble[hidden] {
-	display: none;
-}
-
-@keyframes pet-bubble-in {
-	from {
-		opacity: 0;
-		transform: translate(-50%, calc(-100% + 4px));
-	}
-	to {
-		opacity: 1;
-		transform: translate(-50%, -100%);
-	}
-}
+.pet-task-status { white-space: pre-wrap; overflow-wrap: anywhere; }
+.pet-task-binding-row { display: flex; gap: 6px; margin: 8px 0; }
+.pet-task-binding-row input { min-width: 0; width: 50%; padding: 5px; }
+.pet-task-bindings button { margin: 4px; padding: 5px 8px; }
 
 /*
  * The menu is drawn inside the iframe rather than using a host context menu:
@@ -132,6 +107,7 @@ body {
  * positioning and dismissal in one place.
  */
 .pet-menu {
+	pointer-events: auto;
 	position: absolute;
 	z-index: 5;
 	min-width: 132px;
@@ -171,6 +147,7 @@ body {
 /* ------------------------------------------------------------------ HUD -- */
 
 .pet-hud {
+	pointer-events: auto;
 	position: absolute;
 	inset: 6px auto auto 6px;
 	z-index: 6;

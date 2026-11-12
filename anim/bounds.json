@@ -1,0 +1,1846 @@
+{
+	"generatedAt": "2026-11-10T12:29:40.160Z",
+	"version": 1,
+	"generator": "tools/measure-bounds.py",
+	"alphaThreshold": 32,
+	"paddingPx": 2,
+	"canvas": {
+		"width": 384,
+		"height": 216
+	},
+	"frameCount": 11202,
+	"clipCount": 114,
+	"bodyClip": "待机呼吸休闲",
+	"bodyBounds": {
+		"left": 0.299479,
+		"top": 0.152778,
+		"right": 0.6875,
+		"bottom": 0.925926
+	},
+	"clips": {
+		"被落叶淹没": {
+			"bounds": {
+				"left": 0.044271,
+				"top": 0.083333,
+				"right": 0.960938,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.049479,
+				"top": 0.092593,
+				"right": 0.955729,
+				"bottom": 1.0
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"被鼠标拖拽悬空反馈": {
+			"bounds": {
+				"left": 0.3125,
+				"top": 0.060185,
+				"right": 0.710938,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.317708,
+				"top": 0.069444,
+				"right": 0.705729,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"被吓一跳": {
+			"bounds": {
+				"left": 0.315104,
+				"top": 0.078704,
+				"right": 0.684896,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.320312,
+				"top": 0.087963,
+				"right": 0.679688,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"变鸽子": {
+			"bounds": {
+				"left": 0.179688,
+				"top": 0.050926,
+				"right": 0.822917,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.184896,
+				"top": 0.060185,
+				"right": 0.817708,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"侧身急躁跑": {
+			"bounds": {
+				"left": 0.046875,
+				"top": 0.143519,
+				"right": 0.71875,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.052083,
+				"top": 0.152778,
+				"right": 0.713542,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"插茱萸赏菊": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.166667,
+				"right": 0.692708,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.175926,
+				"right": 0.6875,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"拆礼物": {
+			"bounds": {
+				"left": 0.239583,
+				"top": 0.115741,
+				"right": 0.739583,
+				"bottom": 0.953704
+			},
+			"rawBounds": {
+				"left": 0.244792,
+				"top": 0.125,
+				"right": 0.734375,
+				"bottom": 0.944444
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"超大伸懒腰": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.148148,
+				"right": 0.679688,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.157407,
+				"right": 0.674479,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"晨间刷牙": {
+			"bounds": {
+				"left": 0.302083,
+				"top": 0.157407,
+				"right": 0.6875,
+				"bottom": 0.972222
+			},
+			"rawBounds": {
+				"left": 0.307292,
+				"top": 0.166667,
+				"right": 0.682292,
+				"bottom": 0.962963
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃白饭": {
+			"bounds": {
+				"left": 0.309896,
+				"top": 0.162037,
+				"right": 0.684896,
+				"bottom": 0.949074
+			},
+			"rawBounds": {
+				"left": 0.315104,
+				"top": 0.171296,
+				"right": 0.679688,
+				"bottom": 0.939815
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃冰淇淋融化": {
+			"bounds": {
+				"left": 0.320312,
+				"top": 0.157407,
+				"right": 0.679688,
+				"bottom": 0.939815
+			},
+			"rawBounds": {
+				"left": 0.325521,
+				"top": 0.166667,
+				"right": 0.674479,
+				"bottom": 0.930556
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃大闸蟹": {
+			"bounds": {
+				"left": 0.3125,
+				"top": 0.162037,
+				"right": 0.713542,
+				"bottom": 0.958333
+			},
+			"rawBounds": {
+				"left": 0.317708,
+				"top": 0.171296,
+				"right": 0.708333,
+				"bottom": 0.949074
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃饭·碗饭": {
+			"bounds": {
+				"left": 0.309896,
+				"top": 0.166667,
+				"right": 0.679688,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.315104,
+				"top": 0.175926,
+				"right": 0.674479,
+				"bottom": 0.916667
+			},
+			"frames": 51,
+			"sourceFacing": 1
+		},
+		"吃饭团": {
+			"bounds": {
+				"left": 0.320312,
+				"top": 0.166667,
+				"right": 0.708333,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.325521,
+				"top": 0.175926,
+				"right": 0.703125,
+				"bottom": 0.916667
+			},
+			"frames": 51,
+			"sourceFacing": 1
+		},
+		"吃饺子": {
+			"bounds": {
+				"left": 0.296875,
+				"top": 0.087963,
+				"right": 0.710938,
+				"bottom": 0.958333
+			},
+			"rawBounds": {
+				"left": 0.302083,
+				"top": 0.097222,
+				"right": 0.705729,
+				"bottom": 0.949074
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃腊八粥": {
+			"bounds": {
+				"left": 0.309896,
+				"top": 0.166667,
+				"right": 0.677083,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.315104,
+				"top": 0.175926,
+				"right": 0.671875,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃年糕": {
+			"bounds": {
+				"left": 0.309896,
+				"top": 0.162037,
+				"right": 0.682292,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.315104,
+				"top": 0.171296,
+				"right": 0.677083,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃青团": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.162037,
+				"right": 0.682292,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.171296,
+				"right": 0.677083,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃汤圆": {
+			"bounds": {
+				"left": 0.325521,
+				"top": 0.166667,
+				"right": 0.684896,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.330729,
+				"top": 0.175926,
+				"right": 0.679688,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃糖葫芦": {
+			"bounds": {
+				"left": 0.3125,
+				"top": 0.157407,
+				"right": 0.692708,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.317708,
+				"top": 0.166667,
+				"right": 0.6875,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃晚餐": {
+			"bounds": {
+				"left": 0.148438,
+				"top": 0.157407,
+				"right": 0.854167,
+				"bottom": 0.944444
+			},
+			"rawBounds": {
+				"left": 0.153646,
+				"top": 0.166667,
+				"right": 0.848958,
+				"bottom": 0.935185
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃午餐": {
+			"bounds": {
+				"left": 0.3125,
+				"top": 0.157407,
+				"right": 0.679688,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.317708,
+				"top": 0.166667,
+				"right": 0.674479,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃西瓜": {
+			"bounds": {
+				"left": 0.315104,
+				"top": 0.157407,
+				"right": 0.6875,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.320312,
+				"top": 0.166667,
+				"right": 0.682292,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃早餐": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.157407,
+				"right": 0.679688,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.166667,
+				"right": 0.674479,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃长寿面": {
+			"bounds": {
+				"left": 0.192708,
+				"top": 0.157407,
+				"right": 0.690104,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.197917,
+				"top": 0.166667,
+				"right": 0.684896,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃重阳糕": {
+			"bounds": {
+				"left": 0.325521,
+				"top": 0.162037,
+				"right": 0.684896,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.330729,
+				"top": 0.171296,
+				"right": 0.679688,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃粽子": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.162037,
+				"right": 0.690104,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.171296,
+				"right": 0.684896,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吃Token": {
+			"bounds": {
+				"left": 0.216146,
+				"top": 0.152778,
+				"right": 0.783854,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.221354,
+				"top": 0.162037,
+				"right": 0.778646,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"抽陀螺": {
+			"bounds": {
+				"left": 0.252604,
+				"top": 0.166667,
+				"right": 0.690104,
+				"bottom": 0.962963
+			},
+			"rawBounds": {
+				"left": 0.257812,
+				"top": 0.175926,
+				"right": 0.684896,
+				"bottom": 0.953704
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"穿针乞巧": {
+			"bounds": {
+				"left": 0.278646,
+				"top": 0.12037,
+				"right": 0.841146,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.283854,
+				"top": 0.12963,
+				"right": 0.835938,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吹笛子": {
+			"bounds": {
+				"left": 0.111979,
+				"top": 0.060185,
+				"right": 0.856771,
+				"bottom": 0.939815
+			},
+			"rawBounds": {
+				"left": 0.117188,
+				"top": 0.069444,
+				"right": 0.851562,
+				"bottom": 0.930556
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"吹气球": {
+			"bounds": {
+				"left": 0.026042,
+				"top": 0.083333,
+				"right": 0.955729,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.03125,
+				"top": 0.092593,
+				"right": 0.950521,
+				"bottom": 1.0
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"打瞌睡被惊醒": {
+			"bounds": {
+				"left": 0.304688,
+				"top": 0.046296,
+				"right": 0.705729,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.309896,
+				"top": 0.055556,
+				"right": 0.700521,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"大口吃零食": {
+			"bounds": {
+				"left": 0.049479,
+				"top": 0.111111,
+				"right": 0.927083,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.054688,
+				"top": 0.12037,
+				"right": 0.921875,
+				"bottom": 0.990741
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"待机呼吸休闲": {
+			"bounds": {
+				"left": 0.299479,
+				"top": 0.152778,
+				"right": 0.6875,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.304688,
+				"top": 0.162037,
+				"right": 0.682292,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"荡秋千": {
+			"bounds": {
+				"left": 0.291667,
+				"top": 0.037037,
+				"right": 0.752604,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.296875,
+				"top": 0.046296,
+				"right": 0.747396,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"点击回应-傲娇生气": {
+			"bounds": {
+				"left": 0.309896,
+				"top": 0.157407,
+				"right": 0.677083,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.315104,
+				"top": 0.166667,
+				"right": 0.671875,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"点击回应-害羞惊讶": {
+			"bounds": {
+				"left": 0.320312,
+				"top": 0.166667,
+				"right": 0.6875,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.325521,
+				"top": 0.175926,
+				"right": 0.682292,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"点击回应-开心跃动": {
+			"bounds": {
+				"left": 0.28125,
+				"top": 0.041667,
+				"right": 0.721354,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.286458,
+				"top": 0.050926,
+				"right": 0.716146,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"点击回应-挠痒咯咯笑": {
+			"bounds": {
+				"left": 0.315104,
+				"top": 0.148148,
+				"right": 0.690104,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.320312,
+				"top": 0.157407,
+				"right": 0.684896,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"点击回应-元气挥手": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.092593,
+				"right": 0.679688,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.101852,
+				"right": 0.674479,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"东张西望": {
+			"bounds": {
+				"left": 0.320312,
+				"top": 0.162037,
+				"right": 0.695312,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.325521,
+				"top": 0.171296,
+				"right": 0.690104,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"动物环绕": {
+			"bounds": {
+				"left": 0.117188,
+				"top": 0.074074,
+				"right": 0.861979,
+				"bottom": 0.967593
+			},
+			"rawBounds": {
+				"left": 0.122396,
+				"top": 0.083333,
+				"right": 0.856771,
+				"bottom": 0.958333
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"堆雪人": {
+			"bounds": {
+				"left": 0.304688,
+				"top": 0.162037,
+				"right": 0.765625,
+				"bottom": 0.958333
+			},
+			"rawBounds": {
+				"left": 0.309896,
+				"top": 0.171296,
+				"right": 0.760417,
+				"bottom": 0.949074
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"放风筝": {
+			"bounds": {
+				"left": 0.15625,
+				"top": 0.0,
+				"right": 0.802083,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.161458,
+				"top": 0.0,
+				"right": 0.796875,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"放河灯": {
+			"bounds": {
+				"left": 0.320312,
+				"top": 0.162037,
+				"right": 0.684896,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.325521,
+				"top": 0.171296,
+				"right": 0.679688,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"放孔明灯": {
+			"bounds": {
+				"left": 0.247396,
+				"top": 0.0,
+				"right": 0.6875,
+				"bottom": 0.981481
+			},
+			"rawBounds": {
+				"left": 0.252604,
+				"top": 0.009259,
+				"right": 0.682292,
+				"bottom": 0.972222
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"放烟花": {
+			"bounds": {
+				"left": 0.028646,
+				"top": 0.0,
+				"right": 0.96875,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.033854,
+				"top": 0.0,
+				"right": 0.963542,
+				"bottom": 1.0
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"工作状态-垂头叹气冒汗": {
+			"bounds": {
+				"left": 0.242188,
+				"top": 0.12963,
+				"right": 0.671875,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.247396,
+				"top": 0.138889,
+				"right": 0.666667,
+				"bottom": 0.916667
+			},
+			"frames": 49,
+			"sourceFacing": 1
+		},
+		"工作状态-忙碌点按": {
+			"bounds": {
+				"left": 0.273438,
+				"top": 0.009259,
+				"right": 0.700521,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.278646,
+				"top": 0.018519,
+				"right": 0.695312,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"工作状态-清点归档": {
+			"bounds": {
+				"left": 0.325521,
+				"top": 0.166667,
+				"right": 0.674479,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.330729,
+				"top": 0.175926,
+				"right": 0.669271,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"工作状态-雀跃庆祝": {
+			"bounds": {
+				"left": 0.268229,
+				"top": 0.041667,
+				"right": 0.739583,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.273438,
+				"top": 0.050926,
+				"right": 0.734375,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"工作状态-思考冒泡": {
+			"bounds": {
+				"left": 0.283854,
+				"top": 0.134259,
+				"right": 0.684896,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.289062,
+				"top": 0.143519,
+				"right": 0.679688,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"工作状态-原地踱步张望": {
+			"bounds": {
+				"left": 0.283854,
+				"top": 0.106481,
+				"right": 0.690104,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.289062,
+				"top": 0.115741,
+				"right": 0.684896,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"哈欠连天": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.157407,
+				"right": 0.682292,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.166667,
+				"right": 0.677083,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"蝴蝶蜜蜂环绕头顶开花": {
+			"bounds": {
+				"left": 0.005208,
+				"top": 0.009259,
+				"right": 0.989583,
+				"bottom": 0.944444
+			},
+			"rawBounds": {
+				"left": 0.010417,
+				"top": 0.018519,
+				"right": 0.984375,
+				"bottom": 0.935185
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"鲸鱼吐泡泡特效": {
+			"bounds": {
+				"left": 0.174479,
+				"top": 0.087963,
+				"right": 0.679688,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.179688,
+				"top": 0.097222,
+				"right": 0.674479,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"开心小跑": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.157407,
+				"right": 0.692708,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.166667,
+				"right": 0.6875,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"可爱宅舞": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.143519,
+				"right": 0.697917,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.152778,
+				"right": 0.692708,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"蓝鲸现世": {
+			"bounds": {
+				"left": 0.195312,
+				"top": 0.092593,
+				"right": 0.760417,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.200521,
+				"top": 0.101852,
+				"right": 0.755208,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"撸猫": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.162037,
+				"right": 0.682292,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.171296,
+				"right": 0.677083,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"萌化小幽灵": {
+			"bounds": {
+				"left": 0.244792,
+				"top": 0.12963,
+				"right": 0.770833,
+				"bottom": 0.949074
+			},
+			"rawBounds": {
+				"left": 0.25,
+				"top": 0.138889,
+				"right": 0.765625,
+				"bottom": 0.939815
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"女仆屈膝礼仪": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.162037,
+				"right": 0.677083,
+				"bottom": 0.939815
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.171296,
+				"right": 0.671875,
+				"bottom": 0.930556
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"螃蟹走路": {
+			"bounds": {
+				"left": 0.283854,
+				"top": 0.166667,
+				"right": 0.710938,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.289062,
+				"top": 0.175926,
+				"right": 0.705729,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": -1
+		},
+		"凭空生花": {
+			"bounds": {
+				"left": 0.184896,
+				"top": 0.064815,
+				"right": 0.859375,
+				"bottom": 0.953704
+			},
+			"rawBounds": {
+				"left": 0.190104,
+				"top": 0.074074,
+				"right": 0.854167,
+				"bottom": 0.944444
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"扑克魔术": {
+			"bounds": {
+				"left": 0.276042,
+				"top": 0.166667,
+				"right": 0.6875,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.28125,
+				"top": 0.175926,
+				"right": 0.682292,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"期待开饭": {
+			"bounds": {
+				"left": 0.315104,
+				"top": 0.157407,
+				"right": 0.674479,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.320312,
+				"top": 0.166667,
+				"right": 0.669271,
+				"bottom": 0.916667
+			},
+			"frames": 51,
+			"sourceFacing": 1
+		},
+		"骑木马": {
+			"bounds": {
+				"left": 0.234375,
+				"top": 0.032407,
+				"right": 0.778646,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.239583,
+				"top": 0.041667,
+				"right": 0.773438,
+				"bottom": 1.0
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"轻快记录": {
+			"bounds": {
+				"left": 0.296875,
+				"top": 0.152778,
+				"right": 0.684896,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.302083,
+				"top": 0.162037,
+				"right": 0.679688,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"轻快摇摆舞": {
+			"bounds": {
+				"left": 0.299479,
+				"top": 0.157407,
+				"right": 0.742188,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.304688,
+				"top": 0.166667,
+				"right": 0.736979,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"三球抛接": {
+			"bounds": {
+				"left": 0.320312,
+				"top": 0.092593,
+				"right": 0.6875,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.325521,
+				"top": 0.101852,
+				"right": 0.682292,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"深度思考碎碎念": {
+			"bounds": {
+				"left": 0.143229,
+				"top": 0.134259,
+				"right": 0.867188,
+				"bottom": 0.939815
+			},
+			"rawBounds": {
+				"left": 0.148438,
+				"top": 0.143519,
+				"right": 0.861979,
+				"bottom": 0.930556
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"是啊，吃什么": {
+			"bounds": {
+				"left": 0.080729,
+				"top": 0.111111,
+				"right": 0.953125,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.085938,
+				"top": 0.12037,
+				"right": 0.947917,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"收红包": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.166667,
+				"right": 0.692708,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.175926,
+				"right": 0.6875,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"涮火锅": {
+			"bounds": {
+				"left": 0.3125,
+				"top": 0.162037,
+				"right": 0.6875,
+				"bottom": 0.972222
+			},
+			"rawBounds": {
+				"left": 0.317708,
+				"top": 0.171296,
+				"right": 0.682292,
+				"bottom": 0.962963
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"睡觉-开始": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.148148,
+				"right": 0.692708,
+				"bottom": 0.939815
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.157407,
+				"right": 0.6875,
+				"bottom": 0.930556
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"睡觉-起来": {
+			"bounds": {
+				"left": 0.283854,
+				"top": 0.157407,
+				"right": 0.697917,
+				"bottom": 0.962963
+			},
+			"rawBounds": {
+				"left": 0.289062,
+				"top": 0.166667,
+				"right": 0.692708,
+				"bottom": 0.953704
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"睡觉-循环": {
+			"bounds": {
+				"left": 0.270833,
+				"top": 0.097222,
+				"right": 0.674479,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.276042,
+				"top": 0.106481,
+				"right": 0.669271,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"碎碎念-擦桌碎碎念": {
+			"bounds": {
+				"left": 0.307292,
+				"top": 0.162037,
+				"right": 0.684896,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.3125,
+				"top": 0.171296,
+				"right": 0.679688,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"碎碎念-对屏碎碎念": {
+			"bounds": {
+				"left": 0.325521,
+				"top": 0.157407,
+				"right": 0.674479,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.330729,
+				"top": 0.166667,
+				"right": 0.669271,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"碎碎念-发呆碎碎念": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.12963,
+				"right": 0.679688,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.138889,
+				"right": 0.674479,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"讨糖南瓜灯": {
+			"bounds": {
+				"left": 0.309896,
+				"top": 0.162037,
+				"right": 0.703125,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.315104,
+				"top": 0.171296,
+				"right": 0.697917,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"踢毽子": {
+			"bounds": {
+				"left": 0.296875,
+				"top": 0.069444,
+				"right": 0.708333,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.302083,
+				"top": 0.078704,
+				"right": 0.703125,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"偷吃零食被抓住": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.083333,
+				"right": 0.690104,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.092593,
+				"right": 0.684896,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"玩水枪": {
+			"bounds": {
+				"left": 0.046875,
+				"top": 0.166667,
+				"right": 0.932292,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.052083,
+				"top": 0.175926,
+				"right": 0.927083,
+				"bottom": 0.99537
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"玩游戏气急败坏": {
+			"bounds": {
+				"left": 0.255208,
+				"top": 0.148148,
+				"right": 0.708333,
+				"bottom": 0.962963
+			},
+			"rawBounds": {
+				"left": 0.260417,
+				"top": 0.157407,
+				"right": 0.703125,
+				"bottom": 0.953704
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"舞狮头": {
+			"bounds": {
+				"left": 0.307292,
+				"top": 0.078704,
+				"right": 0.697917,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.3125,
+				"top": 0.087963,
+				"right": 0.692708,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"下五子棋": {
+			"bounds": {
+				"left": 0.3125,
+				"top": 0.134259,
+				"right": 0.695312,
+				"bottom": 0.967593
+			},
+			"rawBounds": {
+				"left": 0.317708,
+				"top": 0.143519,
+				"right": 0.690104,
+				"bottom": 0.958333
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"小幅度原地360度旋转展示": {
+			"bounds": {
+				"left": 0.291667,
+				"top": 0.12037,
+				"right": 0.736979,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.296875,
+				"top": 0.12963,
+				"right": 0.731771,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"小提琴演奏": {
+			"bounds": {
+				"left": 0.205729,
+				"top": 0.157407,
+				"right": 0.739583,
+				"bottom": 0.958333
+			},
+			"rawBounds": {
+				"left": 0.210938,
+				"top": 0.166667,
+				"right": 0.734375,
+				"bottom": 0.949074
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"写代码": {
+			"bounds": {
+				"left": 0.322917,
+				"top": 0.157407,
+				"right": 0.679688,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.328125,
+				"top": 0.166667,
+				"right": 0.674479,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"写福字": {
+			"bounds": {
+				"left": 0.260417,
+				"top": 0.162037,
+				"right": 0.682292,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.265625,
+				"top": 0.171296,
+				"right": 0.677083,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"摇扇纳凉": {
+			"bounds": {
+				"left": 0.239583,
+				"top": 0.134259,
+				"right": 0.739583,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.244792,
+				"top": 0.143519,
+				"right": 0.734375,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"用鲸鱼尾巴拍打地面": {
+			"bounds": {
+				"left": 0.320312,
+				"top": 0.162037,
+				"right": 0.739583,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.325521,
+				"top": 0.171296,
+				"right": 0.734375,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"优雅女仆舞": {
+			"bounds": {
+				"left": 0.3125,
+				"top": 0.134259,
+				"right": 0.731771,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.317708,
+				"top": 0.143519,
+				"right": 0.726562,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"悠闲哼歌": {
+			"bounds": {
+				"left": 0.21875,
+				"top": 0.00463,
+				"right": 0.768229,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.223958,
+				"top": 0.013889,
+				"right": 0.763021,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"余额-袋空如洗": {
+			"bounds": {
+				"left": 0.111979,
+				"top": 0.097222,
+				"right": 0.859375,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.117188,
+				"top": 0.106481,
+				"right": 0.854167,
+				"bottom": 0.99537
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"余额-分文不剩": {
+			"bounds": {
+				"left": 0.221354,
+				"top": 0.143519,
+				"right": 0.859375,
+				"bottom": 0.953704
+			},
+			"rawBounds": {
+				"left": 0.226562,
+				"top": 0.152778,
+				"right": 0.854167,
+				"bottom": 0.944444
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"余额-金袋叮当": {
+			"bounds": {
+				"left": 0.145833,
+				"top": 0.078704,
+				"right": 0.848958,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.151042,
+				"top": 0.087963,
+				"right": 0.84375,
+				"bottom": 0.99537
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"余额-钱袋满溢": {
+			"bounds": {
+				"left": 0.125,
+				"top": 0.087963,
+				"right": 0.916667,
+				"bottom": 0.986111
+			},
+			"rawBounds": {
+				"left": 0.130208,
+				"top": 0.097222,
+				"right": 0.911458,
+				"bottom": 0.976852
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"余额-钱袋如常": {
+			"bounds": {
+				"left": 0.109375,
+				"top": 0.152778,
+				"right": 0.84375,
+				"bottom": 0.958333
+			},
+			"rawBounds": {
+				"left": 0.114583,
+				"top": 0.162037,
+				"right": 0.838542,
+				"bottom": 0.949074
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"余额-数金皱眉": {
+			"bounds": {
+				"left": 0.320312,
+				"top": 0.162037,
+				"right": 0.684896,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.325521,
+				"top": 0.171296,
+				"right": 0.679688,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"原地蹲下玩玩具汽车": {
+			"bounds": {
+				"left": 0.111979,
+				"top": 0.138889,
+				"right": 0.859375,
+				"bottom": 0.967593
+			},
+			"rawBounds": {
+				"left": 0.117188,
+				"top": 0.148148,
+				"right": 0.854167,
+				"bottom": 0.958333
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"原地漂浮踏步": {
+			"bounds": {
+				"left": 0.325521,
+				"top": 0.152778,
+				"right": 0.682292,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.330729,
+				"top": 0.162037,
+				"right": 0.677083,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 0
+		},
+		"原地敲击桌面互动": {
+			"bounds": {
+				"left": 0.309896,
+				"top": 0.166667,
+				"right": 0.674479,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.315104,
+				"top": 0.175926,
+				"right": 0.669271,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"原地跳跃抓碎头顶物品": {
+			"bounds": {
+				"left": 0.171875,
+				"top": 0.0,
+				"right": 0.825521,
+				"bottom": 0.935185
+			},
+			"rawBounds": {
+				"left": 0.177083,
+				"top": 0.0,
+				"right": 0.820312,
+				"bottom": 0.925926
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"原地小憩沉眠": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.069444,
+				"right": 0.677083,
+				"bottom": 0.925926
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.078704,
+				"right": 0.671875,
+				"bottom": 0.916667
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"原地重力下蹲压缩": {
+			"bounds": {
+				"left": 0.317708,
+				"top": 0.115741,
+				"right": 0.713542,
+				"bottom": 0.944444
+			},
+			"rawBounds": {
+				"left": 0.322917,
+				"top": 0.125,
+				"right": 0.708333,
+				"bottom": 0.935185
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"原地专心玩魔方": {
+			"bounds": {
+				"left": 0.270833,
+				"top": 0.166667,
+				"right": 0.690104,
+				"bottom": 0.949074
+			},
+			"rawBounds": {
+				"left": 0.276042,
+				"top": 0.175926,
+				"right": 0.684896,
+				"bottom": 0.939815
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"原地左转奔跑": {
+			"bounds": {
+				"left": 0.182292,
+				"top": 0.148148,
+				"right": 0.734375,
+				"bottom": 0.944444
+			},
+			"rawBounds": {
+				"left": 0.1875,
+				"top": 0.157407,
+				"right": 0.729167,
+				"bottom": 0.935185
+			},
+			"frames": 100,
+			"sourceFacing": -1
+		},
+		"照镜子": {
+			"bounds": {
+				"left": 0.302083,
+				"top": 0.143519,
+				"right": 0.723958,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.307292,
+				"top": 0.152778,
+				"right": 0.71875,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"整体换装试色": {
+			"bounds": {
+				"left": 0.291667,
+				"top": 0.138889,
+				"right": 0.744792,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.296875,
+				"top": 0.148148,
+				"right": 0.739583,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"中秋赏月吃月饼": {
+			"bounds": {
+				"left": 0.302083,
+				"top": 0.12963,
+				"right": 0.919271,
+				"bottom": 0.930556
+			},
+			"rawBounds": {
+				"left": 0.307292,
+				"top": 0.138889,
+				"right": 0.914062,
+				"bottom": 0.921296
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		},
+		"装点圣诞树": {
+			"bounds": {
+				"left": 0.125,
+				"top": 0.106481,
+				"right": 0.783854,
+				"bottom": 1.0
+			},
+			"rawBounds": {
+				"left": 0.130208,
+				"top": 0.115741,
+				"right": 0.778646,
+				"bottom": 0.99537
+			},
+			"frames": 100,
+			"sourceFacing": 1
+		}
+	}
+}

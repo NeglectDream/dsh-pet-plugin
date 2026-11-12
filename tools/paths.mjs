@@ -19,13 +19,15 @@ export const PLUGIN_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.ur
  * The repository root.
  *
  * Two layouts exist: the original one, where the plugin sources sit in a `narrafork/`
- * subdirectory of the dsh-pet repository, and the published plugin repository, where
- * the package *is* the root — its `.git` sits next to `manifest.json`. Every tool works
- * from either layout; the second one simply has no source media to transcode from.
+ * subdirectory of the dsh-pet repository, and the standalone plugin repository
+ * (including ZIP downloads without `.git`). Detect the original layout by its
+ * actual source-assets directory, not by Git metadata: a downloaded plugin must
+ * keep dist/ and LICENSE rooted here rather than in the user's Downloads folder.
  */
-export const REPO_DIR = existsSync(path.join(PLUGIN_DIR, ".git"))
-	? PLUGIN_DIR
-	: path.resolve(PLUGIN_DIR, "..");
+export const REPO_DIR = path.basename(PLUGIN_DIR) === "narrafork" &&
+	existsSync(path.join(PLUGIN_DIR, "..", "dsh-pet", "assets"))
+	? path.resolve(PLUGIN_DIR, "..")
+	: PLUGIN_DIR;
 
 /** `<repo>/dsh-pet/assets` — where the original webm/gif/png/font material lives. */
 export const ASSETS_DIR = path.join(REPO_DIR, "dsh-pet", "assets");

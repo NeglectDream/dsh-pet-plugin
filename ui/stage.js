@@ -1,32 +1,15 @@
 /**
- * The pet stage — everything that happens inside the panel.
+ * Dependency-free pet stage for panel DOM input and the existing overlay relay.
  *
- * WHY NO FRAMEWORK
- * The interesting parts of this file are a 60 fps transform loop and a pointer
- * physics model. React would sit between the loop and the DOM for no benefit,
- * and pulling the shared host runtime in would cost the panel ~1.2 MB of React and
- * Mantine to render six absolutely positioned `<img>` elements. The view declares
- * no `runtime`, so the shell loads exactly this file and nothing else.
+ * The sandbox cannot fetch animation files. Build-time index, measured alpha
+ * bounds and the original click sound are inlined; clip bytes arrive through
+ * pet-clip RPC and are kept in a bounded LRU. Every playback owns a fresh Blob
+ * URL so animated WebP one-shots restart independently and stop after one loop.
+ * Decoding precedes action/travel timers; cancellation invalidates every older
+ * async result while preserving the last visible image.
  *
- * THREE PROBLEMS THAT ARE NOT OBVIOUS FROM THE OUTSIDE
- *
- * 1. Animated WebP has no "ended" event. `load` fires when the first frame is
- *    decoded; nothing fires at the end of the loop. So a clip's duration must
- *    come from somewhere else — here it is precomputed at build time into the
- *    inlined index, with `clipDurationMs()` as a fallback that reads the RIFF
- *    container if an entry is missing its duration.
- *
- * 2. The asset route sends `Cache-Control: private, no-store`. Every distinct
- *    `src` is a fresh download, and re-assigning the *same* `src` is the only
- *    request-free path. So the player keeps each clip on screen as long as it
- *    can (looping clips never change `src` at all) and swaps between exactly two
- *    `<img>` elements, which bounds both the request count and the decoded-frame
- *    memory to two clips per pet.
- *
- * 3. `connect-src 'none'` blocks `fetch` and `XMLHttpRequest` entirely, so there
- *    is no way to load `index.json` as data. The index is therefore inlined into
- *    this bundle by `tools/build-ui.mjs` — see the `PET_ANIM_INDEX` placeholder
- *    at the bottom of the file.
+ * The full canvas is visual only. Compact hit targets follow each clip's bounds,
+ * while physics uses a stable idle-body baseline unaffected by click squash.
  */
 
 /* -------------------------------------------------------------------------- */
@@ -71,17 +54,9 @@ const SETTINGS_VIEW_ID = "pet-settings";
 /* Animation WebP duration fallback                                          */
 /* -------------------------------------------------------------------------- */
 
-/**
- * Read an animated WebP's total duration from its RIFF container.
- *
- * The build already measured every clip, so this only runs for an index entry
- * whose `durationMs` is missing — i.e. a hand-edited or partially regenerated
- * index. It is intentionally the same 40 lines as `tools/webp.mjs` rather than a
- * shared module: the UI bundle cannot import, and a wrong duration here only
- * costs a mistimed cut, never a crash.
- */
+/** WebP has no ended event; build-index measured each clip's total duration. */
 function clipDurationMs(clip) {
-	if (typeof clip.durationMs === "number" && clip.durationMs > 0) return clip.durationMs;
+	if (typeof clip?.durationMs === "number" && clip.durationMs > 0) return clip.durationMs;
 	return undefined;
 }
 
@@ -101,16 +76,12 @@ function clipDurationMs(clip) {
  * through the plugin's own command channel instead, and this module turns them
  * into `blob:` URLs (`img-src` allows `blob:`).
  *
- * Two side effects are worth stating because they are improvements, not accidents:
- *  - a blob URL is stable, so re-showing a clip costs nothing — the host's
- *    `Cache-Control: private, no-store` on the asset route no longer applies to
- *    animation at all;
- *  - the total is bounded by the cache below instead of by the browser's HTTP
- *    cache behaviour.
+ * The bounded cache retains immutable bytes. Instance URLs belong to the player,
+ * not the cache: unique URLs restart one-shots and are revoked on every exit path.
  */
+// Cache source bytes, not playback URLs: each playback has an independent clock.
 const CLIP_URL_CACHE_MAX = 24;
-/** index → { url, bytes }; Map order is the LRU order (oldest first). */
-const clipUrls = new Map();
+const clipBytesCache = new Map();
 const clipInflight = new Map();
 
 function base64ToBytes(text) {
@@ -120,114 +91,122 @@ function base64ToBytes(text) {
 	return bytes;
 }
 
+async function withTimeout(promise, milliseconds, label) {
+	let timer;
+	try {
+		return await Promise.race([promise, new Promise((_, reject) => {
+			timer = setTimeout(() => reject(new Error(`${label} timeout`)), Math.max(1, milliseconds));
+		})]);
+	} finally { clearTimeout(timer); }
+}
 async function fetchClipBytes(index) {
 	const parts = [];
 	let offset = 0;
-	let total = Number.POSITIVE_INFINITY;
-	// A clip is up to ~1.5 MB, so this is 1–3 round trips over stdio. Each chunk is
-	// capped server-side at 512 KiB because a JSON-RPC frame is 1 MiB and base64
-	// inflates by 4/3.
-	for (let guard = 0; guard < 32 && offset < total; guard += 1) {
-		const result = await SDK.callSafe("pet-clip", { index, offset });
+	let total;
+	const deadline = performance.now() + 15000;
+	for (let guard = 0; guard < 32; guard += 1) {
+		if (performance.now() >= deadline) throw new Error("pet-clip timeout");
+		const result = await withTimeout(SDK.callSafe("pet-clip", { index, offset }), deadline - performance.now(), "pet-clip");
 		if (!result.ok) throw new Error(result.error.message);
 		const value = result.value ?? {};
-		total = typeof value.total === "number" ? value.total : 0;
+		if (!Number.isSafeInteger(value.total) || value.total <= 0 || value.total > 16 * 1024 * 1024 ||
+			value.offset !== offset || (total !== undefined && total !== value.total)) {
+			throw new Error("invalid clip chunk envelope");
+		}
+		total = value.total;
 		const bytes = base64ToBytes(String(value.data ?? ""));
-		if (bytes.byteLength === 0) break;
+		if (bytes.byteLength === 0 || offset + bytes.byteLength > total) throw new Error("invalid clip chunk length");
 		parts.push(bytes);
 		offset += bytes.byteLength;
-		if (value.done === true) break;
+		if (offset === total) break;
+		if (value.done === true) throw new Error("truncated clip data");
 	}
-	const merged = new Uint8Array(parts.reduce((sum, part) => sum + part.byteLength, 0));
+	if (offset !== total) throw new Error("incomplete clip data");
+	const merged = new Uint8Array(total);
 	let at = 0;
-	for (const part of parts) {
-		merged.set(part, at);
-		at += part.byteLength;
-	}
+	for (const part of parts) { merged.set(part, at); at += part.byteLength; }
 	return merged;
 }
 
-/** Clip ids currently on screen, which must never be evicted underneath a player. */
-function pinnedIndices() {
-	const pinned = new Set();
-	for (const pet of stage.pets) {
-		const clip = pet.player.clipId ? CLIP_BY_ID.get(pet.player.clipId) : undefined;
-		if (clip) pinned.add(clip.index);
-	}
-	return pinned;
-}
-
-function evictClipUrls() {
-	if (clipUrls.size <= CLIP_URL_CACHE_MAX) return;
-	const pinned = pinnedIndices();
-	for (const key of [...clipUrls.keys()]) {
-		if (clipUrls.size <= CLIP_URL_CACHE_MAX) return;
-		if (pinned.has(key)) continue;
-		const entry = clipUrls.get(key);
-		clipUrls.delete(key);
-		try {
-			URL.revokeObjectURL(entry.url);
-		} catch {
-			/* already gone */
-		}
-	}
-}
-
-/** Resolve one clip's index to a reusable `blob:` URL, loading it if needed. */
-async function clipUrl(index) {
-	const cached = clipUrls.get(index);
+async function clipBytes(index) {
+	const cached = clipBytesCache.get(index);
 	if (cached) {
-		// Touch: move to the hot end of the LRU.
-		clipUrls.delete(index);
-		clipUrls.set(index, cached);
-		return cached.url;
+		clipBytesCache.delete(index);
+		clipBytesCache.set(index, cached);
+		return cached;
 	}
-	const inFlight = clipInflight.get(index);
-	if (inFlight) return inFlight;
-	const task = (async () => {
-		const bytes = await fetchClipBytes(index);
-		const url = URL.createObjectURL(new Blob([bytes], { type: "image/webp" }));
-		clipUrls.set(index, { url, bytes: bytes.byteLength });
-		evictClipUrls();
-		return url;
-	})();
+	if (clipInflight.has(index)) return clipInflight.get(index);
+	const task = fetchClipBytes(index).then((bytes) => {
+		clipBytesCache.set(index, bytes);
+		while (clipBytesCache.size > CLIP_URL_CACHE_MAX) clipBytesCache.delete(clipBytesCache.keys().next().value);
+		return bytes;
+	});
 	clipInflight.set(index, task);
-	try {
-		return await task;
-	} finally {
-		clipInflight.delete(index);
+	try { return await task; }
+	finally { clipInflight.delete(index); }
+}
+
+/** Validate RIFF chunk boundaries before changing ANIM's uint16 loop count.
+ *  0 = forever; 1 = exactly one playback. Never mutate the shared source bytes.
+ */
+function webpWithLoopCount(bytes, loopCount) {
+	if (loopCount !== 0 && loopCount !== 1) throw new Error("invalid loop count");
+	if (bytes.length < 12) throw new Error("truncated WebP header");
+	const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+	const fourCC = (offset) => String.fromCharCode(...bytes.subarray(offset, offset + 4));
+	if (fourCC(0) !== "RIFF" || fourCC(8) !== "WEBP" || view.getUint32(4, true) + 8 !== bytes.length) {
+		throw new Error("invalid WebP RIFF size or signature");
 	}
+	let loopOffset = -1;
+	let animated = false;
+	let frames = 0;
+	for (let offset = 12; offset < bytes.length;) {
+		if (offset + 8 > bytes.length) throw new Error("truncated WebP chunk header");
+		const type = fourCC(offset);
+		const size = view.getUint32(offset + 4, true);
+		const start = offset + 8;
+		const end = start + size + (size & 1);
+		if (end > bytes.length) throw new Error("truncated WebP chunk payload");
+		if (type === "VP8X") {
+			if (size !== 10) throw new Error("invalid VP8X chunk");
+			animated = Boolean(bytes[start] & 2);
+		} else if (type === "ANIM") {
+			if (size !== 6 || loopOffset !== -1 || !animated || frames) throw new Error("invalid ANIM chunk");
+			loopOffset = start + 4;
+		} else if (type === "ANMF") {
+			if (size < 16 || loopOffset < 0) throw new Error("invalid ANMF chunk");
+			frames += 1;
+		}
+		offset = end;
+	}
+	if (!animated || loopOffset < 0 || !frames) throw new Error("not an animated WebP");
+	const copy = bytes.slice();
+	new DataView(copy.buffer).setUint16(loopOffset, loopCount, true);
+	return copy;
+}
+
+/** Caller owns the URL and must revoke it on replacement/cancellation/disposal. */
+async function clipUrl(index, { loop = true } = {}) {
+	const bytes = webpWithLoopCount(await clipBytes(index), loop ? 0 : 1);
+	return URL.createObjectURL(new Blob([bytes], { type: "image/webp" }));
 }
 
 /* -------------------------------------------------------------------------- */
 /* Clip player: one double-buffered slot per pet                             */
 /* -------------------------------------------------------------------------- */
 
-/**
- * Plays one clip at a time into a fixed two-image slot.
- *
- * The two `<img>` elements alternate: the incoming clip decodes into the hidden
- * one, and only once `decode()` resolves is the opacity swapped. Skipping that
- * step is what causes the "flash to transparent" between clips, because a newly
- * assigned `src` paints nothing until its first frame arrives.
- */
 class ClipPlayer {
 	constructor(element) {
 		this.element = element;
 		this.layers = [document.createElement("img"), document.createElement("img")];
+		this.urls = [undefined, undefined];
+		this.layerClips = [undefined, undefined];
 		for (const layer of this.layers) {
 			layer.className = "pet-frame";
 			layer.alt = "";
 			layer.decoding = "async";
 			layer.draggable = false;
-			// Critical geometry inline, not only in the stylesheet. If `stage.css`
-			// fails to load or is still in flight when this script runs, a
-			// stack of unstyled `<img>` elements is invisible or grossly misplaced —
-			// and "the panel is empty" is indistinguishable from "the plugin is
-			// broken". Inline opacity in particular: the cross-fade is a CSS effect,
-			// but *being visible at all* must not be.
-			layer.style.cssText =
-				"position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none";
+			layer.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none";
 			element.append(layer);
 		}
 		this.front = 0;
@@ -237,72 +216,101 @@ class ClipPlayer {
 		this.clipId = undefined;
 		this.token = 0;
 		this.facing = 1;
-		this.updateFacing();
+		this.loop = false;
+		this.disposed = false;
+	}
+
+	isMirrored(clip = CLIP_BY_ID.get(this.clipId)) {
+		if (clip?.noMirror || clip?.sourceFacing === 0) return false;
+		return this.facing !== (clip?.sourceFacing ?? 1);
 	}
 
 	updateFacing() {
-		const transform = this.facing < 0 ? "scaleX(-1)" : "none";
-		for (const layer of this.layers) layer.style.transform = transform;
+		for (let index = 0; index < this.layers.length; index += 1) {
+			this.layers[index].style.transform = this.isMirrored(this.layerClips[index]) ? "scaleX(-1)" : "none";
+		}
 	}
 
 	setFacing(facing) {
-		if (this.facing === facing) return;
-		this.facing = facing;
+		this.facing = facing < 0 ? -1 : 1;
 		this.updateFacing();
 	}
 
-	/**
-	 * Show a clip. Resolves once the new frame is on screen (or immediately if the
-	 * request was superseded by a later call).
-	 */
-	async show(clipId) {
+	releaseLayer(index) {
+		this.layers[index].removeAttribute("src");
+		if (this.urls[index]) URL.revokeObjectURL(this.urls[index]);
+		this.urls[index] = undefined;
+		this.layerClips[index] = undefined;
+	}
+
+	cancelPending() {
+		this.token += 1;
+		this.cancelDecode?.();
+		this.cancelDecode = undefined;
+		this.releaseLayer(1 - this.front);
+	}
+
+	async show(clipId, { loop = false } = {}) {
+		if (this.disposed) return false;
+		this.cancelPending();
+		const token = this.token;
 		const clip = CLIP_BY_ID.get(clipId);
 		if (!clip) {
 			record("clip-missing", `动画缺失：${clipId}`, "warn", "index 中没有这个 id");
 			return false;
 		}
-		if (this.clipId === clipId) return true;
-
-		const token = ++this.token;
-		const back = this.layers[1 - this.front];
+		// Only a continuous loop may reuse its clock. Repeated one-shots always
+		// receive a fresh URL, even if two pets request the same source at once.
+		if (loop && this.loop && this.clipId === clipId) return true;
 		let url;
-		try {
-			url = await clipUrl(clip.index);
-		} catch (error) {
-			if (token !== this.token) return false;
-			record("clip-bytes", `动画数据读取失败：${clipId}`, "fail", String(error?.message ?? error));
+		try { url = await clipUrl(clip.index, { loop }); }
+		catch (error) {
+			if (token === this.token) record("clip-bytes", `动画数据读取失败：${clipId}`, "fail", String(error?.message ?? error));
 			return false;
 		}
-		if (token !== this.token) return false;
-		if (back.getAttribute("src") !== url) back.src = url;
-
+		if (token !== this.token || this.disposed) { URL.revokeObjectURL(url); return false; }
+		const backIndex = 1 - this.front;
+		const back = this.layers[backIndex];
+		this.urls[backIndex] = url;
+		this.layerClips[backIndex] = clip;
+		this.updateFacing();
+		back.src = url;
+		let timeout;
 		try {
-			// `decode()` rejects on a decode error *and* on an aborted load, and it
-			// never resolves for a zero-sized image. Raced against a timeout so a
-			// single broken file cannot freeze the pet forever.
-			await Promise.race([
-				back.decode(),
-				new Promise((_, reject) => setTimeout(() => reject(new Error("decode timeout")), 4000)),
+			const decoded = await Promise.race([
+				back.decode().then(() => true),
+				new Promise((resolve) => { this.cancelDecode = () => resolve(false); }),
+				new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error("decode timeout")), 8000); }),
 			]);
+			if (!decoded || token !== this.token || this.disposed) return false;
 		} catch (error) {
-			// A newer `show()` reuses the same back element and changes its `src`,
-			// which aborts this decode. That is not a failure — it is the normal
-			// outcome of a fast clip switch — so a superseded attempt reports nothing.
-			if (token !== this.token) return false;
-			record("clip-decode", `动画解码失败：${clipId}`, "fail", `${clip.file}: ${error?.message ?? error}`);
+			if (token === this.token) {
+				this.releaseLayer(backIndex);
+				record("clip-decode", `动画解码失败：${clipId}`, "fail", `${clip.file}: ${error?.message ?? error}`);
+			}
 			return false;
+		} finally {
+			clearTimeout(timeout);
+			if (token === this.token) this.cancelDecode = undefined;
 		}
-		if (token !== this.token) return false;
-
-		const previous = this.layers[this.front];
+		const previous = this.front;
 		back.classList.add("is-front");
-		previous.classList.remove("is-front");
+		this.layers[previous].classList.remove("is-front");
 		back.style.opacity = "1";
-		previous.style.opacity = "0";
-		this.front = 1 - this.front;
+		this.layers[previous].style.opacity = "0";
+		this.front = backIndex;
 		this.clipId = clipId;
+		this.loop = loop;
+		this.releaseLayer(previous);
 		record("clip-decode", "动画解码", "ok", `${clipId} ${clip.width}×${clip.height} ${clip.durationMs}ms`);
 		return true;
+	}
+
+	dispose() {
+		this.disposed = true;
+		this.cancelPending();
+		this.releaseLayer(this.front);
+		this.clipId = undefined;
 	}
 }
 
@@ -315,19 +323,157 @@ const MAX_SPEED = 4200;
 const DRAG_STIFFNESS = 26;
 const RELEASE_BOOST = 1.15;
 
+const BODY_BOUNDS = INDEX.bodyBounds ?? { left: 0.30, top: 0.15, right: 0.68, bottom: 0.95 };
+const IDLE_CLIP = INDEX.pools.idle[0];
+const clamp = (value, min, max) => max < min ? (min + max) / 2 : Math.min(max, Math.max(min, value));
+
+function randomIdleDelay(config = {}) {
+	const min = Number.isFinite(config.idleMinMs) ? Math.max(0, config.idleMinMs) : 4000;
+	const max = Number.isFinite(config.idleMaxMs) ? Math.max(min, config.idleMaxMs) : Math.max(min, 9000);
+	return min + Math.random() * (max - min);
+}
+/** WebAudio stays entirely in the plugin. Relay messages are NOT user gestures. */
+class ClickSound {
+	constructor() {
+		this.voices = new Set();
+		this.lastPlayAt = -Infinity;
+		this.epoch = 0;
+		this.playToken = 0;
+		this.resumeToken = 0;
+	}
+
+	describeOverlay() {
+		if (diagnosticById.has("sound-overlay")) return;
+		record("sound-overlay", "浮层音效限制", "info", "当前宿主仅支持指针中继，无法可靠解锁音频；面板内真实点击可播放原版鸭叫。");
+	}
+
+	prepare() {
+		if (state.surface === "overlay") { this.describeOverlay(); return; }
+		if (state.config?.sound?.enabled === false || this.context || this.failed) return;
+		const AudioContext = globalThis.AudioContext || globalThis.webkitAudioContext;
+		if (!AudioContext) { this.failed = true; record("sound", "点击音效", "warn", "浏览器不支持 WebAudio"); return; }
+		try {
+			this.context = new AudioContext();
+			document.addEventListener("visibilitychange", () => { if (document.hidden) this.cancelPending(); });
+			this.gain = this.context.createGain();
+			this.analyser = this.context.createAnalyser();
+			this.analyser.fftSize = 256;
+			this.gain.connect(this.analyser);
+			this.analyser.connect(this.context.destination);
+			this.applyVolume();
+			const epoch = this.epoch;
+			void this.context.decodeAudioData(base64ToBytes(PET_CLICK_SOUND_BASE64).buffer).then((buffer) => {
+				if (epoch !== this.epoch) return;
+				this.buffer = buffer;
+				let peak = 0;
+				for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
+					for (const sample of buffer.getChannelData(channel)) peak = Math.max(peak, Math.abs(sample));
+				}
+				this.decodedPeak = peak;
+				record("sound", "点击音效", "info", `原版鸭叫已解码（${buffer.duration.toFixed(2)}s），等待面板真实点击`);
+			}).catch((error) => this.fail(error));
+		} catch (error) { this.fail(error); }
+	}
+
+	fail(error) {
+		if (this.failed) return;
+		this.failed = true;
+		record("sound", "点击音效", "warn", String(error?.message ?? error));
+	}
+
+	applyVolume() {
+		const enabled = state.config?.sound?.enabled !== false;
+		const volume = clamp(state.config?.sound?.volume ?? 0.6, 0, 1);
+		if (this.gain) this.gain.gain.value = enabled ? volume * 0.5 : 0;
+		if (!enabled || volume <= 0) {
+			this.cancelPending();
+			for (const voice of this.voices) { try { voice.stop(); } catch { /* already ended */ } }
+			this.voices.clear();
+		}
+	}
+
+	unlock(event) {
+		if (state.surface === "overlay") { this.describeOverlay(); return; }
+		if (!event?.isTrusted || document.hidden || state.config?.sound?.enabled === false) return;
+		this.prepare();
+		this.applyVolume();
+		if (!this.context || this.context.state === "running" || this.resuming) return;
+		const token = ++this.resumeToken;
+		this.resuming = true;
+		try {
+			// A blocked browser can leave resume pending forever. Bound this attempt;
+			// only a future real gesture may retry, never a timer-driven autoplay loop.
+			void withTimeout(this.context.resume(), 400, "audio resume").catch((error) => {
+				if (token === this.resumeToken) record("sound", "点击音效", "info", `音频仍挂起，等待下一次真实点击：${error?.message ?? error}`);
+			}).finally(() => { if (token === this.resumeToken) this.resuming = false; });
+		} catch (error) { this.resuming = false; this.fail(error); }
+	}
+
+	play(event) {
+		this.cancelPending();
+		this.unlock(event);
+		if (state.surface === "overlay" || !event?.isTrusted || document.hidden || state.paused ||
+			state.config?.sound?.enabled === false || (state.config?.sound?.volume ?? 0.6) <= 0 || !this.context) return false;
+		const token = this.playToken;
+		const deadline = performance.now() + 180;
+		const attempt = () => {
+			this.pendingTimer = undefined;
+			if (token !== this.playToken || document.hidden || state.paused || state.config?.sound?.enabled === false ||
+				(state.config?.sound?.volume ?? 0.6) <= 0 || performance.now() > deadline) return false;
+			if (this.buffer && this.context.state === "running") return this.startVoice();
+			// One bounded slot, not a queue: resolve a quick first-click unlock/decode,
+			// but discard it if permissions/focus return after this gesture is stale.
+			this.pendingTimer = setTimeout(attempt, Math.min(16, Math.max(1, deadline - performance.now() + 1)));
+			return false;
+		};
+		return attempt();
+	}
+
+	cancelPending() {
+		this.playToken += 1;
+		clearTimeout(this.pendingTimer);
+		this.pendingTimer = undefined;
+	}
+
+	startVoice() {
+		const now = performance.now();
+		if (now - this.lastPlayAt < 60 || this.voices.size >= 2) return false;
+		const voice = this.context.createBufferSource();
+		voice.buffer = this.buffer;
+		voice.connect(this.gain);
+		voice.onended = () => { this.voices.delete(voice); voice.disconnect(); };
+		try {
+			voice.start();
+			this.voices.add(voice);
+			this.lastPlayAt = now;
+			record("sound", "点击音效", "ok", `AudioContext running；原版鸭叫输出已启动（音量 ${state.config?.sound?.volume ?? 0.6}）`);
+			return true;
+		} catch (error) { voice.disconnect(); this.fail(error); return false; }
+	}
+
+	dispose() {
+		this.cancelPending();
+		this.epoch += 1;
+		this.resumeToken += 1;
+		for (const voice of this.voices) { try { voice.stop(); } catch { /* already ended */ } }
+		this.voices.clear();
+		void this.context?.close()?.catch?.(() => {});
+	}
+}
+const clickSound = new ClickSound();
 class Pet {
 	constructor(stage, index) {
 		this.stage = stage;
 		this.index = index;
 		this.element = document.createElement("div");
 		this.element.className = "pet";
-		// Same reasoning as the frames: geometry lives inline so a missing stylesheet
-		// cannot make the pet un-findable. The stylesheet still owns cursor, shadow
-		// and the squash transform-origin.
-		this.element.style.cssText = "position:absolute;left:0;top:0;transform-origin:50% 100%";
+		this.element.style.cssText = `position:absolute;left:0;top:0;pointer-events:none;transform-origin:50% ${BODY_BOUNDS.bottom * 100}%`;
 		this.player = new ClipPlayer(this.element);
-		stage.layers.pets.append(this.element);
-
+		this.hitElement = document.createElement("div");
+		this.hitElement.className = "pet-hit";
+		this.hitElement.style.cssText = "position:absolute;left:0;top:0;pointer-events:auto;touch-action:none";
+		this.hitElement.setAttribute("aria-label", `桌宠 ${index + 1}`);
+		stage.layers.pets.append(this.element, this.hitElement);
 		this.w = 120;
 		this.h = 68;
 		this.x = 0;
@@ -338,435 +484,432 @@ class Pet {
 		this.squashVelocity = 0;
 		this.facing = 1;
 		this.dragging = false;
+		this.airborne = false;
 		this.dragTarget = { x: 0, y: 0 };
-		this.dragPointerId = undefined;
-		this.pressedAt = 0;
-		this.pressedPoint = { x: 0, y: 0 };
-		this.lastClickAt = 0;
 		this.mode = "idle";
-		this.modeUntil = 0;
 		this.clipEndsAt = 0;
-		this.pendingEndAction = undefined;
-		this.travel = undefined;
-		this.sleepSuite = undefined;
-		this.sleepPhase = undefined;
-		this.idleTimer = undefined;
+		this.behaviorToken = 0;
+		this.loading = false;
+		this.initialized = false;
+		this.disposed = false;
 	}
 
-	/** Size from the stage, so the pet scales with the panel instead of the window. */
+	get config() { return this.stage.config; }
+	get isAsleep() { return this.sleepPhase !== undefined; }
+	get isUserBusy() { return this.dragging || this.airborne; }
+
+	initialize() {
+		if (this.initialized || !this.config || this.disposed) return;
+		this.initialized = true;
+		this.enterIdle();
+	}
+
 	resize(stageWidth, stageHeight, scale) {
 		const base = Math.min(Math.max(stageWidth * 0.26, 96), 300);
-		const width = base * scale;
-		const aspect = INDEX.canvas.width / INDEX.canvas.height;
-		this.w = width;
-		this.h = width / aspect;
-		// Clamp only — placement is `layout()`'s job. Clamping here means a panel
-		// shrink can never leave a pet hanging outside the stage.
-		this.x = Math.min(Math.max(this.x, this.w / 2), Math.max(this.w / 2, stageWidth - this.w / 2));
-		this.y = Math.min(Math.max(this.y, this.h / 2), Math.max(this.h / 2, stageHeight - this.h / 2));
+		this.w = base * scale;
+		this.h = this.w / (INDEX.canvas.width / INDEX.canvas.height);
 		this.element.style.width = `${this.w}px`;
 		this.element.style.height = `${this.h}px`;
+		this.clampPosition();
+		if (this.travel) {
+			const limits = this.limits();
+			this.travel.fromX = clamp(this.travel.fromX, limits.left, limits.right);
+			this.travel.toX = clamp(this.travel.toX, limits.left, limits.right);
+		}
+		if (this.dragging) this.dragTarget = { x: this.x, y: this.y };
+		this.render();
 	}
 
-	/* ---- animation control ------------------------------------------------ */
-
-	get config() {
-		return this.stage.config;
+	/** Full canvas is painted; only these transformed visible bounds are interactive. */
+	bounds(kind = "hit") {
+		const clip = CLIP_BY_ID.get(this.player.clipId);
+		const box = kind === "body" ? BODY_BOUNDS : (clip?.bounds ?? BODY_BOUNDS);
+		// Squash is visual feedback, not a growing rigid body that pushes neighbours
+		// or permanently nudges x away from a wall on every click. The physical
+		// baseline follows world facing, never a temporary text/action clip's flip.
+		const mirror = kind === "body" ? this.facing < 0 : this.player.isMirrored(clip);
+		const left = mirror ? 1 - box.right : box.left;
+		const right = mirror ? 1 - box.left : box.right;
+		const { scaleX, scaleY } = kind === "body" ? { scaleX: 1, scaleY: 1 } : this.scales();
+		const originY = this.y + (BODY_BOUNDS.bottom - 0.5) * this.h;
+		const result = {
+			left: this.x + (left - 0.5) * this.w * scaleX,
+			right: this.x + (right - 0.5) * this.w * scaleX,
+			top: originY + (box.top - BODY_BOUNDS.bottom) * this.h * scaleY,
+			bottom: originY + (box.bottom - BODY_BOUNDS.bottom) * this.h * scaleY,
+		};
+		return { ...result, width: result.right - result.left, height: result.bottom - result.top };
 	}
 
-	enabledGroups() {
-		const groups = this.config?.animationGroups ?? {};
-		return groups;
+	scales() {
+		return { scaleX: clamp(1 - this.squash * 0.5, 0.65, 1.5), scaleY: clamp(1 + this.squash, 0.35, 1.5) };
 	}
 
-	groupAllowed(group) {
-		if (group === "balance" || group === "drag" || group === "click") return true;
-		if (group.startsWith("sleep")) return true;
-		return this.enabledGroups()[group] !== false;
+	limits() {
+		const body = this.bounds("body");
+		return { left: this.x - body.left, right: this.stage.width + this.x - body.right,
+			top: this.y - body.top, bottom: this.stage.height + this.y - body.bottom };
 	}
 
-	/** Pick one clip id at random from a list, avoiding an immediate repeat. */
-	pick(list) {
+	clampPosition() {
+		const limits = this.limits();
+		this.x = clamp(this.x, limits.left, limits.right);
+		this.y = clamp(this.y, limits.top, limits.bottom);
+	}
+
+	enabledGroups() { return this.config?.animationGroups ?? {}; }
+	groupAllowed(group) { return this.enabledGroups()[group] !== false; }
+	pick(list = []) {
 		const candidates = list.filter((id) => id !== this.lastClipId);
 		const pool = candidates.length > 0 ? candidates : list;
 		return pool[Math.floor(Math.random() * pool.length)];
 	}
 
-	playOnce(clipId, onEnd) {
-		if (!clipId) {
-			// Every pool can be empty if a future index has fewer clips; falling back to
-			// idle is also what keeps the ambient timer armed, so a missing clip cannot
-			// leave the pet frozen on its previous frame forever.
-			this.enterIdle();
-			return;
-		}
-		this.lastClipId = clipId;
-		void this.player.show(clipId);
-		const clip = CLIP_BY_ID.get(clipId);
-		const duration = clipDurationMs(clip) ?? 1200;
-		this.clipEndsAt = performance.now() + duration;
-		this.pendingEndAction = onEnd;
-	}
-
-	playLoop(clipId) {
-		if (!clipId) return;
-		this.lastClipId = clipId;
-		void this.player.show(clipId);
+	/** All interruptions use one cancellation path; no old callback owns x later. */
+	clearBehavior({ wake = true } = {}) {
+		clearTimeout(this.idleTimer);
+		this.idleTimer = undefined;
+		this.behaviorToken += 1;
+		this.player.cancelPending();
 		this.clipEndsAt = 0;
 		this.pendingEndAction = undefined;
+		this.travel = undefined;
+		this.loading = false;
+		if (wake) { this.sleepPhase = undefined; this.sleepSuite = undefined; }
 	}
 
-	/* ---- behaviour ------------------------------------------------------- */
-
-	enterIdle(delayOverride) {
-		this.mode = this.sleepPhase ? "sleep" : "idle";
-		const idlePool = INDEX.pools.idle.filter((id) => this.groupAllowed("idle"));
-		if (idlePool.length > 0) this.playLoop(this.pick(idlePool));
-		const [min, max] = [
-			this.config?.idleMinMs ?? 4000,
-			this.config?.idleMaxMs ?? 9000,
-		];
-		const delay = delayOverride ?? min + Math.random() * Math.max(0, max - min);
-		this.scheduleAmbient(delay);
+	async playOnce(clipId, onEnd = () => this.enterIdle(), onShown) {
+		if (this.disposed) return false;
+		if (!CLIP_BY_ID.has(clipId)) { this.enterIdle(); return false; }
+		this.clearBehavior({ wake: false });
+		const token = this.behaviorToken;
+		this.mode = this.isAsleep ? "sleep" : "action";
+		this.loading = true;
+		this.lastClipId = clipId;
+		const shown = await this.player.show(clipId, { loop: false });
+		if (token !== this.behaviorToken || this.disposed) return false;
+		this.loading = false;
+		if (!shown) { this.enterIdle(); return false; }
+		// The action and travel clocks start AFTER the incoming image is decoded.
+		this.clipEndsAt = performance.now() + (clipDurationMs(CLIP_BY_ID.get(clipId)) ?? 1200);
+		this.pendingEndAction = onEnd;
+		onShown?.();
+		this.render();
+		return true;
 	}
 
-	scheduleAmbient(delay) {
+	async playLoop(clipId) {
+		if (this.disposed || !clipId) return false;
+		this.clearBehavior({ wake: false });
+		const token = this.behaviorToken;
+		this.loading = true;
+		this.lastClipId = clipId;
+		const shown = await this.player.show(clipId, { loop: true });
+		if (token !== this.behaviorToken || this.disposed) return false;
+		this.loading = false;
+		this.render();
+		return shown;
+	}
+
+	enterIdle() {
+		if (this.disposed) return;
+		this.clearBehavior();
+		this.mode = "idle";
+		// The baseline is not a random performance. Even with the idle category
+		// disabled there must be a visible, breathing pet between other actions.
+		const playback = this.playLoop(IDLE_CLIP);
+		const token = this.behaviorToken;
+		void playback.then(() => {
+			if (token === this.behaviorToken && this.mode === "idle" && !this.disposed) this.scheduleAmbient();
+		});
+	}
+
+	scheduleAmbient() {
 		clearTimeout(this.idleTimer);
-		this.idleTimer = setTimeout(() => this.ambientTick(), delay);
+		this.idleTimer = undefined;
+		if (this.disposed || this.mode !== "idle" || this.loading) return;
+		this.idleTimer = setTimeout(() => {
+			this.idleTimer = undefined;
+			this.ambientTick();
+		}, randomIdleDelay(this.config));
 	}
 
-	/**
-	 * The random-action chain.
-	 *
-	 * Weights come from `config.jsonc` (`animationWeights` + per-category weights)
-	 * so this file does not own a second opinion about how often the fish should
-	 * dance: `idle` here means "stay put", `turn` flips facing, `move` travels, and
-	 * the remainder is split across the enabled action categories.
-	 */
 	ambientTick() {
-		// A one-shot is already playing (`clipEndsAt` is set): let it finish rather
-		// than cutting into it. The idle timer is re-armed when it ends.
-		if (this.mode !== "idle" || this.clipEndsAt) return;
+		if (this.disposed || this.mode !== "idle" || this.loading || this.clipEndsAt || this.isUserBusy) return;
+		if (!this.player.clipId) { this.enterIdle(); return; }
+		if (this.config?.bubbles?.autoChat !== false && !state.paused && (!this.bubble || this.bubble.hidden)) {
+			ensureBubble(this)?.show(BubbleContent.random(this.config?.bubbles?.overrides, Math.random, this.lastAmbientText), { priority: 0, automatic: true });
+			this.lastAmbientText = this.bubbleController?.content?.text ?? this.lastAmbientText;
+		}
 		const chain = INDEX.chain;
 		const roll = Math.random() * 100;
-		const turnLimit = chain.idle + chain.turn;
-		// `roam: false` pins the pet in place, so the travel slot is folded back into
-		// "do nothing" instead of being handed to a clip that would walk it away.
-		const roam = this.config?.roam !== false;
-		const moveLimit = turnLimit + (roam ? chain.move : 0);
-
-		if (roll < chain.idle) {
-			this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
+		if (roll < chain.idle) { this.scheduleAmbient(); return; }
+		if (roll < chain.idle + chain.turn) {
+			if (this.groupAllowed("turn") && INDEX.pools.turn.length) this.playFlipOnce(this.pick(INDEX.pools.turn));
+			else this.scheduleAmbient();
 			return;
 		}
-		if (roll < turnLimit && this.groupAllowed("turn") && INDEX.pools.turn.length > 0) {
-			this.playFlipOnce(this.pick(INDEX.pools.turn));
+		if (roll < chain.idle + chain.turn + chain.move) {
+			if (this.config?.roam !== false && this.groupAllowed("move") && INDEX.pools.move.length) this.startTravel(this.pick(INDEX.pools.move));
+			else this.scheduleAmbient();
 			return;
 		}
-		if (roll < moveLimit && this.groupAllowed("move") && INDEX.pools.move.length > 0) {
-			this.startTravel(this.pick(INDEX.pools.move));
-			return;
-		}
-
-		const categories = INDEX.pools.categories.filter((category) => this.groupAllowed(category.group));
-		const totalWeight = categories.reduce((sum, category) => sum + category.weight, 0);
-		if (totalWeight <= 0) {
-			this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
-			return;
-		}
-		let target = Math.random() * totalWeight;
+		const categories = INDEX.pools.categories.filter((category) => this.groupAllowed(category.group) && category.clipIds.length);
+		const total = categories.reduce((sum, category) => sum + category.weight, 0);
+		if (total <= 0) { this.scheduleAmbient(); return; }
+		let target = Math.random() * total;
 		for (const category of categories) {
 			target -= category.weight;
 			if (target > 0) continue;
-			const pool = category.clipIds.filter((id) => {
-				const clip = CLIP_BY_ID.get(id);
-				// `noMirror` clips carry text: playing them mirrored would show reversed
-				// characters, so they are skipped while the pet faces left.
-				return clip && !(clip.noMirror && this.facing < 0);
-			});
-			if (pool.length === 0) break;
-			this.playOnce(this.pick(pool), () => this.enterIdle());
+			this.playOnce(this.pick(category.clipIds));
 			return;
 		}
-		this.scheduleAmbient(this.config?.idleMinMs ?? 4000);
+		this.scheduleAmbient();
 	}
 
-	/** A `move` clip that also translates the pet across the stage. */
 	startTravel(clipId) {
-		const clip = CLIP_BY_ID.get(clipId);
+		if (this.isUserBusy || this.disposed) return;
+		this.sleepPhase = undefined;
+		this.sleepSuite = undefined;
 		const params = { ...(INDEX.moveDefaults ?? {}), ...(INDEX.moveParams?.[clipId] ?? {}) };
-		const stageWidth = this.stage.width;
-		const scale = this.w / 462; // config.jsonc's distances assume a 462 px-wide pet
+		const scale = this.w / 462;
 		const minDist = (params.minDist ?? 60) * scale;
 		const maxDist = (params.maxDist ?? 240) * scale;
-		const margin = params.margin ?? 20;
 		const distance = minDist + Math.random() * Math.max(0, maxDist - minDist);
-		const roomRight = stageWidth - margin - (this.x + this.w / 2);
-		const roomLeft = this.x - this.w / 2 - margin;
+		const body = this.bounds("body");
+		const margin = (params.margin ?? 20) * scale;
+		const roomRight = Math.max(0, this.stage.width - margin - body.right);
+		const roomLeft = Math.max(0, body.left - margin);
 		let direction = Math.random() < 0.5 ? -1 : 1;
 		if (roomRight < distance && roomLeft > roomRight) direction = -1;
 		else if (roomLeft < distance && roomRight > roomLeft) direction = 1;
-		const reachable = Math.min(distance, direction < 0 ? roomLeft : roomRight);
-		if (reachable < 8) {
-			// Nowhere to go: treat it as a plain one-shot rather than sliding into a wall.
-			this.playOnce(clipId, () => this.enterIdle());
-			return;
-		}
-		const durationMs = clipDurationMs(clip) ?? 2000;
-		this.travel = {
-			fromX: this.x,
-			toX: this.x + direction * reachable,
-			startedAt: performance.now(),
-			durationMs,
-			leadMs: (params.leadSec ?? 2) * 1000,
-			tailMs: (params.tailSec ?? 2) * 1000,
-		};
+		const reachable = Math.max(0, Math.min(distance, direction < 0 ? roomLeft : roomRight));
 		this.setFacing(direction);
-		this.playOnce(clipId, () => {
-			this.travel = undefined;
-			this.enterIdle();
+		this.vx = 0;
+		this.playOnce(clipId, () => this.enterIdle(), () => {
+			if (reachable < 8) return;
+			const limits = this.limits();
+			this.travel = { fromX: this.x, toX: clamp(this.x + direction * reachable, limits.left, limits.right),
+				startedAt: performance.now(), durationMs: clipDurationMs(CLIP_BY_ID.get(clipId)) ?? 2000,
+				leadMs: (params.leadSec ?? 2) * 1000, tailMs: (params.tailSec ?? 2) * 1000 };
 		});
 	}
 
-		/** Play `clipId` once and flip the pet's facing when it finishes. */
 	playFlipOnce(clipId) {
-		this.playOnce(clipId, () => {
-			this.setFacing(this.facing < 0 ? 1 : -1);
-			this.enterIdle();
-		});
+		this.playOnce(clipId, () => { this.setFacing(-this.facing); this.enterIdle(); });
 	}
-
 	setFacing(facing) {
 		this.facing = facing < 0 ? -1 : 1;
 		this.player.setFacing(this.facing);
 	}
 
-	/* ---- interaction ----------------------------------------------------- */
-
 	onPointerDown(event) {
-		if (event.button !== undefined && event.button !== 0) return;
+		if (this.disposed || this.dragging || (event.button !== undefined && event.button !== 0)) return;
+		clickSound.unlock(event);
+		this.clearBehavior();
+		this.airborne = false;
 		this.dragging = true;
 		this.dragPointerId = event.pointerId;
 		this.pressedAt = performance.now();
 		this.pressedPoint = { x: event.clientX, y: event.clientY };
-		// Grab point relative to the pet's centre, so the fish keeps its offset under
-		// the cursor instead of snapping its middle to the fingertip.
+		this.maxDragDistance = 0;
+		this.pointerSamples = [{ x: event.clientX, y: event.clientY, time: this.pressedAt }];
+		this.lastMovedAt = this.pressedAt;
 		const rect = this.stage.root.getBoundingClientRect();
-		this.dragOffset = {
-			x: event.clientX - rect.left - this.x,
-			y: event.clientY - rect.top - this.y,
-		};
+		this.dragOffset = { x: event.clientX - rect.left - this.x, y: event.clientY - rect.top - this.y };
 		this.dragTarget = { x: this.x, y: this.y };
-		// `setPointerCapture` throws `NotFoundError` for a pointer id the browser does
-		// not consider active (synthetic events, a pointer already released). Capture
-		// is an optimisation — the pet tracks the pointer either way — so a failure
-		// here must not abort the drag that just started.
-		try {
-			this.element.setPointerCapture?.(event.pointerId);
-		} catch {
-			/* capture unavailable */
-		}
+		try { this.hitElement.setPointerCapture?.(event.pointerId); } catch { /* relayed or cancelled pointer */ }
 		this.element.classList.add("is-dragging");
-		clearTimeout(this.idleTimer);
+		this.hitElement.classList.add("is-dragging");
 		this.mode = "drag";
-		const dragPool = INDEX.pools.drag.filter(() => this.groupAllowed("drag"));
-		if (dragPool.length > 0) this.playLoop(this.pick(dragPool));
+		const clip = this.groupAllowed("drag") ? this.pick(INDEX.pools.drag) : IDLE_CLIP;
+		void this.playLoop(clip || IDLE_CLIP);
 		this.vx = 0;
 		this.vy = 0;
 	}
 
 	onPointerMove(event) {
 		if (!this.dragging || event.pointerId !== this.dragPointerId) return;
+		const now = performance.now();
+		const previous = this.pointerSamples.at(-1);
+		if (!previous || event.clientX !== previous.x || event.clientY !== previous.y) this.lastMovedAt = now;
+		this.pointerSamples.push({ x: event.clientX, y: event.clientY, time: now });
+		this.pointerSamples = this.pointerSamples.filter((sample) => now - sample.time <= 120).slice(-32);
+		this.maxDragDistance = Math.max(this.maxDragDistance, Math.hypot(event.clientX - this.pressedPoint.x, event.clientY - this.pressedPoint.y));
+		if (this.maxDragDistance >= 6 && !this.grabBubbleShown) {
+			this.grabBubbleShown = true;
+			this.bubbleController?.close();
+			showBubble("被你抓住啦！", { pet: this, durationMs: 1800 });
+		}
 		const rect = this.stage.root.getBoundingClientRect();
-		this.dragTarget.x = Math.min(
-			Math.max(event.clientX - rect.left - (this.dragOffset?.x ?? 0), this.w / 2),
-			Math.max(this.w / 2, this.stage.width - this.w / 2),
-		);
-		this.dragTarget.y = Math.min(
-			Math.max(event.clientY - rect.top - (this.dragOffset?.y ?? 0), this.h / 2),
-			Math.max(this.h / 2, this.stage.height - this.h / 2),
-		);
+		const limits = this.limits();
+		this.dragTarget = {
+			x: clamp(event.clientX - rect.left - this.dragOffset.x, limits.left, limits.right),
+			y: clamp(event.clientY - rect.top - this.dragOffset.y, limits.top, limits.bottom),
+		};
+	}
+
+	finishPointer() {
+		this.dragging = false;
+		try { this.hitElement.releasePointerCapture?.(this.dragPointerId); } catch { /* not captured */ }
+		this.dragPointerId = undefined;
+		this.grabBubbleShown = false;
+		this.element.classList.remove("is-dragging");
+		this.hitElement.classList.remove("is-dragging");
+		if (state.overlayPet === this) state.overlayPet = undefined;
+		this.mode = "idle";
 	}
 
 	onPointerUp(event) {
 		if (!this.dragging || event.pointerId !== this.dragPointerId) return;
-		this.dragging = false;
-		try {
-			this.element.releasePointerCapture?.(event.pointerId);
-		} catch {
-			/* capture was never acquired */
-		}
-		this.element.classList.remove("is-dragging");
-		const elapsed = performance.now() - this.pressedAt;
-		const travel = Math.hypot(event.clientX - this.pressedPoint.x, event.clientY - this.pressedPoint.y);
-
-		if (travel < 6 && elapsed < 400) {
-			this.handleClick();
+		this.onPointerMove(event);
+		const now = performance.now();
+		this.finishPointer();
+		if (this.maxDragDistance < 6 && now - this.pressedAt < 400) {
+			this.vx = 0;
+			this.vy = 0;
+			this.handleClick(event);
 			return;
 		}
-		// Thrown: keep most of the pointer velocity so the fish flies the way it was flicked.
-		this.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, this.vx * RELEASE_BOOST));
-		this.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, this.vy * RELEASE_BOOST));
-		this.sleepPhase = undefined;
-		this.enterIdle(300);
+		this.x = this.dragTarget.x;
+		this.y = this.dragTarget.y;
+		const first = this.pointerSamples[0];
+		const last = this.pointerSamples.at(-1);
+		const seconds = Math.max(0.025, (last.time - first.time) / 1000);
+		const moving = this.maxDragDistance >= 12 && now - this.lastMovedAt < 80;
+		this.vx = moving ? clamp((last.x - first.x) / seconds * RELEASE_BOOST, -MAX_SPEED, MAX_SPEED) : 0;
+		this.vy = moving ? clamp((last.y - first.y) / seconds * RELEASE_BOOST, -MAX_SPEED, MAX_SPEED) : 0;
+		this.airborne = moving || this.y < this.limits().bottom - 1;
+		this.enterIdle();
+		showBubble(moving ? "出发！" : "稳稳放好。", { pet: this, durationMs: 2000 });
 	}
 
-	handleClick() {
-		const now = performance.now();
-		const isDouble = now - this.lastClickAt < 320;
-		this.lastClickAt = now;
+	onPointerCancel(event) {
+		if (!this.dragging || (event?.pointerId !== undefined && event.pointerId !== this.dragPointerId)) return;
+		this.finishPointer();
+		this.vx = 0;
+		this.vy = 0;
+		this.airborne = false;
+		this.enterIdle();
+	}
+
+	handleClick(event) {
+		this.clearBehavior();
+		this.mode = "idle";
 		this.squash = -Math.max(0.1, this.config?.clickSquash ?? 0.35);
 		this.squashVelocity = 0;
-
-		if (isDouble) {
-			// Second click inside the double-click window: launch upward instead of
-			// playing a second reaction. Doing both would look like a stutter.
-			this.vy = -Math.max(900, GRAVITY * 0.42);
-			this.vx += (Math.random() - 0.5) * 260;
-			this.playOnce(this.pick(INDEX.pools.click), () => this.enterIdle());
-			return;
-		}
-
-		const clickPool = INDEX.pools.click.filter(() => this.groupAllowed("click"));
-		if (clickPool.length > 0) this.playOnce(this.pick(clickPool), () => this.enterIdle());
-		else this.enterIdle(600);
+		const bubble = ensureBubble(this);
+		const view = currentBalanceView();
+		bubble?.updateData(view.snapshot, view.ledger);
+		const repeatedHomeClick = this.config?.bubbles?.clickMode === "home" && this.lastHomeClickAt !== undefined && performance.now() - this.lastHomeClickAt < 320;
+		this.lastHomeClickAt = performance.now();
+		if (repeatedHomeClick) bubble?.close();
+		else bubble?.interact();
+		void refreshBalance(false);
+		clickSound.play(event);
+		const pool = this.groupAllowed("click") ? INDEX.pools.click : [];
+		if (pool.length) this.playOnce(this.pick(pool));
+		else this.enterIdle();
 	}
 
 	setSleeping(sleeping) {
-		const suites = INDEX.pools.sleep ?? [];
-		const suite = suites[Math.floor(Math.random() * suites.length)];
+		if (this.isUserBusy) return;
+		const endPool = this.sleepSuite?.end ?? [];
+		const wasAsleep = this.isAsleep;
+		this.clearBehavior();
 		if (!sleeping) {
-			if (!this.sleepPhase) return;
-			const endPool = this.sleepSuite?.end ?? [];
-			this.sleepPhase = undefined;
-			this.sleepSuite = undefined;
-			if (endPool.length > 0) this.playOnce(this.pick(endPool), () => this.enterIdle());
+			if (wasAsleep && endPool.length) this.playOnce(this.pick(endPool));
 			else this.enterIdle();
 			return;
 		}
-		if (!suite) return;
+		const suites = INDEX.pools.sleep ?? [];
+		const suite = suites[Math.floor(Math.random() * suites.length)];
+		if (!suite) { this.enterIdle(); return; }
 		this.sleepSuite = suite;
 		this.sleepPhase = "start";
-		clearTimeout(this.idleTimer);
 		this.mode = "sleep";
-		const startPool = suite.start ?? [];
-		if (startPool.length === 0) {
-			this.beginSleepLoop();
-			return;
-		}
-		this.playOnce(this.pick(startPool), () => this.beginSleepLoop());
+		if (suite.start?.length) this.playOnce(this.pick(suite.start), () => this.beginSleepLoop());
+		else this.beginSleepLoop();
 	}
 
 	beginSleepLoop() {
-		const pool = this.sleepSuite?.loop ?? [];
 		this.sleepPhase = "loop";
 		this.mode = "sleep";
-		if (pool.length > 0) this.playLoop(this.pick(pool));
-		else this.playLoop(this.lastClipId);
+		void this.playLoop(this.pick(this.sleepSuite?.loop) || IDLE_CLIP);
 	}
-
-	get isAsleep() {
-		return this.sleepPhase !== undefined;
-	}
-
-	/* ---- physics --------------------------------------------------------- */
 
 	update(dt) {
-		const config = this.stage.config;
-		const gravity = GRAVITY * (config?.gravity ?? 1) * (this.mode === "sleep" ? 1 : 1);
+		const config = this.config;
+		const gravity = GRAVITY * (config?.gravity ?? 1);
 		const bounce = config?.bounce ?? 0.55;
 		const friction = config?.friction ?? 0.9;
-
+		this.applySquashSpring(dt);
 		if (this.dragging) {
-			const previousX = this.x;
-			const previousY = this.y;
-			// Critically damped follow: the pet trails the pointer without oscillating.
 			const alpha = Math.min(1, DRAG_STIFFNESS * dt);
 			this.x += (this.dragTarget.x - this.x) * alpha;
 			this.y += (this.dragTarget.y - this.y) * alpha;
-			if (dt > 0) {
-				this.vx = (this.x - previousX) / dt;
-				this.vy = (this.y - previousY) / dt;
-			}
-			this.applySquashSpring(dt);
+			this.clampPosition();
 			return;
 		}
-
 		if (this.travel) {
-			const elapsed = performance.now() - this.travel.startedAt;
-			const { leadMs, tailMs, durationMs, fromX, toX } = this.travel;
-			const movingMs = Math.max(1, durationMs - leadMs - tailMs);
-			const progress = Math.min(1, Math.max(0, (elapsed - leadMs) / movingMs));
-			// Ease-in-out so the walk starts and stops instead of teleporting.
-			const eased = progress < 0.5 ? 2 * progress * progress : 1 - 2 * (1 - progress) * (1 - progress);
+			const { leadMs, tailMs, durationMs, fromX, toX, startedAt } = this.travel;
+			const progress = clamp((performance.now() - startedAt - leadMs) / Math.max(1, durationMs - leadMs - tailMs), 0, 1);
+			const eased = progress < 0.5 ? 2 * progress * progress : 1 - 2 * (1 - progress) ** 2;
 			this.x = fromX + (toX - fromX) * eased;
 			this.vx = 0;
-		} else {
-			this.x += this.vx * dt;
-		}
-
+		} else this.x += this.vx * dt;
 		this.vy += gravity * dt;
 		this.y += this.vy * dt;
-
-		const halfW = this.w / 2;
-		const halfH = this.h / 2;
-		const floor = this.stage.height - halfH;
-		const ceiling = halfH;
-		const left = halfW;
-		const right = this.stage.width - halfW;
-
-		if (this.y > floor) {
-			this.y = floor;
-			if (Math.abs(this.vy) > 90) this.vy = -this.vy * bounce;
-			else this.vy = 0;
+		const limits = this.limits();
+		if (this.y >= limits.bottom) {
+			this.y = limits.bottom;
+			this.vy = Math.abs(this.vy) > 90 ? -Math.abs(this.vy) * bounce : 0;
 			this.vx *= Math.pow(friction, dt * 60);
 			if (Math.abs(this.vx) < 4) this.vx = 0;
 		}
-		if (this.y < ceiling) {
-			this.y = ceiling;
-			this.vy = Math.abs(this.vy) * bounce;
+		if (this.y < limits.top) { this.y = limits.top; this.vy = Math.abs(this.vy) * bounce; }
+		if (this.x < limits.left) { this.x = limits.left; this.vx = Math.abs(this.vx) * bounce; }
+		if (this.x > limits.right) { this.x = limits.right; this.vx = -Math.abs(this.vx) * bounce; }
+		this.clampPosition();
+		if (this.airborne && Math.abs(this.vx) < 4 && Math.abs(this.vy) < 4) {
+			this.airborne = false;
+			if (this.mode === "idle") this.scheduleAmbient();
 		}
-		if (this.x < left) {
-			this.x = left;
-			this.vx = Math.abs(this.vx) * bounce;
-		}
-		if (this.x > right) {
-			this.x = right;
-			this.vx = -Math.abs(this.vx) * bounce;
-		}
-
-		this.applySquashSpring(dt);
 	}
 
 	applySquashSpring(dt) {
-		// A spring, not a lerp: a plain decay cannot overshoot, and the overshoot is
-		// what makes the squash read as jelly rather than as a slow resize.
-		const stiffness = 260;
-		const damping = 18;
-		this.squashVelocity += (-stiffness * this.squash - damping * this.squashVelocity) * dt;
+		this.squashVelocity += (-260 * this.squash - 18 * this.squashVelocity) * dt;
 		this.squash += this.squashVelocity * dt;
 	}
 
-	/** Clip timers: an animated WebP cannot tell us it finished. */
 	tickClipTimer(now) {
-		if (this.mode === "drag" || this.sleepPhase === "loop") return;
-		if (!this.clipEndsAt || now < this.clipEndsAt) return;
+		if (this.dragging || this.sleepPhase === "loop" || !this.clipEndsAt || now < this.clipEndsAt) return;
 		const action = this.pendingEndAction;
 		this.clipEndsAt = 0;
 		this.pendingEndAction = undefined;
-		if (action) action();
+		this.travel = undefined;
+		action?.();
 	}
 
 	render() {
-		const scaleY = 1 + this.squash;
-		const scaleX = 1 - this.squash * 0.5;
-		this.element.style.transform =
-			`translate3d(${(this.x - this.w / 2).toFixed(2)}px, ${(this.y - this.h / 2).toFixed(2)}px, 0) ` +
-			`scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
+		const { scaleX, scaleY } = this.scales();
+		this.element.style.transform = `translate3d(${this.x - this.w / 2}px, ${this.y - this.h / 2}px, 0) scale(${scaleX}, ${scaleY})`;
+		const hit = this.bounds();
+		this.hitElement.style.transform = `translate3d(${hit.left}px, ${hit.top}px, 0)`;
+		this.hitElement.style.width = `${hit.width}px`;
+		this.hitElement.style.height = `${hit.height}px`;
+		positionBubble(this);
 	}
 
 	dispose() {
-		clearTimeout(this.idleTimer);
+		this.disposed = true;
+		this.finishPointer();
+		this.clearBehavior();
+		this.player.dispose();
+		this.bubbleController?.destroy();
+		this.bubbleController = undefined;
+		this.bubble = undefined;
+		this.hitElement.remove();
 		this.element.remove();
 	}
 }
@@ -778,6 +921,11 @@ class Pet {
 const state = {
 	config: undefined,
 	balance: undefined,
+	ledger: undefined,
+	balanceApiStatus: "loading",
+	activeAccountIds: [],
+	localNotices: [],
+	stopped: false,
 	hud: undefined,
 	ready: false,
 	paused: false,
@@ -785,27 +933,21 @@ const state = {
 	frameCount: 0,
 	fps: 0,
 	balanceTier: undefined,
-	balanceBubbleAt: 0,
-	/**
-	 * `"overlay"` means the view was mounted in the host's full-viewport transparent
-	 * layer rather than inside a dock panel. The difference is not cosmetic: in
-	 * overlay mode the iframe is click-through, so DOM pointer events never arrive
-	 * and interaction has to come from the host's `overlay.pointer` relay instead.
-	 */
+	/** Surface and overlay pointer relay remain unrelated to balance acquisition. */
 	surface: "panel",
-	/** The host's `narrafork.overlay` API, when this host exposes it. */
 	overlayApi: undefined,
-	/** Which pet currently owns the relayed pointer gesture. */
 	overlayPet: undefined,
 };
 
 const stage = {
+	get config() { return state.config; },
+	refresh: () => fetchState(),
+	sound: clickSound,
 	root: undefined,
 	layers: {},
 	pets: [],
 	width: 0,
 	height: 0,
-	bubbleTimer: undefined,
 	menu: undefined,
 	rafId: 0,
 	emergencyStop: false,
@@ -859,7 +1001,7 @@ function buildDom() {
 	// The stage must fill the iframe with or without `stage.css`. Without this floor,
 	// a stylesheet that 404s or arrives after the script leaves the stage at whatever
 	// height its emptied body has — which is zero, and zero is silent.
-	root.style.cssText = "position:relative;width:100%;height:100%;overflow:hidden";
+	root.style.cssText = "position:relative;width:100%;height:100%;overflow:hidden;pointer-events:none";
 
 	const background = document.createElement("div");
 	background.className = "pet-background";
@@ -868,22 +1010,17 @@ function buildDom() {
 
 	const pets = document.createElement("div");
 	pets.className = "pet-layer";
-	pets.style.cssText = "position:absolute;inset:0";
-
-	const bubble = document.createElement("div");
-	bubble.className = "pet-bubble";
-	bubble.hidden = true;
-	bubble.style.position = "absolute";
+	pets.style.cssText = "position:absolute;inset:0;pointer-events:none";
 
 	const hud = document.createElement("div");
 	hud.className = "pet-hud";
 	hud.hidden = true;
 	hud.style.position = "absolute";
 
-	root.append(background, pets, bubble, hud);
+	root.append(background, pets, hud);
 	document.body.replaceChildren(root);
 	stage.root = root;
-	stage.layers = { background, pets, bubble, hud };
+	stage.layers = { background, pets, hud };
 	return root;
 }
 
@@ -897,70 +1034,68 @@ function layout() {
 	const previousHeight = stage.height;
 	stage.width = Math.max(1, Math.floor(rect.width));
 	stage.height = Math.max(1, Math.floor(rect.height));
-
 	const config = state.config ?? {};
-	const target = Math.max(1, Math.min(6, config.count ?? 1));
+	const target = clamp(Math.floor(config.count ?? 1), 1, 6);
 	while (stage.pets.length < target) {
 		const pet = new Pet(stage, stage.pets.length);
 		stage.pets.push(pet);
 		bindPet(pet);
 	}
-	while (stage.pets.length > target) {
-		stage.pets.pop()?.dispose();
-	}
-
+	while (stage.pets.length > target) stage.pets.pop().dispose();
 	for (const [index, pet] of stage.pets.entries()) {
-		if (!pet.placed) {
-			// A pet created after the stage already had a size (i.e. the user raised the
-			// count) never saw the initial-placement branch, so it would otherwise sit at
-			// x = 0 — or, after the proportional reflow below, at the exact centre on top
-			// of pet 0. Placing by index is what makes "count: 2" mean two fish side by
-			// side rather than one fish drawn twice.
-			pet.x = (stage.width * (index + 1)) / (target + 1);
-			pet.y = stage.height - pet.h / 2;
-			pet.placed = true;
-		} else if (previousWidth !== stage.width || previousHeight !== stage.height) {
-			// Proportional reflow after a resize: keeping absolute pixels would push pets
-			// outside a shrunken panel, and a resize should not teleport them.
-			pet.x = (pet.x / previousWidth) * stage.width;
-			pet.y = (pet.y / previousHeight) * stage.height;
+		if (pet.placed && previousWidth > 0 && previousHeight > 0 &&
+			(previousWidth !== stage.width || previousHeight !== stage.height)) {
+			pet.x = pet.x / previousWidth * stage.width;
+			pet.y = pet.y / previousHeight * stage.height;
 		}
 		pet.resize(stage.width, stage.height, config.scale ?? 1);
+		if (!pet.placed) {
+			pet.x = stage.width * (index + 1) / (target + 1);
+			pet.y = pet.limits().bottom;
+			pet.placed = Boolean(state.config);
+			pet.clampPosition();
+		}
+		pet.initialize();
+		pet.render();
 	}
-
-	// Recorded here rather than once at boot: a panel that opens at 0×0 and grows a
-	// moment later is a normal Dockview start-up, and the self-check should show the
-	// size it settled on, not the size it briefly had.
-	record(
-		"size",
-		"舞台尺寸",
-		stage.width > 32 && stage.height > 32 ? "ok" : "warn",
-		`${stage.width}×${stage.height}（视口 ${window.innerWidth}×${window.innerHeight}）`,
-	);
-	// A resize or a pet-count change moves the union rectangle, and in overlay mode the
-	// host's hit region has to follow immediately or clicks land on the wrong place.
+	record("size", "舞台尺寸", stage.width > 32 && stage.height > 32 ? "ok" : "warn",
+		`${stage.width}×${stage.height}（视口 ${window.innerWidth}×${window.innerHeight}）`);
 	publishOverlayBounds(true);
 }
 
 function bindPet(pet) {
-	// In overlay mode the iframe is click-through by construction, so no DOM pointer
-	// event can ever reach these listeners; input arrives through `overlay.pointer`
-	// instead (see `installOverlayRelay`). Binding them anyway would be dead code
-	// that makes the next reader think dragging works natively here.
 	if (state.surface === "overlay") return;
-	pet.element.addEventListener("pointerdown", (event) => {
+	pet.hitElement.addEventListener("pointerdown", (event) => {
 		event.preventDefault();
 		pet.onPointerDown(event);
 	});
-	pet.element.addEventListener("pointermove", (event) => pet.onPointerMove(event));
-	pet.element.addEventListener("pointerup", (event) => pet.onPointerUp(event));
-	pet.element.addEventListener("pointercancel", (event) => pet.onPointerUp(event));
-	pet.element.addEventListener("contextmenu", (event) => {
+	pet.hitElement.addEventListener("lostpointercapture", (event) => pet.onPointerCancel(event));
+	pet.hitElement.addEventListener("contextmenu", (event) => {
 		event.preventDefault();
-		// Stop here: the stage-level handler below opens the same menu, and letting
-		// the event bubble would open it twice.
 		event.stopPropagation();
 		openMenu(event.clientX, event.clientY, pet);
+	});
+}
+
+function cancelPointers() {
+	clickSound.cancelPending();
+	for (const pet of stage.pets) pet.onPointerCancel();
+	state.overlayPet = undefined;
+}
+
+function installPointerEvents() {
+	if (state.surface !== "overlay") {
+		// Window listeners also cover browsers where pointer capture failed. Only
+		// the owner of this pointer id reacts, even when the pointer leaves its hit box.
+		window.addEventListener("pointermove", (event) => { for (const pet of stage.pets) pet.onPointerMove(event); });
+		window.addEventListener("pointerup", (event) => { for (const pet of stage.pets) pet.onPointerUp(event); });
+		window.addEventListener("pointercancel", (event) => { for (const pet of stage.pets) pet.onPointerCancel(event); });
+	}
+	window.addEventListener("blur", cancelPointers);
+	window.addEventListener("pagehide", () => {
+		stopLoop();
+		for (const pet of stage.pets) pet.dispose();
+		clickSound.dispose();
 	});
 }
 
@@ -995,6 +1130,7 @@ function frame(now) {
 	}
 	resolveCollisions();
 	for (const pet of stage.pets) pet.render();
+	if (state.pendingBalance) maybePlayBalance();
 	// Keeps the host's hit rectangle following the pets. Self-throttling, so calling it
 	// every frame costs a few comparisons rather than a bridge round trip per frame.
 	publishOverlayBounds();
@@ -1017,14 +1153,6 @@ function frame(now) {
 	stage.rafId = requestAnimationFrame(frame);
 }
 
-/**
- * Push overlapping pets apart.
- *
- * Axis-aligned separation along the shallow axis, with half the correction each
- * and an elastic exchange on the separating axis. Not a physics engine: the pets
- * have no rotation and no stacking, and a real solver here would be visible only
- * as jitter when six of them pile into the same corner.
- */
 function resolveCollisions() {
 	if (!state.config?.collisions || stage.pets.length < 2) return;
 	for (let a = 0; a < stage.pets.length; a += 1) {
@@ -1032,25 +1160,33 @@ function resolveCollisions() {
 			const first = stage.pets[a];
 			const second = stage.pets[b];
 			if (first.dragging || second.dragging) continue;
-			const dx = second.x - first.x;
-			const dy = second.y - first.y;
-			const overlapX = (first.w + second.w) / 2 - Math.abs(dx);
-			const overlapY = (first.h + second.h) / 2 - Math.abs(dy);
+			const one = first.bounds("body");
+			const two = second.bounds("body");
+			const overlapX = Math.min(one.right, two.right) - Math.max(one.left, two.left);
+			const overlapY = Math.min(one.bottom, two.bottom) - Math.max(one.top, two.top);
 			if (overlapX <= 0 || overlapY <= 0) continue;
-			if (overlapX < overlapY) {
-				const push = (overlapX / 2) * (dx < 0 ? -1 : 1);
-				first.x -= push;
-				second.x += push;
-				const average = (first.vx + second.vx) / 2;
-				first.vx = average - Math.abs(first.vx - average) * 0.4;
-				second.vx = average + Math.abs(second.vx - average) * 0.4;
-			} else {
-				const push = (overlapY / 2) * (dy < 0 ? -1 : 1);
-				first.y -= push;
-				second.y += push;
-				const average = (first.vy + second.vy) / 2;
-				first.vy = average - Math.abs(first.vy - average) * 0.35;
-				second.vy = average + Math.abs(second.vy - average) * 0.35;
+			const horizontal = overlapX < overlapY;
+			const axis = horizontal ? "x" : "y";
+			const velocity = horizontal ? "vx" : "vy";
+			const diff = horizontal ? (two.left + two.right - one.left - one.right) : (two.top + two.bottom - one.top - one.bottom);
+			const sign = diff < 0 ? -1 : 1;
+			const push = (horizontal ? overlapX : overlapY) / 2 * sign;
+			const firstX = first.x;
+			const secondX = second.x;
+			first[axis] -= push;
+			second[axis] += push;
+			const average = (first[velocity] + second[velocity]) / 2;
+			const impulse = Math.abs(first[velocity] - second[velocity]) * 0.2;
+			first[velocity] = average - impulse * sign;
+			second[velocity] = average + impulse * sign;
+			first.clampPosition();
+			second.clampPosition();
+			// A collision must not be undone by next frame's absolute travel curve.
+			for (const [pet, oldX] of [[first, firstX], [second, secondX]]) {
+				if (!pet.travel) continue;
+				const limits = pet.limits();
+				pet.travel.fromX = clamp(pet.travel.fromX + pet.x - oldX, limits.left, limits.right);
+				pet.travel.toX = clamp(pet.travel.toX + pet.x - oldX, limits.left, limits.right);
 			}
 		}
 	}
@@ -1060,28 +1196,209 @@ function resolveCollisions() {
 /* Bubble                                                                    */
 /* -------------------------------------------------------------------------- */
 
-function showBubble(text, options = {}) {
-	const bubble = stage.layers.bubble;
-	if (!text) {
-		bubble.hidden = true;
+function currentBalanceView() {
+	const snapshot = state.balance;
+	const custom = state.config?.balance?.custom ?? {};
+	if (!snapshot) {
+		const configured = typeof custom.url === "string" && custom.url.length > 0;
+		return { snapshot: { status: configured ? "loading" : "unconfigured", loading: configured,
+			message: configured ? "正在查询第三方余额 API…" : "请先填写第三方余额 API 地址与 API Key。",
+			ok: false, stale: false, accounts: [], balances: [] }, ledger: { accounts: [] } };
+	}
+	const currency = typeof custom.currency === "string" ? custom.currency : "POINTS";
+	const sourceAccounts = Array.isArray(snapshot.accounts) ? snapshot.accounts : [];
+	const account = sourceAccounts[0];
+	if (!account) {
+		return { snapshot: { ...snapshot, label: undefined, providerId: undefined,
+			shape: currency === "POINTS" ? "points" : "money", accounts: [], balances: [] }, ledger: { accounts: [] } };
+	}
+	const selected = {
+		accountId: account.accountId,
+		currency,
+		shape: currency === "POINTS" ? "points" : "money",
+		remaining: account.remaining ?? account.totalBalance,
+		used: account.used ?? null,
+	};
+	return {
+		snapshot: {
+			ok: snapshot.ok,
+			stale: snapshot.stale === true,
+			error: snapshot.error,
+			fetchedAt: snapshot.fetchedAt,
+			shape: selected.shape,
+			accounts: [selected],
+			balances: [selected],
+		},
+		ledger: currency === "POINTS" ? { accounts: [] } : ledgerForAccounts([selected]),
+	};
+}
+
+function ledgerForAccounts(accounts) {
+	const ids = new Set(state.activeAccountIds);
+	return { ...(state.ledger ?? {}), accounts: (state.ledger?.accounts ?? []).filter((entry) => ids.has(entry.accountId)) };
+}
+
+function updateBubbleBalanceViews() {
+	const view = currentBalanceView();
+	for (const pet of stage.pets) pet.bubbleController?.updateData(view.snapshot, view.ledger);
+}
+
+function ensureBubble(pet) {
+	if (!pet || pet.disposed || typeof PetBubble === "undefined") return undefined;
+	if (!pet.bubbleController) {
+		const view = currentBalanceView();
+		pet.bubbleController = new PetBubble({ container: stage.root,
+			body: () => pet.bounds("body"), viewport: () => ({ width: stage.width, height: stage.height }),
+			config: state.config?.bubbles ?? {}, snapshot: view.snapshot, ledger: view.ledger, surface: state.surface,
+			onChange: (bubble, reason) => {
+				if (pet.activeNotice && (reason === "close" || bubble.contentId !== pet.activeNotice)) {
+					const id = pet.activeNotice; pet.activeNotice = undefined;
+					state.taskEvents?.dismiss(id);
+				}
+			},
+		});
+		pet.bubble = pet.bubbleController.element;
+		pet.bubbleController.setVisible(!state.paused);
+	}
+	return pet.bubbleController;
+}
+
+/** One finite, newest-per-id UI queue; it never changes a pet's physics. */
+function queueNotice(notice) {
+	if (!notice?.id || state.config?.bubbles?.enabled === false) return;
+	state.localNotices = state.localNotices.filter((item) => item.id !== notice.id && item.expiresAt > Date.now());
+	state.localNotices.push({ ...notice, expiresAt: notice.expiresAt ?? Date.now() + 60_000 });
+	state.localNotices.sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+	state.localNotices = state.localNotices.slice(0, 12);
+}
+
+async function startTaskEvents() {
+	if (typeof TaskEvents === "undefined" || state.stopped) return;
+	state.taskEvents = new TaskEvents({ config: state.config?.tasks ?? { enabled: true },
+		onNotice: (notice) => queueNotice({ ...notice, priority: notice.kind === "permission" ? 90 : 40,
+			durationMs: state.config?.bubbles?.noticeDurationMs ?? 8000,
+			expiresAt: Date.now() + (notice.kind === "permission" ? 120_000 : 30_000) }),
+		onClear: clearNotice,
+		onState: (status) => { state.taskState = status; renderTaskBindings(); },
+	});
+	await state.taskEvents.start();
+	state.taskEvents.setVisible(!state.paused);
+}
+
+function renderTaskBindings() {
+	const node = stage.taskStatus;
+	if (!node) return;
+	const status = state.taskEvents?.getState() ?? state.taskState;
+	node.textContent = `能力：${status?.capability ?? "检查中"}。${status?.error?.message ?? ""}\n` +
+		`当前范围：${status?.scope?.map((item) => `${item.alias || "当前对话"} (${item.narratorId})`).join("、") || "未关联，不订阅任何任务"}\n` +
+		"宿主未提供逐轮费用；当前接口不能可靠确认等待回答。关联只对本视图生效，不读取对话正文。";
+}
+
+function openTaskBindings() {
+	if (state.surface === "overlay") {
+		showBubble("浮层仅跟随宿主明确提供的当前对话；请在面板视图中设置该面板自己的任务关联。", { durationMs: 8000 });
 		return;
 	}
-	bubble.textContent = text;
-	bubble.dataset.tone = options.tone ?? "info";
-	bubble.hidden = false;
-	// Anchor above the first pet, clamped into the stage.
-	const pet = stage.pets[0];
-	if (pet) {
-		const left = Math.min(Math.max(pet.x, 90), Math.max(90, stage.width - 90));
-		bubble.style.left = `${left}px`;
-		bubble.style.top = `${Math.max(8, pet.y - pet.h / 2 - 14)}px`;
+	stage.taskPanel?.remove();
+	const panel = SDK.el("section", { class: "pet-task-bindings", role: "dialog", "aria-label": "本视图任务关联" });
+	const status = SDK.el("p", { class: "pet-task-status" });
+	stage.taskStatus = status;
+	const fields = [];
+	const scopes = state.taskEvents?.getState()?.scope ?? [];
+	for (let index = 0; index < 3; index++) {
+		const id = SDK.el("input", { placeholder: "已知 narratorId（不扫描列表）", maxlength: 160, "aria-label": `对话 ID ${index + 1}` });
+		const alias = SDK.el("input", { placeholder: "显示别名（可选）", maxlength: 60, "aria-label": `别名 ${index + 1}` });
+		id.value = scopes[index]?.narratorId ?? ""; alias.value = scopes[index]?.alias ?? "";
+		fields.push({ id, alias });
+		panel.append(SDK.el("div", { class: "pet-task-binding-row" }, [id, alias]));
 	}
-	clearTimeout(stage.bubbleTimer);
-	if (options.sticky !== true) {
-		stage.bubbleTimer = setTimeout(() => {
-			bubble.hidden = true;
-		}, options.durationMs ?? 6000);
+	const result = SDK.el("p", { role: "status" });
+	const apply = SDK.el("button", { type: "button", text: "应用本视图关联", onclick: () => {
+		const reply = state.taskEvents?.setAssociations(fields.filter((field) => field.id.value.trim()).map((field) => ({ narratorId: field.id.value.trim(), alias: field.alias.value.trim() })));
+		result.textContent = reply?.ok ? "已更新；清空三行并应用可全部取消关联。" : String(reply?.error?.message ?? reply?.error ?? "事件模块不可用");
+		renderTaskBindings();
+	} });
+	const retry = SDK.el("button", { type: "button", text: "重新检测授权", onclick: () => void state.taskEvents?.retry() });
+	const close = SDK.el("button", { type: "button", text: "关闭", onclick: () => { panel.remove(); stage.taskPanel = undefined; stage.taskStatus = undefined; } });
+	panel.prepend(SDK.el("h3", { text: "本视图任务关联" }), status);
+	panel.append(result, apply, retry, close);
+	panel.addEventListener("pointerdown", (event) => event.stopPropagation());
+	stage.root.append(panel); stage.taskPanel = panel; renderTaskBindings();
+}
+function clearNotice(id) {
+	state.localNotices = state.localNotices.filter((item) => item.id !== id);
+	for (const pet of stage.pets) {
+		if (pet.activeNotice === id) { pet.bubbleController?.close(); pet.activeNotice = undefined; }
 	}
+}
+
+function noticePet(priority = 30) {
+	return stage.pets.find((pet) => !pet.disposed && !pet.isUserBusy && !pet.isAsleep &&
+		(!pet.bubbleController || pet.bubble?.hidden || (!pet.bubbleController.scene?.startsWith?.("manual") &&
+		 !["balance", "random"].includes(pet.bubbleController.scene) && (pet.bubbleController.priority ?? 0) < priority)));
+}
+
+function deliverLocalNotices() {
+	if (state.paused || state.stopped || state.config?.bubbles?.enabled === false) return;
+	state.localNotices = state.localNotices.filter((item) => item.expiresAt > Date.now());
+	const notice = state.localNotices[0];
+	if (!notice) return;
+	const pet = noticePet(notice.priority);
+	if (!pet) return;
+	state.localNotices.shift();
+	const controller = ensureBubble(pet);
+	if (!controller) return;
+	const displayed = controller.show(notice.content ?? notice.text, { id: notice.id, priority: notice.priority ?? 30,
+		durationMs: notice.durationMs ?? state.config?.bubbles?.noticeDurationMs ?? 8000,
+		expiresAt: notice.expiresAt, automatic: true });
+	if (displayed !== false) pet.activeNotice = notice.id;
+}
+
+async function pollPersistedNotice() {
+	if (state.noticePolling || state.paused || state.stopped || state.config?.bubbles?.enabled === false || state.config?.alerts?.enabled !== true) return;
+	const accountIds = Array.isArray(state.activeAccountIds) ? state.activeAccountIds.filter((id) => typeof id === "string") : [];
+	if (!accountIds.length || !noticePet(80)) return;
+	state.noticePolling = true;
+	try {
+		const reply = await SDK.callSafe("pet-notices", { action: "claim", consumerId: state.noticeOwner, limit: 5, accountIds: accountIds.slice(0, 32) });
+		if (!reply.ok || state.paused || state.stopped || state.config?.bubbles?.enabled === false) return;
+		const notice = (reply.value?.notices ?? []).find((entry) => Date.parse(entry.expiresAt) > Date.now() && Date.parse(entry.leaseUntil) > Date.now());
+		if (!notice) return;
+		const priority = notice.kind === "budget" ? 80 : 70;
+		const target = noticePet(priority);
+		if (!target) return;
+		const controller = ensureBubble(target);
+		if (!controller) return;
+		const text = notice.kind === "budget" ? `今日已观测消费达到预算提醒阈值（${notice.currency}）` : `余额达到提醒条件（${notice.currency}）`;
+		const shown = controller.show(text, { id: notice.id, priority, automatic: true,
+			durationMs: state.config?.bubbles?.noticeDurationMs ?? 8000, expiresAt: Date.parse(notice.expiresAt) });
+		if (shown === false) { controller.queue = controller.queue.filter((entry) => entry.id !== notice.id); return; }
+		target.activeNotice = notice.id;
+		await new Promise((resolve) => setTimeout(resolve, 450));
+		if (state.paused || state.stopped || controller.element?.hidden || controller.deferred || controller.contentId !== notice.id || target.activeNotice !== notice.id) {
+			if (target.activeNotice === notice.id) controller.close();
+			return;
+		}
+		const ack = await SDK.callSafe("pet-notices", { action: "ack", consumerId: state.noticeOwner, id: notice.id, leaseToken: notice.leaseToken });
+		if ((!ack.ok || !ack.value?.acked) && target.activeNotice === notice.id) controller.close();
+	} finally { state.noticePolling = false; }
+}
+function showBubble(text, options = {}) {
+	const pet = options.pet ?? stage.pets.find((item) => !item.isUserBusy) ?? stage.pets[0];
+	if (!pet || pet.disposed) return false;
+	const controller = ensureBubble(pet);
+	if (!controller) return false;
+	if (!text) { controller.close(); return false; }
+	return controller.show(text, { id: options.id, priority: options.priority ?? 30,
+		durationMs: options.sticky ? 0 : options.durationMs,
+		automatic: options.automatic ?? false, expiresAt: options.expiresAt });
+}
+
+function positionBubble(pet) {
+	if (!pet.bubbleController) return;
+	const others = stage.pets.filter((other) => other !== pet && other.bubbleController?.rect && !other.bubble?.hidden)
+		.map((other) => other.bubbleController.rect);
+	pet.bubbleController.position(pet.bounds("body"), { width: stage.width, height: stage.height }, others);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1089,6 +1406,8 @@ function showBubble(text, options = {}) {
 /* -------------------------------------------------------------------------- */
 
 function closeMenu() {
+	stage.menuDismiss?.();
+	stage.menuDismiss = undefined;
 	stage.menu?.remove();
 	stage.menu = undefined;
 }
@@ -1105,7 +1424,12 @@ function openMenu(clientX, clientY, pet) {
 	const asleep = Boolean(pet?.isAsleep);
 	const items = [
 		{ label: "换个动作", run: () => randomAction(pet) },
-		{ label: "刷新余额", run: () => void refreshBalance(true) },
+		{ label: "刷新余额", run: () => void refreshBalance(true, { feedback: true, pet }) },
+		{ label: "关闭气泡", run: () => {
+			if (pet?.activeNotice) state.taskEvents?.dismiss(pet.activeNotice);
+			pet?.bubbleController?.close();
+		} },
+		{ label: "本视图任务关联", run: () => openTaskBindings() },
 		{
 			label: asleep ? "叫醒它" : "让它睡觉",
 			run: () => pet?.setSleeping(!asleep),
@@ -1133,39 +1457,46 @@ function openMenu(clientX, clientY, pet) {
 		menu.append(button);
 	}
 
+	stage.menu = menu;
 	stage.root.append(menu);
 	const bounds = menu.getBoundingClientRect();
 	menu.style.left = `${Math.min(clientX - rect.left, Math.max(0, stage.width - bounds.width - 4))}px`;
 	menu.style.top = `${Math.min(clientY - rect.top, Math.max(0, stage.height - bounds.height - 4))}px`;
 
 	const dismiss = (event) => {
-		if (menu.contains(event.target)) return;
-		closeMenu();
+		if (!menu.contains(event.target)) closeMenu();
+	};
+	// Register after the opening gesture; closing/replacing the menu also cancels
+	// this deferred registration and its listener instead of leaking old menus.
+	const timer = setTimeout(() => document.addEventListener("pointerdown", dismiss, true), 0);
+	stage.menuDismiss = () => {
+		clearTimeout(timer);
 		document.removeEventListener("pointerdown", dismiss, true);
 	};
-	// Deferred: the pointerup that opened the menu would otherwise immediately close it.
-	setTimeout(() => document.addEventListener("pointerdown", dismiss, true), 0);
 }
 
 function randomAction(pet) {
-	if (!pet) return;
+	if (!pet || pet.isUserBusy) return;
+	pet.clearBehavior();
 	const categories = INDEX.pools.categories.filter((category) => pet.groupAllowed(category.group));
 	const pool = categories.flatMap((category) => category.clipIds);
-	if (pool.length === 0) return;
+	if (pool.length === 0) { pet.enterIdle(); return; }
 	pet.playOnce(pet.pick(pool), () => pet.enterIdle());
 }
 
 function resetPets() {
+	cancelPointers();
 	for (const [index, pet] of stage.pets.entries()) {
-		pet.travel = undefined;
+		pet.clearBehavior();
 		pet.vx = 0;
 		pet.vy = 0;
-		pet.x = (stage.width * (index + 1)) / (stage.pets.length + 1);
-		pet.y = stage.height - pet.h / 2;
+		pet.airborne = false;
+		pet.x = stage.width * (index + 1) / (stage.pets.length + 1);
+		pet.y = pet.limits().bottom;
 		pet.setFacing(1);
-		pet.sleepPhase = undefined;
-		pet.sleepSuite = undefined;
+		pet.clampPosition();
 		pet.enterIdle();
+		pet.render();
 	}
 	showBubble("都回到原位啦", { durationMs: 2000 });
 }
@@ -1367,11 +1698,14 @@ async function detectSurface() {
 	return kind;
 }
 
-/** The pet whose sprite box contains a viewport point, topmost last. */
 function petAtPoint(x, y) {
+	const rect = stage.root.getBoundingClientRect();
+	x -= rect.left;
+	y -= rect.top;
 	for (let index = stage.pets.length - 1; index >= 0; index -= 1) {
 		const pet = stage.pets[index];
-		if (Math.abs(x - pet.x) <= pet.w / 2 && Math.abs(y - pet.y) <= pet.h / 2) return pet;
+		const hit = pet.bounds();
+		if (x >= hit.left && x <= hit.right && y >= hit.top && y <= hit.bottom) return pet;
 	}
 	return undefined;
 }
@@ -1394,7 +1728,7 @@ function installOverlayRelay() {
 		const event = {
 			clientX: x,
 			clientY: y,
-			pointerId: Number.isFinite(params.pointerId) ? params.pointerId : 1,
+			pointerId: Number.isFinite(params.pointerId) ? params.pointerId : (state.overlayPet?.dragPointerId ?? 1),
 			button: 0,
 			buttons: Number.isFinite(params.buttons) ? params.buttons : 0,
 			preventDefault() {},
@@ -1402,6 +1736,11 @@ function installOverlayRelay() {
 		};
 
 		if (params.type === "down") {
+			if (state.overlayPet?.dragging) {
+				if (event.pointerId !== state.overlayPet.dragPointerId) return;
+				// A fresh down for this same pointer proves the old up was lost.
+				state.overlayPet.onPointerCancel(event);
+			}
 			const pet = petAtPoint(x, y);
 			if (!pet) return;
 			state.overlayPet = pet;
@@ -1411,12 +1750,14 @@ function installOverlayRelay() {
 		const pet = state.overlayPet;
 		if (!pet) return;
 		if (params.type === "move") {
-			pet.onPointerMove(event);
+			if (params.buttons === 0) pet.onPointerCancel(event);
+			else pet.onPointerMove(event);
 			return;
 		}
 		if (params.type === "up" || params.type === "cancel") {
-			state.overlayPet = undefined;
-			pet.onPointerUp(event);
+			if (event.pointerId !== pet.dragPointerId) return;
+			if (params.type === "cancel") pet.onPointerCancel(event);
+			else pet.onPointerUp(event);
 			// The pet has stopped moving, so the host's hit rectangle can tighten right
 			// away instead of waiting for the next throttled publish.
 			publishOverlayBounds(true);
@@ -1427,60 +1768,32 @@ function installOverlayRelay() {
 let lastPublishedBounds;
 let lastPublishAt = 0;
 
-/**
- * Publish the rectangle the host should make clickable.
- *
- * Bounds are the union of every pet's sprite box plus a margin. The margin exists
- * for a specific reason: while a gesture is in flight the rectangle can only lag
- * behind the pet (it is published at most ~10 times a second), and anything drawn
- * outside the published rectangle would be invisible — the host clips nothing, but
- * the *hit region* is what receives the pointer, so a lagging rectangle means
- * missed clicks rather than missing pixels. A generous margin removes that.
- */
 function publishOverlayBounds(force = false) {
-	if (state.surface !== "overlay" || !state.overlayApi) return;
-	if (stage.pets.length === 0) return;
+	if (state.surface !== "overlay" || !state.overlayApi || !stage.pets.length) return;
 	const now = performance.now();
-	if (!force && now - lastPublishAt < 100) return;
-
-	let minX = Number.POSITIVE_INFINITY;
-	let minY = Number.POSITIVE_INFINITY;
-	let maxX = Number.NEGATIVE_INFINITY;
-	let maxY = Number.NEGATIVE_INFINITY;
+	// The host captures an active pointer. No large safety blanket is necessary.
+	if (!force && now - lastPublishAt < 32) return;
+	let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 	for (const pet of stage.pets) {
-		minX = Math.min(minX, pet.x - pet.w / 2);
-		minY = Math.min(minY, pet.y - pet.h / 2);
-		maxX = Math.max(maxX, pet.x + pet.w / 2);
-		maxY = Math.max(maxY, pet.y + pet.h / 2);
+		const hit = pet.bounds();
+		minX = Math.min(minX, hit.left); minY = Math.min(minY, hit.top);
+		maxX = Math.max(maxX, hit.right); maxY = Math.max(maxY, hit.bottom);
 	}
 	if (!Number.isFinite(minX)) return;
-
-	const margin = 60;
-	const rect = {
-		x: Math.floor(minX - margin),
-		y: Math.floor(minY - margin),
-		width: Math.ceil(maxX - minX + margin * 2),
-		height: Math.ceil(maxY - minY + margin * 2),
-	};
-	if (
-		!force &&
-		lastPublishedBounds &&
-		Math.abs(rect.x - lastPublishedBounds.x) < 8 &&
-		Math.abs(rect.y - lastPublishedBounds.y) < 8 &&
-		Math.abs(rect.width - lastPublishedBounds.width) < 8 &&
-		Math.abs(rect.height - lastPublishedBounds.height) < 8
-	) {
-		return;
-	}
+	const origin = stage.root.getBoundingClientRect();
+	const margin = 6;
+	const left = Math.max(0, Math.floor(minX + origin.left - margin));
+	const top = Math.max(0, Math.floor(minY + origin.top - margin));
+	const right = Math.min(window.innerWidth, Math.ceil(maxX + origin.left + margin));
+	const bottom = Math.min(window.innerHeight, Math.ceil(maxY + origin.top + margin));
+	const rect = { x: left, y: top, width: Math.max(1, right - left), height: Math.max(1, bottom - top) };
+	if (!force && lastPublishedBounds && ["x", "y", "width", "height"].every((key) => Math.abs(rect[key] - lastPublishedBounds[key]) < 2)) return;
 	lastPublishedBounds = rect;
 	lastPublishAt = now;
-	try {
-		// The answer carries the applied (clamped) rectangle and the viewport size; the
-		// stage does not need either today, but ignoring it keeps the call fire-and-forget.
-		void state.overlayApi.setBounds(rect)?.catch?.(() => {});
-	} catch {
-		// A host that stops answering must not break the render loop.
-	}
+	// Existing API accepts one rectangle only: disjoint pets' internal gap remains
+	// a host limitation. Do not pretend a rejected hit can be forwarded underneath.
+	try { void state.overlayApi.setBounds(rect)?.catch?.(() => {}); }
+	catch { /* a disconnected bridge must not break physics */ }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1488,71 +1801,110 @@ function publishOverlayBounds(force = false) {
 /* -------------------------------------------------------------------------- */
 
 async function fetchState() {
-	const result = await SDK.callSafe("pet-state");
-	if (!result.ok) {
-		record("backend", "后端命令", "fail", result.error.message);
-		return undefined;
-	}
-	record("backend", "后端命令", "ok", `pet-state 往返成功`);
-	const value = result.value ?? {};
-	if (value.config) applyConfig(value.config);
-	state.balance = value.balance ?? null;
-	maybePlayBalance();
-	return value;
+	if (state.fetchPending) return state.fetchPending;
+	state.fetchPending = (async () => {
+		const result = await SDK.callSafe("pet-state");
+		if (state.stopped) return undefined;
+		if (!result.ok) {
+			record("backend", "后端命令", "fail", result.error.message);
+			state.balanceApiStatus = "unavailable";
+			if (!state.config) updateBubbleBalanceViews();
+			return undefined;
+		}
+		record("backend", "后端命令", "ok", "pet-state 往返成功");
+		const value = result.value ?? {};
+		if (value.config) applyConfig(value.config);
+		state.balance = value.balance ?? null;
+		state.ledger = value.ledger ?? state.ledger;
+		state.activeAccountIds = Array.isArray(value.activeAccountIds) ? value.activeAccountIds.filter((id) => typeof id === "string") : [];
+		state.balanceApiStatus = state.balance ? state.balance.ok ? "ready" : state.balance.stale ? "stale" : "unavailable"
+			: value.config?.balance?.custom?.url ? "loading" : "not-configured";
+		updateBubbleBalanceViews();
+		maybePlayBalance();
+		return value;
+	})().finally(() => { state.fetchPending = undefined; });
+	return state.fetchPending;
 }
 
 function applyConfig(config) {
 	const previous = state.config;
 	state.config = config;
-	if (!previous || previous.count !== config.count || previous.scale !== config.scale) {
-		layout();
+	if (!previous || previous.count !== config.count || previous.scale !== config.scale) layout();
+	for (const pet of stage.pets) {
+		pet.initialize();
+		if (JSON.stringify(previous?.bubbles) !== JSON.stringify(config.bubbles)) pet.bubbleController?.setConfig(config.bubbles ?? {});
 	}
-	if (!previous) {
-		for (const pet of stage.pets) pet.enterIdle();
+	if (config.bubbles?.enabled === false) state.localNotices = [];
+	if (JSON.stringify(previous?.tasks) !== JSON.stringify(config.tasks)) state.taskEvents?.configure(config.tasks ?? { enabled: true });
+	const balanceConfigChanged = previous && JSON.stringify(previous.balance?.custom) !== JSON.stringify(config.balance?.custom);
+	if (balanceConfigChanged) {
+		state.balance = null;
+		state.ledger = { ...(state.ledger ?? {}), accounts: [] };
+		state.activeAccountIds = [];
+		state.balanceTier = undefined;
+		state.balanceApiStatus = config.balance?.custom?.url ? "loading" : "not-configured";
 	}
+	const waitingChanged = previous && (previous.idleMinMs !== config.idleMinMs || previous.idleMaxMs !== config.idleMaxMs ||
+		previous.roam !== config.roam || JSON.stringify(previous.animationGroups) !== JSON.stringify(config.animationGroups));
+	if (waitingChanged) {
+		for (const pet of stage.pets) {
+			if (pet.mode === "idle" && !pet.loading && !pet.clipEndsAt && !pet.isUserBusy) pet.scheduleAmbient();
+		}
+	}
+	clickSound.applyVolume();
+	clickSound.prepare();
 	applyBackground();
+	if (balanceConfigChanged) updateBubbleBalanceViews();
 }
 
-/**
- * Balance → animation + bubble.
- *
- * Only fires on a *tier change*: the numeric balance is polled repeatedly and an
- * animation on every poll would be a twitch every few seconds.
- */
+/** Keep animation tiers global, but never enqueue the host's full provider list as a bubble. */
 function maybePlayBalance() {
 	const snapshot = state.balance;
+	updateBubbleBalanceViews();
 	if (!snapshot) return;
-	if (!snapshot.ok) {
-		if (state.balanceTier !== "error") {
-			state.balanceTier = "error";
-			const text =
-				snapshot.error?.kind === "missing_secret"
-					? "还没填余额 API Key"
-					: `余额查询失败：${snapshot.error?.message ?? "未知原因"}`;
-			showBubble(text, { tone: "warn", durationMs: 8000 });
-			SDK.bridge().notifications?.show?.({ message: text, title: "桌宠" })?.catch?.(() => {});
-		}
-		return;
-	}
-	const tier = typeof snapshot.tier === "number" ? snapshot.tier : undefined;
-	if (tier === undefined) return;
-	if (state.balanceTier === tier) return;
+	if (!snapshot.ok) { state.balanceTier = "error"; state.pendingBalance = false; return; }
+	const tier = Number.isInteger(snapshot.tier) ? snapshot.tier : undefined;
+	if (tier === undefined || state.balanceTier === tier) { state.pendingBalance = false; return; }
+	const pet = stage.pets.find((item) => !item.disposed && !item.isUserBusy && !item.isAsleep && !item.loading && item.mode !== "action");
+	if (!pet) { state.pendingBalance = true; return; }
+	state.pendingBalance = false;
 	state.balanceTier = tier;
-	const pool = INDEX.pools.balance;
-	const clipId = pool[tier];
-	const pet = stage.pets[0];
-	if (pet && clipId) pet.playOnce(clipId, () => pet.enterIdle());
-	showBubble(snapshot.summary ?? "", { tone: tier >= 4 ? "warn" : "info", durationMs: 7000 });
+	const clipId = INDEX.pools.balance[tier];
+	if (clipId) pet.playOnce(clipId, () => pet.enterIdle());
 }
 
-async function refreshBalance(force) {
-	const result = await SDK.callSafe("pet-balance-refresh", { force });
-	if (!result.ok) {
-		record("balance", "余额查询", "fail", result.error.message);
-		return;
+async function refreshBalance(force = false, { feedback = false, pet } = {}) {
+	if (state.stopped) return;
+	const fingerprint = JSON.stringify(state.config?.balance?.custom ?? {});
+	if (!state.refreshPending && (force || Date.now() - state.lastRefreshAt >= 15_000)) {
+		state.lastRefreshAt = Date.now();
+		state.refreshPending = SDK.callSafe("pet-balance-refresh", { force: force === true }).then((result) => {
+			if (state.stopped) return result;
+			if (fingerprint !== JSON.stringify(state.config?.balance?.custom ?? {})) return result;
+			if (!result.ok) {
+				record("balance", "余额查询", "fail", result.error.message);
+				state.balance = { ...(state.balance ?? {}), ok: false, stale: Boolean(state.balance?.ok || state.balance?.stale), error: { message: result.error.message } };
+				state.balanceApiStatus = state.balance.stale ? "stale" : "unavailable";
+			} else {
+				state.balance = result.value?.snapshot ?? (result.value?.skipped === "not_configured" ? null : state.balance);
+				state.ledger = result.value?.ledger ?? state.ledger;
+				state.activeAccountIds = Array.isArray(result.value?.activeAccountIds) ? result.value.activeAccountIds.filter((id) => typeof id === "string") : [];
+				state.balanceApiStatus = result.value?.skipped === "not_configured" ? "not-configured"
+					: state.balance?.ok ? "ready" : state.balance?.stale ? "stale" : "unavailable";
+				record("balance", "余额查询", state.balance?.ok ? "ok" : "warn", "第三方余额 API 查询完成");
+			}
+			maybePlayBalance();
+			return result;
+		}).finally(() => { state.refreshPending = undefined; });
 	}
-	state.balance = result.value?.snapshot ?? state.balance;
-	maybePlayBalance();
+	const result = await state.refreshPending;
+	if (feedback && !state.stopped) {
+		const target = pet ?? stage.pets.find((item) => !item.isUserBusy) ?? stage.pets[0];
+		const controller = ensureBubble(target);
+		if (controller?.scene !== "random") controller?.home();
+		else queueNotice({ id: "balance-refresh-result", text: state.balance?.ok ? "余额已刷新。" : `余额刷新失败：${state.balance?.error?.message ?? "未知错误"}`, priority: 30, expiresAt: Date.now() + 30_000 });
+	}
+	return result;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1594,8 +1946,12 @@ function startVisibilityGating() {
 	const sync = () => {
 		const hidden = document.hidden;
 		state.paused = hidden || !state.intersecting;
-		if (state.paused) stopLoop();
-		else startLoop();
+		for (const pet of stage.pets) pet.bubbleController?.setVisible(!state.paused);
+		state.taskEvents?.setVisible(!state.paused);
+		if (state.paused) {
+			state.localNotices = state.localNotices.filter((notice) => notice.priority >= 70 && notice.expiresAt > Date.now());
+			cancelPointers(); stopLoop();
+		} else { startLoop(); deliverLocalNotices(); }
 	};
 	state.intersecting = true;
 	document.addEventListener("visibilitychange", sync);
@@ -1612,37 +1968,22 @@ function startVisibilityGating() {
 	}
 }
 
-/**
- * Prove the animation channel works before anything else relies on it.
- *
- * One clip, end to end: command → base64 → Blob → `decode()`. The GIF/PNG probes
- * that used to be here are gone with the asset-route assumption they were testing —
- * the host never served them either.
- */
 async function probeAssets() {
-	const first = INDEX.clips[0];
-	if (!first) {
-		record("clip-bytes", "动画数据通道", "fail", "索引为空");
-		return;
-	}
+	const first = CLIP_BY_ID.get(IDLE_CLIP) ?? INDEX.clips[0];
+	if (!first) { record("clip-bytes", "动画数据通道", "fail", "索引为空"); return; }
 	const started = performance.now();
+	let url, timeout;
+	const image = new Image();
 	try {
-		const url = await clipUrl(first.index);
-		const image = new Image();
+		url = await clipUrl(first.index);
 		image.src = url;
-		await Promise.race([
-			image.decode(),
-			new Promise((_, reject) => setTimeout(() => reject(new Error("decode timeout")), 8000)),
-		]);
-		record(
-			"clip-bytes",
-			"动画数据通道",
-			image.naturalWidth > 0 ? "ok" : "fail",
-			`${first.id} ${image.naturalWidth}×${image.naturalHeight} ${Math.round(performance.now() - started)}ms`,
-		);
-	} catch (error) {
-		record("clip-bytes", "动画数据通道", "fail", String(error?.message ?? error));
-	}
+		await Promise.race([image.decode(), new Promise((_, reject) => {
+			timeout = setTimeout(() => reject(new Error("decode timeout")), 8000);
+		})]);
+		record("clip-bytes", "动画数据通道", image.naturalWidth > 0 ? "ok" : "fail",
+			`${first.id} ${image.naturalWidth}×${image.naturalHeight} ${Math.round(performance.now() - started)}ms`);
+	} catch (error) { record("clip-bytes", "动画数据通道", "fail", String(error?.message ?? error)); }
+	finally { clearTimeout(timeout); image.removeAttribute("src"); if (url) URL.revokeObjectURL(url); }
 }
 
 async function boot() {
@@ -1654,7 +1995,7 @@ async function boot() {
 	// Right-clicking the empty part of the panel should reach the same menu as
 	// right-clicking a pet; without this the browser's own context menu appears
 	// inside the panel and there is no way back to the settings entry.
-	stage.root.addEventListener("contextmenu", (event) => {
+	document.addEventListener("contextmenu", (event) => {
 		event.preventDefault();
 		openMenu(event.clientX, event.clientY, stage.pets[0]);
 	});
@@ -1669,6 +2010,7 @@ async function boot() {
 	const env = SDK.environment();
 	record("bridge", "UI bridge", env.hasBridge ? "ok" : "fail", env.hasBridge ? "narrafork.* 可用" : "globalThis.narrafork 缺失");
 	const surfaceKind = await detectSurface();
+	installPointerEvents();
 	record(
 		"surface",
 		"承载界面",
@@ -1711,6 +2053,9 @@ async function boot() {
 
 	await probeAssets();
 	const value = await fetchState();
+	void startTaskEvents().catch((error) => {
+		state.taskState = { capability: "degraded", error: { message: String(error?.message ?? error) } };
+	});
 	record("ready", "舞台就绪", value ? "ok" : "warn", value ? `v${value.version ?? "?"}` : "后端未响应");
 
 	state.ready = true;
@@ -1760,10 +2105,22 @@ async function boot() {
 	// Slow poll: config changes made in the settings panel should reach the stage
 	// without a reload. Balance has its own, much slower, staleness check inside
 	// `pet-state`, so this interval is about settings, not about the network.
-	setInterval(() => {
+	state.stateInterval = setInterval(() => {
 		if (state.paused) return;
 		void fetchState();
 	}, 12_000);
+	state.noticeInterval = setInterval(() => {
+		deliverLocalNotices();
+		void pollPersistedNotice();
+	}, 1000);
+	window.addEventListener("pagehide", () => {
+		state.stopped = true;
+		clearInterval(state.stateInterval); clearInterval(state.noticeInterval);
+		state.taskEvents?.destroy();
+		state.localNotices = [];
+		cancelPointers(); stopLoop(); closeMenu();
+		for (const pet of stage.pets) pet.dispose();
+	}, { once: true });
 
 	globalThis.__dshPetDiagnostics = () => diagnostics.slice();
 	globalThis.__dshPetStage = stage;
@@ -1789,6 +2146,6 @@ boot().catch((error) => {
 /* Inlined build artefacts (replaced by tools/build-ui.mjs)                  */
 /* -------------------------------------------------------------------------- */
 
-// PET_ANIM_INDEX, PET_PROBE_GIF and PET_PROBE_PNG are injected ahead of this file by
+// PET_ANIM_INDEX (including bounds) and PET_CLICK_SOUND_BASE64 are injected by
 // the build; they are declared here as comments only so the dependency is greppable
 // from the stage's own source.

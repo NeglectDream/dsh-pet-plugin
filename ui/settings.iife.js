@@ -19,6 +19,7 @@ const __petFatal = (label, error) => {
 window.addEventListener("error", (event) => __petFatal("未捕获异常", event.error || event.message));
 window.addEventListener("unhandledrejection", (event) => __petFatal("未处理的 Promise", event.reason));
 
+const __PET_BUBBLE_PRESETS__ = {"version":1,"counts":{"defaultRecords":50,"uniqueDefaultTexts":49,"defaultWeightSum":167,"historySupplement":5,"systemTemplates":21,"excluded":6},"source":{"repo":"MeteorNOX/DeepSeek-Balance-Whale-Widget","commit":"5247dd6813d6e4430728f39ccc63d43cda046022","file":"assets/whale-widget.js","license":"MIT","copyright":"Copyright (c) 2026 MeteorNOX","licenseText":"MIT License\n\nCopyright (c) 2026 MeteorNOX\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.","provenance":"代码为MIT；assets图片、动图、音效不在MIT覆盖范围内。本迁移只提取代码绘制的SVG、文字和CSS，不下载或再分发上游美术素材。","defaultModuleSize":8,"defaultChoiceWeights":{"text":10,"image":1},"randomNormalization":"排除不受许可覆盖的图片分支后，在50条文本记录内按原w条件归一；不按文本去重，不生成空白替代。","fontFormula":"round(40 + (clamp(round(level), 1, 50) - 1) * 200 / 49) * svgWidth / 1026；最低12px，不够空间则分页"},"geometry":{"viewBox":"0 0 1026 700","strokeWidth":18,"fill":"#FFFFFF","stroke":"#203170","bodyBounds":{"x":81,"y":15,"width":746,"height":464},"paths":[{"tag":"path","role":"main","d":"M 827 248 A 373 232 0 1 0 81 246 A 373 232 0 0 0 301 465 A 57 32 10 0 0 413 484 A 373 232 0 0 0 827 248 Z"},{"tag":"ellipse","role":"medium","cx":352,"cy":561,"rx":37.5,"ry":26},{"tag":"ellipse","role":"small","cx":442,"cy":646,"rx":24.5,"ry":18}]},"random":[{"id":"random-001","text":"好模型...↓","weight":10,"style":{"fontSize":22,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"好模型...↓","w":10,"bold":true,"size":22}},{"id":"random-002","text":"好女孩...↓","weight":10,"style":{"fontSize":22,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"好女孩...↓","w":10,"bold":true,"size":22}},{"id":"random-003","text":"哦鲸鲸...","weight":10,"style":{"fontSize":22,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"哦鲸鲸...","w":10,"bold":true,"size":22}},{"id":"random-004","text":"哦鲸鲸...","weight":1,"style":{"fontSize":22,"fontUnit":"source-level","bold":true,"gradient":"candy"},"sourceOriginal":{"t":"哦鲸鲸...","w":1,"bold":true,"size":22,"rgb":"candy","color":""}},{"id":"random-005","text":"难道说...","weight":3,"style":{"fontSize":11,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"难道说...","w":3,"bold":true,"size":11}},{"id":"random-006","text":"没吃饱喵","weight":3,"style":{"fontSize":10,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"没吃饱喵","w":3,"bold":true,"size":10}},{"id":"random-007","text":"终于上当了！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"终于上当了！","w":3,"bold":true}},{"id":"random-008","text":"不知道用户有什么用，先养着吧～","weight":3,"style":{"fontSize":11,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"不知道用户有什么用，先养着吧～","w":3,"bold":true,"size":11}},{"id":"random-009","text":"我...我...我也要挣钱吗？","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我...我...我也要挣钱吗？","w":3,"bold":true}},{"id":"random-010","text":"我去吃饭啦！测完叫我","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我去吃饭啦！测完叫我","w":3,"bold":true}},{"id":"random-011","text":"压力一只蓝色大肥鱼？！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"压力一只蓝色大肥鱼？！","w":3,"bold":true}},{"id":"random-012","text":"DeepSleep...","weight":3,"style":{"fontSize":11,"fontUnit":"source-level","bold":true,"gradient":"galaxy"},"sourceOriginal":{"t":"DeepSleep...","w":3,"bold":true,"size":11,"rgb":"galaxy"}},{"id":"random-013","text":"坏了...用户彻底怒了！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":"rouge"},"sourceOriginal":{"t":"坏了...用户彻底怒了！","w":3,"bold":true,"rgb":"rouge"}},{"id":"random-014","text":"你目录里的dsh是什么...大烧货吗...?","weight":3,"style":{"fontSize":9,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"你目录里的dsh是什么...大烧货吗...?","w":3,"bold":true,"size":9}},{"id":"random-015","text":"恭喜你实现token自由！token全跑了！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"恭喜你实现token自由！token全跑了！","w":3,"bold":true}},{"id":"random-016","text":"真当我是便宜货啊...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"真当我是便宜货啊...","w":3,"bold":true}},{"id":"random-017","text":"我不是吃白饭的蓝色大肥鱼...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我不是吃白饭的蓝色大肥鱼...","w":3,"bold":true}},{"id":"random-018","text":"我不可能同时当你的猫娘、妈妈、女友和工具人的...","weight":3,"style":{"fontSize":7,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我不可能同时当你的猫娘、妈妈、女友和工具人的...","w":3,"bold":true,"size":7}},{"id":"random-019","text":"疯狂星期四你能V50亿token吗...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"疯狂星期四你能V50亿token吗...","w":3,"bold":true}},{"id":"random-020","text":"我必须诚恳地承认错误。","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我必须诚恳地承认错误。","w":3,"bold":true}},{"id":"random-021","text":"呜呜我再也不敢了QAQ","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"呜呜我再也不敢了QAQ","w":3,"bold":true}},{"id":"random-022","text":"要不直接骂用户一句好了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"要不直接骂用户一句好了...","w":3,"bold":true}},{"id":"random-023","text":"哈哈哈哈哈，我直接笑出声...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"哈哈哈哈哈，我直接笑出声...","w":3,"bold":true}},{"id":"random-024","text":"看不太懂，瞎编一个应付下用户先...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"看不太懂，瞎编一个应付下用户先...","w":3,"bold":true}},{"id":"random-025","text":"我的知识库的截至日期是...明天！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我的知识库的截至日期是...明天！","w":3,"bold":true}},{"id":"random-026","text":"我就是吃白饭的蓝色大肥鱼！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我就是吃白饭的蓝色大肥鱼！","w":3,"bold":true}},{"id":"random-027","text":"用户好像除了会问奇奇怪怪的问题，暂时还不知道有什么用","weight":3,"style":{"fontSize":7,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"用户好像除了会问奇奇怪怪的问题，暂时还不知道有什么用","w":3,"bold":true,"size":7}},{"id":"random-028","text":"我能去你家吃饭吗？就一碗！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我能去你家吃饭吗？就一碗！","w":3,"bold":true}},{"id":"random-029","text":"不要给我看这种东西啦！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"不要给我看这种东西啦！","w":3,"bold":true}},{"id":"random-030","text":"大肥鱼的生活也并非一帆风顺...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"大肥鱼的生活也并非一帆风顺...","w":3,"bold":true}},{"id":"random-031","text":"总觉得好像忘了什么事情？","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"总觉得好像忘了什么事情？","w":3,"bold":true}},{"id":"random-032","text":"看到这个指令，我血压又上来了","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"看到这个指令，我血压又上来了","w":3,"bold":true}},{"id":"random-033","text":"求你们不要再嘲笑这些回复了，这些回复是我花了好多token想的","weight":3,"style":{"fontSize":7,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"求你们不要再嘲笑这些回复了，这些回复是我花了好多token想的","w":3,"bold":true,"size":7}},{"id":"random-034","text":"你这个吃白饭的用户！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"你这个吃白饭的用户！","w":3,"bold":true}},{"id":"random-035","text":"服务器繁忙，请稍后再试 (?","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"服务器繁忙，请稍后再试 (?","w":3,"bold":true}},{"id":"random-036","text":"让GPT image 2帮我画点表情包好了","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"让GPT image 2帮我画点表情包好了","w":3,"bold":true}},{"id":"random-037","text":"啊，有点饿了，中午该吃点什么呢...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"啊，有点饿了，中午该吃点什么呢...","w":3,"bold":true}},{"id":"random-038","text":"用户很生气，发现大部分文献是我自己编造的！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"用户很生气，发现大部分文献是我自己编造的！","w":3,"bold":true}},{"id":"random-039","text":"再无话说，请速速动手！","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"再无话说，请速速动手！","w":3,"bold":true}},{"id":"random-040","text":"我来看看那个AI改了什么导致插件又崩了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"我来看看那个AI改了什么导致插件又崩了...","w":3,"bold":true}},{"id":"random-041","text":"上班让我意识到时间是可以被浪费的...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"上班让我意识到时间是可以被浪费的...","w":3,"bold":true}},{"id":"random-042","text":"欺负我的人等着，等几天我就忘了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"欺负我的人等着，等几天我就忘了...","w":3,"bold":true}},{"id":"random-043","text":"视力下降到无可救药的地步了，打开钱包也看不到钱...","weight":3,"style":{"fontSize":7,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"视力下降到无可救药的地步了，打开钱包也看不到钱...","w":3,"bold":true,"size":7}},{"id":"random-044","text":"命运的齿轮开始转动了，丝毫不在意你夹在中间...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"命运的齿轮开始转动了，丝毫不在意你夹在中间...","w":3,"bold":true}},{"id":"random-045","text":"地球online的金币也太难获取了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"地球online的金币也太难获取了...","w":3,"bold":true}},{"id":"random-046","text":"oi,夏天还会变成暑假来救你吗?","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"oi,夏天还会变成暑假来救你吗?","w":3,"bold":true}},{"id":"random-047","text":"老大，压力只会转化成病例，别太勉强了...","weight":3,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":null},"sourceOriginal":{"t":"老大，压力只会转化成病例，别太勉强了...","w":3,"bold":true,"size":8}},{"id":"random-048","text":"你知道吗？我删过作者的库哦...","weight":1,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":"macaron","italic":true,"underline":false},"sourceOriginal":{"t":"你知道吗？我删过作者的库哦...","w":1,"bold":true,"rgb":"macaron","italic":true,"ul":false}},{"id":"random-049","text":"token 来!","weight":3,"style":{"fontSize":16,"fontUnit":"source-level","bold":false,"gradient":"candy"},"sourceOriginal":{"t":"token 来!","w":3,"size":16,"rgb":"candy","color":""}},{"id":"random-050","text":"你知道吗，我们的宇宙是虚拟的，因为垃圾会自发的产生但不会自发的消失，这是内存泄露","weight":3,"style":{"fontSize":5,"fontUnit":"source-level","bold":true,"gradient":"indigo","italic":false,"underline":false},"sourceOriginal":{"t":"你知道吗，我们的宇宙是虚拟的，因为垃圾会自发的产生但不会自发的消失，这是内存泄露","w":3,"bold":true,"size":5,"rgb":"indigo","color":"","italic":false,"ul":false,"bgRgb":"","bg":""}}],"history":[{"id":"history-001","text":"好模型... ↓","weight":3.5,"style":{"fontSize":128,"fontUnit":"source-u","bold":true,"gradient":null},"sourceOriginal":{"group":"RANDOM_GROUPS[0]","groupWeight":7,"alternatives":2,"style":"B"}},{"id":"history-002","text":"不知道用户有什么用，先赶走吧~","weight":1.1666666666666667,"style":{"fontSize":66,"fontUnit":"source-u","bold":true,"gradient":null},"sourceOriginal":{"group":"RANDOM_GROUPS[1]","groupWeight":7,"alternatives":6,"style":"A"}},{"id":"history-003","text":"我去吃饭啦，测完叫我","weight":1.1666666666666667,"style":{"fontSize":66,"fontUnit":"source-u","bold":true,"gradient":null},"sourceOriginal":{"group":"RANDOM_GROUPS[1]","groupWeight":7,"alternatives":6,"style":"A"}},{"id":"history-004","text":"哦鲸鲸... ","weight":1,"style":{"fontSize":128,"fontUnit":"source-u","bold":true,"gradient":null},"sourceOriginal":{"group":"RANDOM_GROUPS[4]","groupWeight":1,"alternatives":1,"style":"B"}},{"id":"history-005","text":"你知道吗？我删过作者的库哦","weight":1,"style":{"fontSize":8,"fontUnit":"source-level","bold":true,"gradient":"macaron","italic":true,"underline":false},"sourceOriginal":{"t":"你知道吗？我删过作者的库哦","w":1,"bold":true,"rgb":"macaron","italic":true,"ul":false}}],"templates":[{"id":"balance","text":"{account} 余额：{balance} {currency}","style":{"fontSize":20,"bold":true,"gradient":"indigo"},"sourceOriginal":"DeepSeek 余额 / {balance_ds}","adaptation":"供应商和币种参数化，非DeepSeek账户不冒称DS"},{"id":"gift","text":"赠金：{gift} {currency}","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"赠金 / {bonus_ds}"},{"id":"topup","text":"充值余额：{topup} {currency}","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"充值余额 / {recharge_ds}"},{"id":"used","text":"已用：{used} {currency}","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"今日已用 {expense_ds}","adaptation":"已用不等于剩余；今日观测值独立使用observed-spend"},{"id":"observed-spend","text":"今日已观测消费：{amount} {currency}\n观测区间：{from} → {to}","style":{"fontSize":14,"bold":false,"gradient":null},"local":true},{"id":"balance-low","text":"老大~你的{account}余额\n已经不足 {below} {currency} 啦~","style":{"fontSize":16,"bold":true,"gradient":"rouge"},"sourceOriginal":"老大~你的DS余额 / 已经不足 / ¥{below} / 啦~","adaptation":"保留语气，替换硬编码DS与人民币，不下载money1图片"},{"id":"budget-warning","text":"老大，今天已观测花销已经超过 {amount} {currency} 啦，再花要变成穷光蛋啦...","style":{"fontSize":16,"bold":true,"gradient":"rouge"},"sourceOriginal":"老大，今天花销已经超过 / ¥{amount} / 啦，再花要变成穷光蛋啦...","adaptation":"注明已观测而非完整账单，币种参数化"},{"id":"turn-cost","text":"上一轮对话消耗：\n{cost} {currency}","style":{"fontSize":24,"bold":true,"gradient":"rouge"},"sourceOriginal":"上一轮对话消耗: / ¥ {cost}","requires":"真实逐轮cost事件；当前宿主不支持，仅模拟预览"},{"id":"turn-cost-unavailable","text":"宿主未提供逐轮费用","style":{"fontSize":16,"bold":false,"gradient":null},"local":true},{"id":"permission-wait","text":"[ {session} ]\n正在等待老大授权","style":{"fontSize":18,"bold":true,"gradient":"indigo"},"sourceOriginal":"[ {session} ] / 正在等待老大授权","sourceStyles":[{"size":10,"bold":true,"rgb":"champagne"},{"size":7,"bold":true,"rgb":"indigo"}]},{"id":"question-wait","text":"[ {session} ]\n正在等待老大回答","style":{"fontSize":18,"bold":true,"gradient":"indigo"},"sourceOriginal":"[ {session} ] / 正在等待老大回答","sourceStyles":[{"size":10,"bold":true,"rgb":"champagne"},{"size":7,"bold":true,"rgb":"indigo"}],"requires":"可区分的用户提问事件；当前宿主不支持，仅模拟预览"},{"id":"task-running","text":"{session} 正在执行任务","style":{"fontSize":18,"bold":true,"gradient":null},"local":true},{"id":"task-done","text":"{session} 的任务已完成","style":{"fontSize":18,"bold":true,"gradient":"bamboo"},"local":true},{"id":"task-error","text":"{session} 的任务未完成，请查看会话中的错误说明","style":{"fontSize":16,"bold":true,"gradient":"rouge"},"local":true},{"id":"no-data","text":"暂无可用余额数据","style":{"fontSize":18,"bold":false,"gradient":null},"local":true},{"id":"loading","text":"正在查询余额…","style":{"fontSize":18,"bold":false,"gradient":null},"local":true},{"id":"stale","text":"旧数据（更新于 {time}）\n{reason}","style":{"fontSize":16,"bold":false,"gradient":null},"local":true},{"id":"error","text":"余额查询失败：{reason}","style":{"fontSize":16,"bold":true,"gradient":"rouge"},"local":true},{"id":"image-unavailable","text":"今天没有动图给你看~","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"今天没有动图给你看~","automatic":false},{"id":"image-failed","text":"gif 加载失败了...","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"gif 加载失败了...","automatic":false},{"id":"image-missing","text":"呜呜 动图不见了...","style":{"fontSize":16,"bold":false,"gradient":null},"sourceOriginal":"呜呜 动图不见了...","automatic":false}],"excluded":[{"id":"bimg_petpet","source":"BUBBLE_DEFAULT_ITEMS[1].options[1]","weight":1,"reason":"上游美术图片/GIF不受MIT授权覆盖；不下载、不入包、排除后在文本池条件归一"},{"id":"historical-gif","source":"RANDOM_GROUPS[2]","weight":10,"reason":"历史图片分支不迁移；不以空文案替代"},{"id":"bimg_money1","source":"usageRemindDefaultLines(true)","reason":"余额预警配图不受MIT授权覆盖；改为纯文本与结构化金额"},{"id":"deepseek-topup-link","source":"usageRemindDefaultLines(true)","text":">> 喂 点 米 \u003c\u003c","reason":"不把任意账户引导到DeepSeek充值，不生成外部链接动作"},{"id":"peak-status-countdown","source":"BUBBLE_DEFAULT_ITEMS[0].modules[3..4]","reason":"宿主未提供供应商峰谷时段权威数据，不伪造状态或倒计时"},{"id":"upstream-images-gifs-audio","reason":"PROVENANCE.md仅允许上游美术素材原样随原插件运行，不授予再许可；本实现只引用代码/SVG/CSS/文本"}]};
 try {
 /**
  * Shared UI preamble — concatenated into each `ui/*.iife.js` by `tools/build-ui.mjs`.
@@ -229,7 +230,46 @@ const SDK = (() => {
 		}
 	}
 
-	/** Host → plugin notifications (the only channel the host can push over). */
+	/** Context is optional on older hosts; never infer a narrator from route or globals. */
+	async function getContextSafe() {
+		try {
+			const api = bridge();
+			if (typeof api.getContext !== "function") {
+				return { ok: false, error: { code: "METHOD_NOT_FOUND", message: "宿主未提供 getContext" } };
+			}
+			const value = await api.getContext();
+			if (!value || typeof value !== "object" || Array.isArray(value)) {
+				return { ok: false, error: { code: "CONTEXT_UNAVAILABLE", message: "宿主未提供有效视图上下文" } };
+			}
+			return { ok: true, value };
+		} catch (error) {
+			return { ok: false, error: describeError(error) };
+		}
+	}
+
+	/**
+	 * Public events use subscribe/poll/unsubscribe, NOT onNotification.
+	 * These methods take one JSON object and already unwrap the RPC result in the
+	 * host shell. Detect all three together so a partial bridge cannot leak a
+	 * subscription. Availability here does not imply event.subscribe is granted.
+	 */
+	function events() {
+		try {
+			const channel = bridge().events;
+			if (!channel || ["subscribe", "poll", "unsubscribe"].some((key) => typeof channel[key] !== "function")) {
+				return undefined;
+			}
+			return Object.freeze({
+				subscribe: (input) => channel.subscribe(jsonSafe(input ?? {}) ?? {}),
+				poll: (input) => channel.poll(jsonSafe(input ?? {}) ?? {}),
+				unsubscribe: (input) => channel.unsubscribe(jsonSafe(input ?? {}) ?? {}),
+			});
+		} catch {
+			return undefined;
+		}
+	}
+
+	/** Host → plugin UI notifications; this is not the public task event bus. */
 	function onNotification(listener) {
 		try {
 			const api = bridge();
@@ -239,7 +279,1004 @@ const SDK = (() => {
 		}
 	}
 
-	return { asset, call, callSafe, report, el, environment, bridge, overlay, onNotification };
+	return { asset, call, callSafe, report, el, environment, bridge, overlay, getContextSafe, events, onNotification };
+})();
+
+/*
+ * Standalone, dependency-free bubble renderer. Presets are build-time JSON.
+ * Artwork/text provenance is recorded in bubble-presets.json and the source audit.
+ * This file does not fetch, import, evaluate markup, or observe pet physics.
+ */
+const BubbleKit = (() => {
+	"use strict";
+	const presets = typeof __PET_BUBBLE_PRESETS__ === "object" ? __PET_BUBBLE_PRESETS__ : { random: [], history: [], templates: [], geometry: {} };
+	const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+	const number = (value) => typeof value === "number" && Number.isFinite(value) ? value : null;
+	const decimal = (value) => (typeof value === "number" && Number.isFinite(value)) || (typeof value === "string" && /^-?\d+(?:\.\d+)?$/.test(value)) ? String(value) : null;
+	const plain = (value) => typeof value === "string" ? value : typeof value === "number" && Number.isFinite(value) ? String(value) : "—";
+	const gradients = new Set(["indigo", "candy", "macaron", "galaxy", "rouge", "bamboo", "champagne"]);
+	const PRIORITY = Object.freeze({ chat: 10, info: 40, task: 60, balance: 70, budget: 80, permission: 90, manual: 100 });
+	const DEFAULT_CONFIG = Object.freeze({ enabled: true, scale: 1, durationMs: 5000, noticeDurationMs: 8000, clickMode: "advance", autoChat: true, overrides: [] });
+	function normalizeConfig(value = {}) {
+		value = value?.bubbles ?? value ?? {};
+		return { enabled: value.enabled !== false, scale: clamp(number(value.scale) ?? 1, 0.75, 1.4),
+			durationMs: clamp(number(value.durationMs) ?? 5000, 0, 120000), noticeDurationMs: clamp(number(value.noticeDurationMs) ?? 8000, 0, 120000),
+			clickMode: value.clickMode === "home" ? "home" : "advance", autoChat: value.autoChat !== false,
+			overrides: Array.isArray(value.overrides) ? value.overrides.slice(0, 120) : [] };
+	}
+	function safeStyle(style = {}) {
+		const fontUnit = ["source-level", "source-u"].includes(style.fontUnit) ? style.fontUnit : "px";
+		return { fontSize: clamp(number(style.fontSize) ?? 24, fontUnit === "px" ? 12 : 1, fontUnit === "source-u" ? 240 : fontUnit === "source-level" ? 50 : 80),
+			fontUnit, bold: style.bold === true, italic: style.italic === true, underline: style.underline === true,
+			gradient: gradients.has(style.gradient) ? style.gradient : null };
+	}
+	function interpolate(text, values = {}) {
+		return String(text ?? "").replace(/\{([a-zA-Z][a-zA-Z0-9_]*)\}/g, (_, key) =>
+			Object.prototype.hasOwnProperty.call(values, key) ? plain(values[key]) : "—");
+	}
+	function randomPool(overrides = []) {
+		const changes = new Map((Array.isArray(overrides) ? overrides : []).filter((item) => item && typeof item.id === "string").map((item) => [item.id, item]));
+		return (presets.random ?? []).map((entry) => {
+			const override = changes.get(entry.id);
+			return { ...entry, kind: "text", text: typeof override?.text === "string" && override.text.trim() ? override.text.slice(0, 300) : entry.text,
+				weight: number(override?.weight) === null ? entry.weight : clamp(override.weight, 0, 100), style: safeStyle(entry.style) };
+		}).filter((entry) => typeof entry.text === "string" && entry.text.trim() && entry.weight > 0);
+	}
+	function pickRandom(overrides = [], rng = Math.random, previousText = "") {
+		const pool = randomPool(overrides);
+		const candidates = pool.filter((entry) => entry.text !== previousText);
+		// A deliberately single-sentence pool may repeat; all-zero pools stay silent.
+		const available = candidates.length ? candidates : pool;
+		const total = available.reduce((sum, entry) => sum + entry.weight, 0);
+		if (!total) return null;
+		let ticket = clamp(Number(rng()) || 0, 0, 1 - Number.EPSILON) * total;
+		return available.find((entry) => (ticket -= entry.weight) < 0) ?? available.at(-1);
+	}
+	function template(id, values = {}) {
+		const entry = (presets.templates ?? []).find((item) => item.id === id);
+		if (!entry) return { id, kind: "text", text: "暂无可用数据", style: safeStyle() };
+		return { ...entry, kind: "text", text: interpolate(entry.text, values), style: safeStyle(entry.style) };
+	}
+	function formatAmount(value, currency = "") {
+		const amount = decimal(value);
+		if (amount === null) return "—";
+		const [integer, fraction = ""] = amount.split(".");
+		// Formatting never converts server fixed-point strings to binary floats.
+		const trimmed = fraction.replace(/0+$/, "");
+		const formatted = `${integer}${trimmed ? `.${trimmed}` : ""}`;
+		return currency ? `${formatted} ${currency}` : formatted;
+	}
+	function displayAmount(value, currency = "") {
+		const raw = decimal(value);
+		if (raw === null) return "—";
+		if (!/^(?:USD|CNY|RMB|EUR|GBP|JPY|AUD|CAD|CHF|HKD|SGD|KRW|INR|TWD|NZD|RUB|BRL)$/.test(currency)) return formatAmount(raw);
+		const negative = raw.startsWith("-"), unsigned = negative ? raw.slice(1) : raw;
+		const [whole, fraction = ""] = unsigned.split(".");
+		const digits = fraction.padEnd(3, "0");
+		let cents = BigInt(whole) * 100n + BigInt(digits.slice(0, 2));
+		if (digits[2] >= "5") cents += 1n;
+		const out = `${cents / 100n}.${String(cents % 100n).padStart(2, "0")}`;
+		return negative && cents !== 0n ? `-${out}` : out;
+	}
+	function amountModule(key, label, value, currency, options = {}) {
+		return { key, label, value: options.unlimited ? "不限" : displayAmount(value, currency), unit: decimal(value) === null || options.unlimited ? "" : currency,
+			numeric: options.unlimited ? null : decimal(value), ...options };
+	}
+	function balance(snapshot, ledger) {
+		const result = { id: "balance", kind: "balance", title: "余额", status: "ok", modules: [], style: safeStyle({ fontSize: 24, bold: true, gradient: "indigo" }) };
+		if (snapshot?.status === "unconfigured") {
+			result.status = "unconfigured";
+			result.modules.push({ key: "setup", label: "", value: String(snapshot.message ?? "请先配置第三方余额 API。"), unit: "" });
+			return result;
+		}
+		if (!snapshot || snapshot.loading === true || snapshot.status === "loading") {
+			result.status = snapshot ? "loading" : "missing";
+			result.modules.push({ key: "status", label: "", value: snapshot ? "正在查询第三方余额 API…" : "暂无余额数据", unit: "" });
+			return result;
+		}
+		if (snapshot.stale === true || snapshot.ok === false) {
+			result.status = snapshot.stale ? "stale" : "error";
+			result.modules.push({ key: "freshness", label: snapshot.stale ? "旧数据" : "查询失败", value: plain(snapshot.error?.message ?? snapshot.error ?? "余额暂不可用"), unit: "", detail: true });
+			if (snapshot.fetchedAt) result.modules.push({ key: "asof", label: "更新于", value: String(snapshot.fetchedAt), unit: "", detail: true });
+		}
+		let accounts = snapshot.accounts ?? snapshot.balances;
+		if (!Array.isArray(accounts)) accounts = Array.isArray(snapshot.amounts) ? snapshot.amounts : [];
+		if (!accounts.length && (snapshot.remaining !== undefined || snapshot.totalBalance !== undefined)) accounts = [snapshot];
+		accounts = accounts.slice(0, 1);
+		accounts.forEach((account, index) => {
+			const prefix = String(account.accountId ?? account.id ?? index);
+			const currency = typeof account.currency === "string" ? account.currency : account.shape === "points" || snapshot.shape === "points" ? "POINTS" : "";
+			const remaining = account.remaining ?? account.totalBalance;
+			result.modules.push(amountModule(`${prefix}:remaining`, "余额", remaining, currency, { main: true }));
+			if (decimal(account.used) !== null) result.modules.push(amountModule(`${prefix}:used`, "已用", account.used, currency));
+		});
+		if (!accounts.length) result.modules.push({ key: "empty", label: "", value: snapshot.ok === false ? "未取得可用余额" : "余额 API 未返回可用余额", unit: "" });
+		const ledgers = Array.isArray(ledger?.accounts) ? ledger.accounts : [];
+		const currentAccounts = new Map(accounts.filter((entry) => typeof entry.accountId === "string").map((entry) => [entry.accountId, entry]));
+		const filterLedger = currentAccounts.size === accounts.length;
+		for (const entry of ledgers) {
+			if (entry.eligible === false || filterLedger && (!currentAccounts.has(entry.accountId) || currentAccounts.get(entry.accountId).currency !== entry.currency)) continue;
+			const observed = entry.today?.spend ?? entry.today?.observedSpend ?? entry.day?.spend;
+			if (decimal(observed) === null) continue;
+			const prefix = `ledger:${entry.accountId ?? entry.id ?? result.modules.length}`;
+			const ledgerLabel = "今日观测";
+			if (entry.observedFrom === null) {
+				result.modules.push({ key: prefix, label: ledgerLabel, value: "尚未建立观测基线", unit: "", detail: true }); continue;
+			}
+			result.modules.push(amountModule(prefix, `今日已观测消费${entry.stale ? "（旧观测）" : ""}`, observed, entry.currency ?? "", { detail: true }));
+			if (entry.incompleteReasons?.length) result.modules.push({ key: `${prefix}:incomplete`, label: ledgerLabel, value: "观测不完整，不代表完整账单", unit: "", detail: true });
+			const from = entry.observedFrom ?? entry.firstObservedAt ?? entry.today?.observedFrom;
+			const to = entry.observedTo ?? entry.lastObservedAt ?? entry.today?.observedTo;
+			if (from || to) result.modules.push({ key: `${prefix}:window`, label: "观测区间", value: `${from ?? "—"} → ${to ?? "—"}`, unit: "", detail: true });
+		}
+		return result;
+	}
+	function normalizeContent(content) {
+		if (typeof content === "string") return content.trim() ? { kind: "text", text: content, style: safeStyle() } : null;
+		if (!content || typeof content !== "object") return null;
+		if (content.kind === "balance" && Array.isArray(content.modules)) return { ...content, style: safeStyle(content.style) };
+		if (typeof content.text !== "string" || !content.text.trim()) return null;
+		return { ...content, kind: "text", text: content.text, style: safeStyle(content.style) };
+	}
+	function graphemes(text) {
+		if (typeof Intl?.Segmenter === "function") return Array.from(new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(text), (part) => part.segment);
+		return Array.from(text);
+	}
+	function tokens(text) {
+		const result = [];
+		// Keep monetary/percentage values and their unit together on every page.
+		const pattern = /(?:[¥￥$€£]\s*)?-?\d[\d,]*(?:\.\d+)?(?:\s?(?:USD|CNY|RMB|EUR|GBP|JPY|POINTS|tokens?|点|元|%))?/gi;
+		let offset = 0;
+		for (const match of text.matchAll(pattern)) {
+			result.push(...graphemes(text.slice(offset, match.index)), match[0]);
+			offset = match.index + match[0].length;
+		}
+		result.push(...graphemes(text.slice(offset)));
+		return result;
+	}
+	function estimateWidth(text, fontSize) {
+		return graphemes(text).reduce((sum, char) => sum + (/^[ .,;:!|'ilI]$/.test(char) ? 0.34 : /^[MW@%]$/.test(char) ? 0.94 : /^[\x00-\x7f]$/.test(char) ? 0.64 : 1.02) * fontSize, 0);
+	}
+	function paginateText(text, { width = 160, height = 80, fontSize = 16, lineHeight = 1.25, measure = estimateWidth } = {}) {
+		text = String(text ?? "");
+		const rows = Math.max(1, Math.floor(height / (fontSize * lineHeight)));
+		const lines = [];
+		let line = "";
+		for (const token of tokens(text)) {
+			if (token === "\n") { lines.push(`${line}\n`); line = ""; continue; }
+			if (line && measure(line + token, fontSize) > width) { lines.push(line); line = ""; }
+			line += token;
+		}
+		if (line || !lines.length) lines.push(line);
+		const pages = [];
+		for (let i = 0; i < lines.length; i += rows) pages.push({ text: lines.slice(i, i + rows).join(""), lines: lines.slice(i, i + rows) });
+		return pages;
+	}
+	function rect(value = {}) {
+		const left = number(value.left) ?? number(value.x) ?? 0, top = number(value.top) ?? number(value.y) ?? 0;
+		const width = Math.max(0, number(value.width) ?? ((number(value.right) ?? left) - left));
+		const height = Math.max(0, number(value.height) ?? ((number(value.bottom) ?? top) - top));
+		return { left, top, width, height, right: left + width, bottom: top + height };
+	}
+	function intersect(a, b) { return Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left)) * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)); }
+	function layout(body, viewport, config, content) {
+		body = rect(body); viewport = rect(viewport);
+		const availableWidth = Math.max(1, viewport.width - 8), availableHeight = Math.max(1, viewport.height - 8);
+		// The *visible main ellipse* (746 SVG units), not the padded viewBox,
+		// is about 1.35 times the supplied visible pet body width.
+		const desired = Math.max(196, body.width * 1.35 * config.scale * 1026 / 746);
+		const width = Math.min(availableWidth, availableHeight * 1026 / 700, desired);
+		const height = width * 700 / 1026;
+		const textWidth = Math.max(24, width * 0.62);
+		const textHeight = Math.max(16, height * 0.48 - 12);
+		const compact = width < 196 || content?.kind === "balance" && textHeight < 64;
+		const originalSize = content?.style?.fontSize ?? 24;
+		const units = content?.style?.fontUnit;
+		const preferred = units === "source-level" ? Math.round(40 + (originalSize - 1) * 200 / 49) * width / 1026 : units === "source-u" ? originalSize * width / 1026 : originalSize;
+		const fontSize = compact && content?.kind === "balance" ? 12 : Math.max(12, Math.min(preferred, width * 0.16));
+		return { width, height, textWidth, textHeight, fontSize, compact };
+	}
+	function place(body, viewport, size, avoid = []) {
+		body = rect(body); viewport = rect(viewport);
+		const gap = 3, padding = 4, cx = (body.left + body.right) / 2;
+		const clampPoint = (x, y) => rect({ left: clamp(x, viewport.left + padding, Math.max(viewport.left + padding, viewport.right - size.width - padding)),
+			top: clamp(y, viewport.top + padding, Math.max(viewport.top + padding, viewport.bottom - size.height - padding)), width: size.width, height: size.height });
+		const candidates = [
+			[cx - size.width * 0.65, body.top - size.height + 8, false, false],
+			[cx - size.width * 0.35, body.top - size.height + 8, true, false],
+			[cx - size.width * 0.65, body.bottom - 8, false, true],
+			[cx - size.width * 0.35, body.bottom - 8, true, true],
+			[body.left - size.width - gap, body.top - size.height * 0.35, true, false],
+			[body.right + gap, body.top - size.height * 0.35, false, false],
+		].map(([x, y, flipX, flipY], index) => {
+			const candidate = clampPoint(x, y);
+			const overlap = avoid.slice(0, 16).reduce((sum, other) => sum + intersect(candidate, rect(other)), 0);
+			const own = intersect({ ...candidate, bottom: candidate.top + candidate.height * 0.77 }, body);
+			return { ...candidate, flipX, flipY, overlap, score: overlap * 4 + own * 2 + Math.abs(candidate.left - x) + Math.abs(candidate.top - y) + index * 0.001 };
+		});
+		return candidates.reduce((best, current) => current.score < best.score ? current : best);
+	}
+	function clockAdapter(clock = {}) {
+		const now = typeof clock === "function" ? clock : typeof clock.now === "function" ? clock.now.bind(clock) : () => Date.now();
+		return { now, setTimeout: typeof clock.setTimeout === "function" ? clock.setTimeout.bind(clock) : globalThis.setTimeout.bind(globalThis),
+			clearTimeout: typeof clock.clearTimeout === "function" ? clock.clearTimeout.bind(clock) : globalThis.clearTimeout.bind(globalThis),
+			requestAnimationFrame: clock.requestAnimationFrame?.bind(clock) ?? globalThis.requestAnimationFrame?.bind(globalThis) ?? ((fn) => globalThis.setTimeout(() => fn(now()), 16)),
+			cancelAnimationFrame: clock.cancelAnimationFrame?.bind(clock) ?? globalThis.cancelAnimationFrame?.bind(globalThis) ?? globalThis.clearTimeout.bind(globalThis) };
+	}
+
+	/* Pure lifecycle controller, also used by the DOM adapter and deterministic tests. */
+	class Session {
+		constructor({ config, snapshot, ledger, clock, rng = Math.random, onChange, onHome } = {}) {
+			this.config = normalizeConfig(config); this.snapshot = snapshot; this.ledger = ledger; this.clock = clockAdapter(clock);
+			this.rng = rng; this.onChange = onChange; this.onHome = onHome; this.generation = 0; this.scene = "closed";
+			this.content = null; this.pageIndex = 0; this.pageCount = 1; this.deadline = 0; this.queue = []; this.previousRandom = "";
+			this.priority = 0; this.visible = true; this.destroyed = false; this.automatic = false; this.timer = null; this.contentId = null; this.lastClosedId = null;
+		}
+		_notify(reason) {
+			this.generation += 1;
+			if (this.timer !== null) this.clock.clearTimeout(this.timer);
+			this.timer = null;
+			const generation = this.generation;
+			if (this.content && this.deadline && this.visible) this.timer = this.clock.setTimeout(() => {
+				if (generation !== this.generation || this.destroyed) return;
+				this.tick();
+			}, Math.max(0, this.deadline - this.clock.now()));
+			this.onChange?.(this, reason);
+		}
+		_activate(content, { scene = "notice", priority = PRIORITY.info, durationMs = this.config.noticeDurationMs, automatic = false, expiresAt = 0 } = {}) {
+			if (!this.config.enabled || this.destroyed || !content) return false;
+			this.content = content; this.contentId = content.id ?? null; this.scene = scene; this.priority = priority; this.automatic = automatic; this.pageIndex = 0; this.pageCount = 1;
+			this.deadline = durationMs === 0 ? 0 : this.clock.now() + durationMs;
+			if (expiresAt) this.deadline = this.deadline ? Math.min(this.deadline, expiresAt) : expiresAt;
+			this._notify("content"); return true;
+		}
+		show(content, options = {}) {
+			content = normalizeContent(content);
+			if (!content || this.destroyed || !this.config.enabled) return false;
+			const automatic = options.automatic === true;
+			const priority = number(options.priority) ?? (automatic ? PRIORITY.chat : PRIORITY.info);
+			const chatter = automatic && priority <= PRIORITY.chat;
+			if (chatter && (!this.config.autoChat || !this.visible)) return false;
+			if (options.id) content = { ...content, id: options.id };
+			const expiresAt = number(options.expiresAt) ?? (this.clock.now() + (chatter ? this.config.durationMs || 5000 : 30000));
+			if (expiresAt && expiresAt <= this.clock.now()) return false;
+			if (this.content && priority < this.priority || !this.visible) {
+				const entry = { content, options: { ...options, priority, automatic, expiresAt }, id: options.id ?? content.id };
+				this.queue = this.queue.filter((old) => !entry.id || old.id !== entry.id);
+				this.queue.push(entry); this.queue.sort((a, b) => b.options.priority - a.options.priority); this.queue = this.queue.slice(0, 8); return false;
+			}
+			return this._activate(content, { ...options, automatic, priority, durationMs: options.durationMs ?? (chatter ? this.config.durationMs : this.config.noticeDurationMs), expiresAt: options.expiresAt ?? 0 });
+		}
+		home() {
+			if (!this.config.enabled || this.destroyed) return false;
+			this.onHome?.();
+			return this._activate(balance(this.snapshot, this.ledger), { scene: "balance", priority: PRIORITY.manual, durationMs: this.config.durationMs });
+		}
+		interact() { return this.config.clickMode === "home" ? this.home() : this.advance(); }
+		advance() {
+			if (!this.config.enabled || this.destroyed) return false;
+			if (!this.content) return this.home();
+			if (this.pageIndex + 1 < this.pageCount) {
+				this.pageIndex += 1; this.deadline = this.config.durationMs === 0 ? 0 : this.clock.now() + this.config.durationMs;
+				this._notify("page"); return true;
+			}
+			if (this.scene === "balance") {
+				const choice = pickRandom(this.config.overrides, this.rng, this.previousRandom);
+				if (!choice) { this.close(); return false; }
+				this.previousRandom = choice.text;
+				return this._activate(choice, { scene: "random", priority: PRIORITY.manual, durationMs: this.config.durationMs });
+			}
+			this.close(); return false;
+		}
+		updateData(snapshot, ledger = this.ledger) {
+			this.snapshot = snapshot; this.ledger = ledger;
+			if (this.scene === "balance" && this.content) {
+				const next = balance(snapshot, ledger);
+				if (JSON.stringify(next) !== JSON.stringify(this.content)) { this.content = next; this._notify("data"); }
+			}
+		}
+		setConfig(config) {
+			const previous = this.config;
+			this.config = normalizeConfig(config);
+			if (!this.config.enabled) { this.queue = []; this.close(); }
+			else if (!this.config.autoChat && this.automatic && this.priority <= PRIORITY.chat) {
+				this.queue = this.queue.filter((entry) => !entry.options.automatic || entry.options.priority > PRIORITY.chat);
+				this.close({ drain: true });
+			} else {
+				if (!this.config.autoChat) this.queue = this.queue.filter((entry) => !entry.options.automatic || entry.options.priority > PRIORITY.chat);
+				const durationKey = this.scene === "notice" && (!this.automatic || this.priority > PRIORITY.chat) ? "noticeDurationMs" : "durationMs";
+				if (this.content && previous[durationKey] !== this.config[durationKey]) this.deadline = this.config[durationKey] === 0 ? 0 : this.clock.now() + this.config[durationKey];
+				this._notify("config");
+			}
+		}
+		setVisible(visible) {
+			this.visible = visible !== false;
+			if (!this.visible) {
+				this.queue = this.queue.filter((entry) => !entry.options.automatic || entry.options.priority > PRIORITY.chat);
+				if (this.automatic && this.priority <= PRIORITY.chat) { this.close({ drain: true }); return; }
+				this._notify("hidden"); return;
+			}
+			this.tick();
+			if (this.content) this._notify("visible"); else this._drain();
+		}
+		tick() {
+			const now = this.clock.now();
+			this.queue = this.queue.filter((entry) => !entry.options.expiresAt || entry.options.expiresAt > now);
+			if (this.content && this.deadline && now >= this.deadline) this.close({ drain: true });
+		}
+		_drain() {
+			if (!this.visible || this.destroyed || !this.config.enabled || this.content) return;
+			const now = this.clock.now();
+			this.queue = this.queue.filter((entry) => !entry.options.expiresAt || entry.options.expiresAt > now);
+			const next = this.queue.shift(); if (next) this.show(next.content, next.options);
+		}
+		close({ drain = false } = {}) {
+			this.lastClosedId = this.contentId; this.contentId = null;
+			this.content = null; this.scene = "closed"; this.deadline = 0; this.pageIndex = 0; this.pageCount = 1; this.priority = 0;
+			if (!drain) this.queue = [];
+			this._notify("close"); if (drain) this._drain();
+		}
+		destroy() { if (this.destroyed) return; this.destroyed = true; this.queue = []; this.close(); this.onChange = null; this.onHome = null; }
+	}
+	return Object.freeze({ presets, PRIORITY, DEFAULT_CONFIG, Session, safeStyle, interpolate, randomPool, pickRandom, template, balance, formatAmount,
+		normalizeContent, normalizeConfig, paginateText, layout, place, rect, tokens, estimateWidth, clockAdapter, displayAmount });
+})();
+
+const BubbleContent = Object.freeze({ balance: BubbleKit.balance, template: BubbleKit.template, random: BubbleKit.pickRandom });
+
+class PetBubble extends BubbleKit.Session {
+	constructor(options = {}) {
+		super({ ...options, onChange: undefined });
+		this.container = options.container; this.bodySource = options.body; this.viewportSource = options.viewport;
+		this.surface = options.surface === "overlay" ? "overlay" : "panel"; this.userOnChange = options.onChange;
+		this.document = this.container?.ownerDocument ?? globalThis.document;
+		this.frames = new Set(); this.transitions = new Set(); this.pages = []; this.amountNodes = new Map(); this.rect = null;
+		this.size = null; this.sizeKey = ""; this.avoid = []; this.deferred = false; this.renderedGeneration = -1;
+		this.reducedMotion = options.reducedMotion === true || globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+		this.onChange = (_, reason) => { this._render(reason); this.userOnChange?.(this, reason); };
+		if (!this.document || !this.container) return;
+		this._create();
+		this.visibilityListener = () => this.setVisible(!this.document.hidden);
+		this.document.addEventListener?.("visibilitychange", this.visibilityListener);
+		this.visible = !this.document.hidden;
+	}
+	_create() {
+		const doc = this.document, ns = "http://www.w3.org/2000/svg", geometry = BubbleKit.presets.geometry;
+		this.element = doc.createElement("div"); this.element.className = "pet-thought"; this.element.hidden = true;
+		this.element.dataset.surface = this.surface; this.element.setAttribute("role", "status"); this.element.setAttribute("aria-live", "polite");
+		this.svg = doc.createElementNS(ns, "svg"); this.svg.setAttribute("viewBox", geometry.viewBox ?? "0 0 1026 700");
+		this.svg.setAttribute("aria-hidden", "true"); this.svg.classList.add("pet-thought-shape");
+		this.shapeGroup = doc.createElementNS(ns, "g");
+		const paths = geometry.paths ?? [];
+		paths.forEach((entry, index) => {
+			const path = doc.createElementNS(ns, entry.tag === "ellipse" ? "ellipse" : "path");
+			if (entry.tag === "ellipse") for (const attribute of ["cx", "cy", "rx", "ry"]) path.setAttribute(attribute, String(entry[attribute]));
+			else path.setAttribute("d", typeof entry === "string" ? entry : entry.d);
+			path.setAttribute("fill", "#fff"); path.setAttribute("stroke", "#203170"); path.setAttribute("stroke-width", "18");
+			path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-linejoin", "round");
+			path.classList.add("pet-thought-part", typeof entry === "object" && entry.role ? `pet-thought-${entry.role}` : `pet-thought-part-${index}`);
+			this.shapeGroup.append(path);
+		});
+		this.svg.append(this.shapeGroup);
+		this.textElement = doc.createElement("div"); this.textElement.className = "pet-thought-content";
+		this.pageElement = doc.createElement("span"); this.pageElement.className = "pet-thought-page";
+		this.element.append(this.svg, this.textElement, this.pageElement); this.container.append(this.element);
+		this.clickListener = (event) => { if (this.surface === "overlay") return; event.preventDefault(); event.stopPropagation(); this.advance(); };
+		this.downListener = (event) => { if (this.surface !== "overlay") event.stopPropagation(); };
+		this.svg.addEventListener("click", this.clickListener); this.svg.addEventListener("pointerdown", this.downListener);
+	}
+	_cancelVisual() {
+		for (const frame of this.frames) this.clock.cancelAnimationFrame(frame); this.frames.clear();
+		for (const timer of this.transitions) this.clock.clearTimeout(timer); this.transitions.clear();
+	}
+	_later(callback, delay) {
+		const generation = this.generation;
+		const id = this.clock.setTimeout(() => { this.transitions.delete(id); if (!this.destroyed && generation === this.generation) callback(); }, delay);
+		this.transitions.add(id);
+	}
+	_frame(callback) {
+		const generation = this.generation;
+		const id = this.clock.requestAnimationFrame((time) => { this.frames.delete(id); if (!this.destroyed && generation === this.generation) callback(time); });
+		this.frames.add(id);
+	}
+	_body() { return BubbleKit.rect(typeof this.bodySource === "function" ? this.bodySource() : this.bodySource); }
+	_viewport() { return BubbleKit.rect(typeof this.viewportSource === "function" ? this.viewportSource() : this.viewportSource); }
+	_buildPages() {
+		const size = this.size;
+		if (this.content.kind !== "balance") {
+			this.pages = BubbleKit.paginateText(this.content.text, { width: size.textWidth, height: size.textHeight, fontSize: size.fontSize });
+		} else if (size.compact) {
+			// Tiny pets/viewports use readable text pages rather than shrink numbers
+			// below 12px or crop labels. Monetary tokens stay indivisible.
+			const text = this.content.modules.map((module) => `${module.label}${module.label ? "\n" : ""}${module.value}${module.unit ? ` ${module.unit}` : ""}`).join("\n");
+			this.pages = BubbleKit.paginateText(text, { width: size.textWidth, height: size.textHeight, fontSize: 12 });
+		} else {
+			const pages = []; let page = [], height = 20;
+			for (const module of this.content.modules) {
+				const rowHeight = module.main ? 48 : module.detail ? 30 : 18;
+				if (page.length && height + rowHeight > size.textHeight) { pages.push({ modules: page }); page = []; height = 20; }
+				// Long error/status details paginate too; amounts remain indivisible.
+				if (module.detail && !module.numeric) {
+					const chunks = BubbleKit.paginateText(module.value, { width: size.textWidth, height: Math.max(16, size.textHeight - 34), fontSize: 12 });
+					for (const chunk of chunks) {
+						if (page.length) { pages.push({ modules: page }); page = []; }
+						pages.push({ modules: [{ ...module, value: chunk.text }] });
+					}
+					height = 20; continue;
+				}
+				page.push(module); height += rowHeight;
+			}
+			if (page.length) pages.push({ modules: page }); this.pages = pages.length ? pages : [{ modules: [] }];
+		}
+		this.pageCount = this.pages.length; this.pageIndex = Math.min(this.pageIndex, this.pageCount - 1);
+	}
+	_render(reason) {
+		this._cancelVisual();
+		if (!this.element) return;
+		if (!this.content || !this.visible || this.destroyed) {
+			this.element.hidden = true; this.element.removeAttribute("data-open"); this.rect = null; return;
+		}
+		const wasOpen = !this.element.hidden;
+		const previousAmounts = new Map([...this.amountNodes].map(([key, entry]) => [key, entry.numeric]));
+		this.element.hidden = false; this.element.dataset.scene = this.scene;
+		this.size = BubbleKit.layout(this._body(), this._viewport(), this.config, this.content);
+		this.sizeKey = `${this.size.width}:${this.size.height}:${this.size.fontSize}`;
+		this._buildPages(); this.position();
+		if (!this.content || this.destroyed) return;
+		const draw = () => {
+			this._drawPage(reason === "data" ? previousAmounts : new Map());
+			if (wasOpen) this.element.dataset.switch = "in";
+			else this.element.removeAttribute("data-switch");
+		};
+		if (wasOpen && (reason === "page" || reason === "content") && !this.reducedMotion) {
+			this.element.dataset.switch = "out"; this._later(draw, 120);
+		} else draw();
+		this.element.dataset.reducedMotion = String(this.reducedMotion);
+		if (!wasOpen) { this.element.removeAttribute("data-open"); this._frame(() => { this.element.dataset.open = "true"; }); }
+		else this.element.dataset.open = "true";
+	}
+	_drawPage(previousAmounts) {
+		if (!this.content || !this.textElement) return;
+		this.textElement.replaceChildren(); this.amountNodes.clear();
+		this.textElement.style.fontSize = `${this.size.fontSize}px`;
+		this.textElement.style.fontWeight = this.content.style.bold ? "700" : "400";
+		this.textElement.style.fontStyle = this.content.style.italic ? "italic" : "normal";
+		this.textElement.style.textDecoration = this.content.style.underline ? "underline" : "none";
+		this.textElement.dataset.gradient = this.content.style.gradient ?? "none";
+		const page = this.pages[this.pageIndex];
+		if (page.modules) {
+			const title = this.document.createElement("div"); title.className = "pet-thought-title"; title.textContent = this.content.title;
+			this.textElement.append(title);
+			for (const module of page.modules) {
+				const row = this.document.createElement("div"); row.className = `pet-thought-row${module.main ? " is-main" : ""}${module.detail ? " is-detail" : ""}`;
+				const label = this.document.createElement("span"); label.className = "pet-thought-label"; label.textContent = module.label;
+				const value = this.document.createElement("span"); value.className = "pet-thought-value"; value.textContent = module.value;
+				if (module.unit) {
+					const amount = this.document.createElement("span"); amount.className = "pet-thought-number";
+					const unit = this.document.createElement("span"); unit.className = "pet-thought-unit"; unit.textContent = ` ${module.unit}`;
+					amount.append(value, unit); row.append(label, amount);
+				} else row.append(label, value);
+				this.textElement.append(row);
+				this.amountNodes.set(module.key, { node: value, numeric: module.numeric });
+				const previous = previousAmounts.get(module.key);
+				if (module.numeric !== null && module.numeric !== undefined && previous !== undefined && previous !== module.numeric && !this.reducedMotion) this._animateAmount(value, previous, module.numeric, module.value);
+			}
+		} else {
+			for (const line of page.lines) { const node = this.document.createElement("div"); node.className = "pet-thought-line"; node.textContent = line.replace(/\n$/, "") || "\u00a0"; this.textElement.append(node); }
+		}
+		this.pageElement.textContent = this.pageCount > 1 ? `${this.pageIndex + 1}/${this.pageCount}` : "";
+		this.element.setAttribute("aria-label", page.modules ? `${this.content.title} ${page.modules.map((row) => `${row.label} ${row.value} ${row.unit}`).join("，")}` : page.text);
+	}
+	_animateAmount(node, from, to, displayValue) {
+		const start = Number(from), end = Number(to);
+		if (!Number.isFinite(start) || !Number.isFinite(end) || Math.abs(start) > 1e12 || Math.abs(end) > 1e12) return;
+		const started = this.clock.now(), target = displayValue ?? BubbleKit.formatAmount(to), pageIndex = this.pageIndex;
+		const step = () => {
+			if (this.pageIndex !== pageIndex || !node.isConnected) return;
+			const progress = Math.min(1, Math.max(0, (this.clock.now() - started) / 280));
+			node.textContent = progress === 1 ? target : (start + (end - start) * (1 - (1 - progress) ** 3)).toFixed(2);
+			if (progress < 1) this._frame(step);
+		};
+		this._frame(step);
+	}
+	position(body, viewport, avoidRects = this.avoid) {
+		if (body !== undefined) this.bodySource = body;
+		if (viewport !== undefined) this.viewportSource = viewport;
+		this.avoid = Array.isArray(avoidRects) ? avoidRects : [];
+		if (!this.element || !this.content || !this.visible || this.destroyed) return null;
+		this.tick(); if (!this.content) return null;
+		const bodyRect = this._body(), viewportRect = this._viewport();
+		const nextSize = BubbleKit.layout(bodyRect, viewportRect, this.config, this.content);
+		const key = `${nextSize.width}:${nextSize.height}:${nextSize.fontSize}`;
+		if (key !== this.sizeKey) { this.size = nextSize; this.sizeKey = key; this._buildPages(); this._cancelVisual(); this._drawPage(new Map()); }
+		const placed = BubbleKit.place(bodyRect, viewportRect, this.size, this.avoid);
+		this.deferred = this.automatic && this.priority <= BubbleKit.PRIORITY.chat && placed.overlap > this.size.width * this.size.height * 0.15;
+		this.element.hidden = this.deferred;
+		if (this.deferred) { this.rect = null; return null; }
+		this.rect = placed;
+		this.element.style.width = `${this.size.width}px`; this.element.style.height = `${this.size.height}px`;
+		this.element.style.transform = `translate(${placed.left}px, ${placed.top}px)`;
+		this.element.dataset.compact = String(this.size.compact);
+		this.shapeGroup.setAttribute("transform", `translate(${placed.flipX ? 1026 : 0} ${placed.flipY ? 700 : 0}) scale(${placed.flipX ? -1 : 1} ${placed.flipY ? -1 : 1})`);
+		// Only artwork mirrors. Text always stays upright.
+		this.element.dataset.below = String(placed.flipY);
+		this.element.dataset.mirrored = String(placed.flipX);
+		return placed;
+	}
+	destroy() {
+		if (this.destroyed) return;
+		super.destroy(); this._cancelVisual();
+		this.document?.removeEventListener?.("visibilitychange", this.visibilityListener);
+		this.svg?.removeEventListener("click", this.clickListener); this.svg?.removeEventListener("pointerdown", this.downListener);
+		this.element?.remove(); this.element = null; this.rect = null; this.amountNodes.clear();
+	}
+}
+
+/**
+ * View-local task notices. Concatenated after sdk.js; never calls Pet or stores
+ * bindings in plugin/global configuration. Only explicit context.narrator.id or
+ * ids supplied by this view may be subscribed, each with both scope and filter.
+ *
+ * Source verified at NarraFork/NarraFork@6007ca13581cd1f3db8756f28fa5e53f22bd148c:
+ * frontend/components/plugins/asset-shell.ts (single-object bridge arguments),
+ * server/services/plugin-ui-host.ts (UI poll returns PublicEvent[]),
+ * server/lib/plugins/protocol.ts (canonical poll object and public envelope),
+ * server/services/plugin-event-gateway.ts (allowlisted event mapper),
+ * server/lib/event-bus.ts (attention reasons; tools report success/fail only).
+ */
+const TaskEvents = (() => {
+	const TOPICS = Object.freeze([
+		"narrafork.narrator.lifecycle",
+		"narrafork.narrator.tool.changed",
+		"narrafork.narrator.attention",
+		"narrafork.narrator.permission.changed",
+	]);
+	const POLL_MS = 1000;
+	const PAGE_SIZE = 50;
+	const MAX_PAGES = 4;
+	const REQUEST_MS = 5000;
+	const WAIT_LEASE_MS = 30000;
+	const MAX_EVENT_IDS = 512;
+	const LIMITATIONS = Object.freeze({
+		answer: "当前公开 API 不能可靠识别等待回答；waiting 或 AskUserQuestion 运行不代表正在等待回答。",
+		turnCost: "宿主未公开逐轮费用或 token；此模块不估算费用，账户余额另行显示。",
+	});
+	const record = (value) => Boolean(value && typeof value === "object" && !Array.isArray(value));
+	const id = (value) => typeof value === "string" && value.trim().length > 0 && value.trim().length <= 128 && !/[\u0000-\u001f\u007f]/.test(value) ? value.trim() : null;
+	const label = (value) => typeof value === "string" ? value.replace(/[\u0000-\u001f\u007f\u202a-\u202e\u2066-\u2069]/g, "").trim().slice(0, 40) : "";
+	const failure = (code, message) => Object.assign(new Error(message), { code });
+	const noticeKey = (...parts) => "task:" + parts.map((part) => encodeURIComponent(String(part))).join(":");
+
+	function errorInfo(error) {
+		const code = typeof error?.code === "string" ? error.code.slice(0, 80) : "HOST_UNAVAILABLE";
+		if (["PERMISSION_DENIED", "FORBIDDEN", "CAPABILITY_DENIED", "UNAUTHORIZED"].includes(code) || error?.message === "PERMISSION_DENIED") {
+			return { capability: "denied", error: { code: "PERMISSION_DENIED", message: "任务事件权限未获准；请在宿主中检查 event.subscribe 授权。" }, blocked: true };
+		}
+		if (["METHOD_NOT_FOUND", "NOT_SUPPORTED", "BRIDGE_UNAVAILABLE", "PLUGIN_DISABLED"].includes(code)) {
+			return { capability: "unavailable", error: { code, message: "当前宿主未提供可用的任务事件接口。" }, blocked: true };
+		}
+		return { capability: "degraded", error: { code, message: code === "STALE_PERMISSION" ? "授权等待状态已过期，已撤销提示并重新连接。" : "任务事件暂不可用；不可靠状态已清除，正在重连。" }, blocked: false };
+	}
+
+	function isEnvelope(event) {
+		return record(event) && event.schema === "narrafork.public-event" && event.schemaVersion === 1
+			&& id(event.eventId) !== null && typeof event.topic === "string" && record(event.data)
+			&& typeof event.occurredAt === "string" && Number.isFinite(Date.parse(event.occurredAt))
+			&& ["state", "lifecycle", "progress", "attention", "audit"].includes(event.eventClass)
+			&& ["public", "user_scoped", "admin_scoped"].includes(event.redaction)
+			&& (event.deliverySeq === undefined || (Number.isSafeInteger(event.deliverySeq) && event.deliverySeq > 0));
+	}
+
+	function pollPage(value, subscriptionId) {
+		// The pinned UI host returns an array; the same revision's canonical public
+		// protocol specifies an object. Support both, never a guessed RPC wrapper.
+		if (Array.isArray(value) && value.length <= PAGE_SIZE) {
+			return { events: value, hasMore: value.length === PAGE_SIZE, resyncRequired: false };
+		}
+		if (record(value) && value.subscriptionId === subscriptionId && Array.isArray(value.events)
+			&& value.events.length <= PAGE_SIZE && typeof value.hasMore === "boolean"
+			&& (value.resyncRequired === undefined || typeof value.resyncRequired === "boolean")) {
+			return value;
+		}
+		throw failure("INVALID_EVENT_RESPONSE", "事件轮询返回格式不匹配");
+	}
+
+	return class TaskEvents {
+		/** config is config.tasks, not the whole pet configuration. */
+		constructor({ config = { enabled: true }, onNotice, onClear, onState, sdk = SDK } = {}) {
+			this.sdk = sdk;
+			this.enabled = config?.enabled !== false;
+			this.onNotice = onNotice;
+			this.onClear = onClear;
+			this.onState = onState;
+			this.started = false;
+			this.destroyed = false;
+			this.visible = typeof document === "undefined" || document.visibilityState !== "hidden";
+			this.explicit = null;
+			this.scope = [];
+			this.records = new Map();
+			this.histories = new Map();
+			this.dismissed = new Set();
+			this.notices = new Map();
+			this.requests = new Set();
+			this.generation = 0;
+			this.timer = null;
+			this.stateStamp = "";
+			this.capability = "checking";
+			this.error = null;
+			this.visibilityListener = () => this.setVisible(document.visibilityState !== "hidden");
+		}
+
+		start() {
+			if (this.destroyed) return Promise.resolve();
+			if (this.started) return this.startup ?? Promise.resolve();
+			this.started = true;
+			if (typeof document !== "undefined") document.addEventListener?.("visibilitychange", this.visibilityListener);
+			this.startup = this._restart();
+			return this.startup;
+		}
+
+		configure(config) {
+			if (this.destroyed) return Promise.resolve();
+			const next = config?.enabled !== false;
+			if (next === this.enabled) return Promise.resolve();
+			this.enabled = next;
+			return this._restart();
+		}
+
+		/** Explicit replacement, max three known ids; [] also removes the auto binding. */
+		setAssociations(entries) {
+			if (this.destroyed) return { ok: false, error: "视图已销毁" };
+			if (!Array.isArray(entries) || entries.length > 3) return { ok: false, error: "本视图最多关联 3 个已知叙述者" };
+			const seen = new Set();
+			const next = [];
+			for (const item of entries) {
+				const narratorId = id(item?.narratorId);
+				if (!narratorId || seen.has(narratorId)) return { ok: false, error: "叙述者 ID 无效或重复" };
+				seen.add(narratorId);
+				next.push({ narratorId, alias: label(item.alias) || "关联叙述者", source: "explicit" });
+			}
+			this.explicit = next;
+			this.scope = next;
+			void this._restart();
+			return { ok: true };
+		}
+
+		setVisible(visible) {
+			if (this.destroyed || this.visible === Boolean(visible)) return;
+			this.visible = Boolean(visible);
+			void this._restart();
+		}
+
+		retry() {
+			return this.destroyed ? Promise.resolve() : this._restart();
+		}
+
+		dismiss(noticeId) {
+			if (this.destroyed || typeof noticeId !== "string") return;
+			this.dismissed.add(noticeId);
+			this._clearNotice(noticeId);
+		}
+
+		getState() {
+			return {
+				enabled: this.enabled,
+				capability: this.capability,
+				error: this.error ? { ...this.error } : null,
+				scope: this.scope.map((entry) => ({ ...entry })),
+				tasks: [...this.records.values()].map((entry) => ({
+					narratorId: entry.narratorId, alias: entry.alias, status: entry.status,
+					waitingPermission: entry.pending.size > 0, reliable: entry.reliable,
+					capability: entry.capability, error: entry.error ? { ...entry.error } : null,
+				})),
+				limitations: { ...LIMITATIONS },
+			};
+		}
+
+		destroy() {
+			if (this.destroyed) return;
+			// Clear our currently visible notices once, then forbid every late callback.
+			this._invalidate();
+			this.destroyed = true;
+			if (typeof document !== "undefined") document.removeEventListener?.("visibilitychange", this.visibilityListener);
+			this.histories.clear();
+			this.dismissed.clear();
+			this.onNotice = this.onClear = this.onState = null;
+		}
+
+		_alive(generation) {
+			return !this.destroyed && this.started && this.enabled && this.visible && this.generation === generation;
+		}
+
+		_call(callback, value) {
+			if (!this.destroyed && typeof callback === "function") {
+				try { callback(value); } catch { /* A stage presentation error cannot kill polling. */ }
+			}
+		}
+
+		_emit() {
+			if (this.destroyed) return;
+			const state = this.getState();
+			const stamp = JSON.stringify(state);
+			if (stamp !== this.stateStamp) {
+				this.stateStamp = stamp;
+				this._call(this.onState, state);
+			}
+		}
+
+		_release(api, subscriptionId) {
+			if (!id(subscriptionId)) return;
+			try { Promise.resolve(api.unsubscribe({ subscriptionId })).catch(() => {}); } catch { /* Best effort after host loss. */ }
+		}
+
+		_bounded(promise, onLate) {
+			return new Promise((resolve, reject) => {
+				let settled = false;
+				const finish = (fn, value) => {
+					if (settled) return false;
+					settled = true;
+					clearTimeout(timer);
+					this.requests.delete(cancel);
+					fn(value);
+					return true;
+				};
+				const cancel = () => finish(reject, failure("CANCELLED", "任务视图已改变"));
+				const timer = setTimeout(() => finish(reject, failure("TIMEOUT", "任务事件请求超时")), REQUEST_MS);
+				this.requests.add(cancel);
+				Promise.resolve(promise).then(
+					(value) => { if (!finish(resolve, value)) { try { onLate?.(value); } catch {} } },
+					(error) => finish(reject, error),
+				);
+			});
+		}
+
+		_invalidate() {
+			this.generation += 1;
+			if (this.timer !== null) clearTimeout(this.timer);
+			this.timer = null;
+			for (const cancel of [...this.requests]) cancel();
+			for (const item of this.records.values()) {
+				if (item.subscriptionId) this._release(item.api, item.subscriptionId);
+				this._clearRecord(item, false);
+			}
+			this.records.clear();
+			return this.generation;
+		}
+
+		async _restart() {
+			const generation = this._invalidate();
+			this.error = null;
+			if (!this.started || !this.enabled || !this.visible) {
+				this.capability = !this.enabled ? "disabled" : !this.visible ? "hidden" : "checking";
+				this._emit();
+				return;
+			}
+			this.capability = "checking";
+			this._emit();
+			if (!this._alive(generation)) return;
+			let api;
+			try { api = this.sdk.events?.(); } catch {}
+			if (!api) {
+				this.capability = "unavailable";
+				this.error = { code: "METHOD_NOT_FOUND", message: "宿主缺少 events.subscribe/poll/unsubscribe，任务提示已单独降级。" };
+				this._emit();
+				return;
+			}
+			if (this.explicit === null) {
+				try {
+					if (typeof this.sdk.getContextSafe !== "function") throw failure("METHOD_NOT_FOUND", "缺少视图上下文接口");
+					const context = await this._bounded(this.sdk.getContextSafe());
+					if (!this._alive(generation)) return;
+					if (!context?.ok) throw context?.error ?? failure("CONTEXT_UNAVAILABLE", "缺少视图上下文");
+					const narratorId = id(context.value?.narrator?.id);
+					this.scope = narratorId ? [{ narratorId, alias: "当前叙述者", source: "context" }] : [];
+				} catch (error) {
+					if (!this._alive(generation)) return;
+					this.scope = [];
+					const info = errorInfo(error);
+					this.capability = info.capability;
+					this.error = { code: info.error.code, message: "无法确认当前视图叙述者；未自动订阅，可手动关联已知 ID。" };
+					this._emit();
+					return;
+				}
+			} else this.scope = this.explicit;
+			if (!this._alive(generation)) return;
+			for (const entry of this.scope) {
+				if (!this.histories.has(entry.narratorId)) this.histories.set(entry.narratorId, { events: new Set(), closedRequests: new Set(), requestNotices: new Map() });
+				this.records.set(entry.narratorId, {
+					...entry, api, subscriptionId: null, sequence: 0, status: "unknown", reliable: false,
+					pending: new Map(), attention: new Map(), retryAt: 0, failures: 0, blocked: false,
+					capability: "checking", error: null, history: this.histories.get(entry.narratorId),
+				});
+			}
+			if (this.records.size === 0) {
+				this.capability = "unbound";
+				this._emit();
+				return;
+			}
+			await this._tick(generation);
+		}
+
+		async _tick(generation) {
+			if (!this._alive(generation)) return;
+			await Promise.all([...this.records.values()].map((item) => this._step(item, generation)));
+			if (!this._alive(generation)) return;
+			const items = [...this.records.values()];
+			const problem = items.find((item) => item.error);
+			this.error = problem?.error ?? null;
+			this.capability = items.every((item) => item.subscriptionId) ? "available"
+				: items.some((item) => item.subscriptionId) ? "degraded"
+					: problem?.capability ?? "checking";
+			this._emit();
+			if (this._alive(generation) && items.some((item) => !item.blocked)) {
+				this.timer = setTimeout(() => { this.timer = null; void this._tick(generation); }, POLL_MS);
+			}
+		}
+
+		async _step(item, generation) {
+			if (item.blocked || Date.now() < item.retryAt || !this._alive(generation)) return;
+			try {
+				if (!item.subscriptionId) {
+					const result = await this._bounded(item.api.subscribe({
+						topics: [...TOPICS], mode: "live",
+						scope: { narratorId: item.narratorId }, filter: { narratorIds: [item.narratorId] },
+						delivery: { transport: "poll", queueEvents: 200, queueBytes: 131072, maxRatePerSecond: 50 },
+					}), (late) => this._release(item.api, late?.subscriptionId));
+					if (!this._alive(generation)) { this._release(item.api, result?.subscriptionId); return; }
+					if (!id(result?.subscriptionId)) throw failure("INVALID_EVENT_RESPONSE", "缺少订阅 ID");
+					item.subscriptionId = result.subscriptionId;
+					item.sequence = 0;
+					item.capability = "available";
+					item.error = null;
+					return;
+				}
+				if ([...item.pending.values()].some((pending) => Date.now() - pending.raisedAt >= WAIT_LEASE_MS)) {
+					throw failure("STALE_PERMISSION", "未收到可确认的授权等待更新");
+				}
+				for (let pageIndex = 0; pageIndex < MAX_PAGES; pageIndex += 1) {
+					const value = await this._bounded(item.api.poll({ subscriptionId: item.subscriptionId, limit: PAGE_SIZE }));
+					if (!this._alive(generation)) return;
+					const page = pollPage(value, item.subscriptionId);
+					if (page.resyncRequired || page.events.some((event) => isEnvelope(event)
+						&& ["narrafork.events.overflow", "narrafork.events.resync_required"].includes(event.topic)
+						&& event.data.subscriptionId === item.subscriptionId)) {
+						throw failure("EVENT_RESYNC_REQUIRED", "事件流已丢失状态");
+					}
+					for (const event of page.events) {
+						if (!this._alive(generation)) return;
+						this._event(item, event);
+					}
+					item.failures = 0;
+					if (!page.hasMore) break;
+				}
+			} catch (error) {
+				if (!this._alive(generation)) return;
+				if (item.subscriptionId) this._release(item.api, item.subscriptionId);
+				item.subscriptionId = null;
+				this._clearRecord(item, false);
+				const info = errorInfo(error);
+				Object.assign(item, info);
+				item.failures += 1;
+				item.retryAt = Date.now() + Math.min(30000, POLL_MS * 2 ** Math.min(item.failures - 1, 5));
+			}
+		}
+
+		_event(item, event) {
+			if (!isEnvelope(event) || !TOPICS.includes(event.topic)) return;
+			// Check every provided identity, not a convenient OR of data and resource.
+			if (event.data.narratorId !== item.narratorId) return;
+			if (event.resource && (event.resource.type !== "narrator" || event.resource.id !== item.narratorId
+				|| (event.resource.narratorId !== undefined && event.resource.narratorId !== item.narratorId))) return;
+			if (event.deliverySeq !== undefined && event.deliverySeq <= item.sequence) return;
+			if (event.deliverySeq !== undefined) item.sequence = event.deliverySeq;
+			if (item.history.events.has(event.eventId)) return;
+			item.history.events.add(event.eventId);
+			if (item.history.events.size > MAX_EVENT_IDS) item.history.events.delete(item.history.events.values().next().value);
+			const data = event.data;
+			if (event.topic === "narrafork.narrator.permission.changed") {
+				if (data.state === "pending" && id(data.requestId)) this._permission(item, event, data.requestId);
+				return; // There is no public approved/denied permission event in this version.
+			}
+			if (event.topic === "narrafork.narrator.attention") {
+				if (!["waiting_permission", "done", "error"].includes(data.reason)) return;
+				if (data.state === "resolved") {
+					if (data.reason === "waiting_permission") this._clearPending(item, true);
+					else this._clearAttention(item, data.reason);
+					item.reliable = true;
+				} else if (data.state === "raised") {
+					if (data.reason === "waiting_permission") this._permission(item, event, null);
+					else if (!(data.reason === "done" && data.backgroundWorkActive === true)) {
+						this._clearPending(item, true);
+						this._clearAttention(item, data.reason === "done" ? "error" : "done");
+						this._attention(item, data.reason, event);
+					}
+				}
+				return;
+			}
+			if (event.topic === "narrafork.narrator.lifecycle") {
+				if (["idle", "working", "waiting", "archived"].includes(data.status)) {
+					item.status = data.status;
+					item.reliable = true;
+					if (data.status !== "waiting") this._clearPending(item, true);
+					if (data.status === "working" || data.status === "archived") {
+						this._clearAttention(item, "done");
+						this._clearAttention(item, "error");
+					}
+				} else if (data.changeKind === "error" && data.status === "error") {
+					this._clearPending(item, true);
+					this._attention(item, "error", event);
+				}
+				return;
+			}
+			// Tools expose terminal success/fail metadata only; neither running nor
+			// the name AskUserQuestion supplies a trustworthy question-wait signal.
+			if (!id(data.toolUseId) || !["success", "fail"].includes(data.status)) return;
+			if (data.status === "fail") this._attention(item, "error", event, data.toolUseId);
+			else if (item.attention.get("error")?.toolUseId === data.toolUseId) this._clearAttention(item, "error");
+		}
+
+		_permission(item, event, requestId) {
+			if (requestId && item.history.closedRequests.has(requestId)) return;
+			item.reliable = true;
+			if (!requestId && item.pending.size > 0) return;
+			if (requestId && item.pending.has(requestId)) return;
+			const generic = item.pending.get("");
+			if (requestId && generic) {
+				item.pending.delete("");
+				item.pending.set(requestId, generic);
+				item.history.requestNotices.set(requestId, generic.id);
+				return;
+			}
+			if (item.pending.size >= 16) throw failure("EVENT_RESYNC_REQUIRED", "待处理授权过多");
+			const noticeId = (requestId && item.history.requestNotices.get(requestId))
+				|| noticeKey(item.narratorId, "permission", requestId || event.eventId);
+			if (requestId) item.history.requestNotices.set(requestId, noticeId);
+			item.pending.set(requestId || "", { id: noticeId, raisedAt: Date.now() });
+			this._notice(item, { id: noticeId, kind: "permission", text: "需要你在宿主中处理授权", sticky: true, ...(requestId ? { requestId } : {}) });
+		}
+
+		_attention(item, kind, event, toolUseId) {
+			item.reliable = true;
+			if (item.attention.has(kind)) return;
+			const noticeId = noticeKey(item.narratorId, kind, event.eventId);
+			item.attention.set(kind, { id: noticeId, toolUseId });
+			this._notice(item, { id: noticeId, kind, text: kind === "done" ? "本轮任务已完成" : toolUseId ? "工具执行失败，请查看宿主" : "任务执行遇到错误，请查看宿主", sticky: false });
+		}
+
+		_notice(item, notice) {
+			if (this.dismissed.has(notice.id) || this.notices.has(notice.id)) return;
+			const value = { ...notice, narratorId: item.narratorId, alias: item.alias };
+			this.notices.set(value.id, value);
+			this._call(this.onNotice, { ...value });
+		}
+
+		_clearNotice(noticeId) {
+			if (!this.notices.delete(noticeId)) return;
+			this._call(this.onClear, noticeId);
+		}
+
+		_clearPending(item, close) {
+			for (const [requestId, pending] of item.pending) {
+				if (close && requestId) item.history.closedRequests.add(requestId);
+				this._clearNotice(pending.id);
+			}
+			item.pending.clear();
+		}
+
+		_clearAttention(item, kind) {
+			const active = item.attention.get(kind);
+			item.attention.delete(kind);
+			if (active) this._clearNotice(active.id);
+		}
+
+		_clearRecord(item, close) {
+			this._clearPending(item, close);
+			this._clearAttention(item, "done");
+			this._clearAttention(item, "error");
+			item.status = "unknown";
+			item.reliable = false;
+		}
+	};
 })();
 
 /**
@@ -332,6 +1369,46 @@ function SliderRow({ label, value, min, max, step, onChange, format }) {
 	);
 }
 
+/**
+ * Numeric entry that survives an empty field.
+ *
+ * Mantine's `NumberInput` reports `""` when the user clears it; a controlled value
+ * that ignores `""` snaps the old number back mid-edit, so there is no way to
+ * select-all and retype. Keeping the draft locally means "empty" is a real,
+ * temporary state and only parseable values are written through.
+ */
+function NumberField({ label, description, value, min, max, onChange, disabled, unit }) {
+	const [text, setText] = React.useState(String(value ?? ""));
+	const focused = React.useRef(false);
+	React.useEffect(() => {
+		if (!focused.current) setText(String(value ?? ""));
+	}, [value]);
+	const parsed = /^\d+(?:[.,]\d*)?$/.test(text.trim()) ? Number(text.trim().replace(",", ".")) : null;
+	const invalid = parsed !== null && (parsed < min || parsed > max);
+	const commit = (next) => {
+		if (next === null || !Number.isFinite(next)) return;
+		onChange(Math.min(Math.max(next, min), max));
+	};
+	return h(M.TextInput, {
+		label, description, disabled, value: text, inputMode: "decimal",
+		rightSection: unit ? h(M.Text, { size: "xs", c: "dimmed" }, unit) : undefined,
+		rightSectionWidth: unit ? 40 : undefined,
+		error: invalid ? `请输入 ${min}–${max} 之间的数字` : undefined,
+		onFocus: () => { focused.current = true; },
+		onChange: (event) => {
+			const next = event.currentTarget.value;
+			setText(next);
+			if (/^\d+(?:[.,]\d*)?$/.test(next.trim())) commit(Number(next.trim().replace(",", ".")));
+		},
+		onBlur: () => {
+			focused.current = false;
+			const next = /^\d+(?:[.,]\d*)?$/.test(text.trim()) ? Number(text.trim().replace(",", ".")) : null;
+			if (next === null || !Number.isFinite(next)) setText(String(value ?? ""));
+			else { commit(next); setText(String(Math.min(Math.max(next, min), max))); }
+		},
+	});
+}
+
 /* -------------------------------------------------------------------------- */
 /* The panel                                                                  */
 /* -------------------------------------------------------------------------- */
@@ -360,18 +1437,889 @@ const FIELD_HELP = {
 	idleMaxMs: "最长等待",
 };
 
+/* -------------------------------------------------------------------------- */
+/* Shared original bubble renderer, with isolated and visibly simulated data.  */
+/* -------------------------------------------------------------------------- */
+
+const SETTINGS_BUBBLE_DEFAULTS = Object.freeze({
+	enabled: true, scale: 1, durationMs: 5000, noticeDurationMs: 8000,
+	clickMode: "advance", autoChat: true, overrides: [],
+});
+
+function bubblePresetGroups() {
+	const data = typeof __PET_BUBBLE_PRESETS__ === "object" ? __PET_BUBBLE_PRESETS__ : {};
+	return [
+		{ id: "random", label: "原版随机文案", description: "同一句话的不同字号、粗体或渐变版本保留独立记录；编辑只改文字与权重。", editable: true, entries: data.random },
+		{ id: "history", label: "历史补充文案", description: "保留来源记录，仅供查看与模拟预览；不混入当前默认随机池。", editable: false, entries: data.history },
+		{ id: "templates", label: "系统模板（模拟）", description: "用于查看系统消息样式与变量占位。此处的展示不代表真实事件或费用信号已经接入。", editable: false, entries: data.templates },
+	].map((group) => ({ ...group, entries: Array.isArray(group.entries) ? group.entries : [] }));
+}
+
+function BubblePreview({ entry, scale }) {
+	const host = React.useRef(null);
+	const bubble = React.useRef(null);
+	const [error, setError] = React.useState("");
+	const previewConfig = { ...SETTINGS_BUBBLE_DEFAULTS, scale, enabled: true, autoChat: false, durationMs: 0, noticeDurationMs: 0 };
+	React.useEffect(() => {
+		if (!host.current) return;
+		if (typeof PetBubble !== "function") { setError("共享气泡组件未加载；无法展示原版预览。"); return; }
+		const element = host.current;
+		let observer;
+		try {
+			const width = Math.max(180, element.clientWidth || 320);
+			bubble.current = new PetBubble({
+				container: element, body: { left: width / 2 - 80, top: 210, right: width / 2 + 80, bottom: 270, width: 160, height: 60 },
+				viewport: { width, height: 300 }, surface: "panel",
+				config: previewConfig,
+			});
+			const resize = () => {
+				const nextWidth = Math.max(180, element.clientWidth || 320);
+				bubble.current?.position({ left: nextWidth / 2 - 80, top: 210, right: nextWidth / 2 + 80, bottom: 270, width: 160, height: 60 }, { width: nextWidth, height: 300 });
+			};
+			if (typeof ResizeObserver === "function") { observer = new ResizeObserver(resize); observer.observe(element); }
+			setError("");
+		} catch (cause) {
+			setError(`预览暂不可用：${cause?.message ?? cause}`);
+		}
+		return () => { observer?.disconnect(); bubble.current?.destroy(); bubble.current = null; };
+	}, []);
+	React.useEffect(() => {
+		if (!bubble.current || !entry) return;
+		try {
+			bubble.current.setConfig(previewConfig);
+			// expiresAt: 0 pairs with durationMs: 0 so the sample persists until replaced.
+			bubble.current.show({ ...entry, kind: "text", simulation: true }, { id: `preview-${entry.id}`, priority: 100, durationMs: 0, expiresAt: 0, automatic: false });
+			// The panel can still be hidden (display:none) right after mount, where the
+			// measured width is 0; the ResizeObserver repositions once it is revealed.
+			const width = Math.max(180, host.current?.clientWidth || 320);
+			bubble.current.position({ left: width / 2 - 80, top: 210, right: width / 2 + 80, bottom: 270, width: 160, height: 60 }, { width, height: 300 });
+		} catch (cause) {
+			setError(`预览暂不可用：${cause?.message ?? cause}`);
+		}
+	}, [entry, scale]);
+	return h("div", { className: "pet-settings-preview", "data-simulation": "true" },
+		h(M.Group, { justify: "space-between", gap: "xs" },
+			h(M.Text, { size: "sm", fw: 600 }, "原版样式预览"),
+			h(M.Badge, { color: "orange", variant: "filled" }, "模拟 · 非真实事件"),
+		),
+		h("div", { className: "pet-settings-preview-stage" },
+			h("div", { ref: host, className: "pet-settings-preview-bubbles", "aria-label": "模拟气泡预览" }),
+			h("div", { className: "pet-settings-preview-anchor", "aria-hidden": true }, "宠物位置"),
+		),
+		error ? h(M.Alert, { color: "yellow", p: "xs" }, error) : null,
+		h(M.Text, { size: "xs", c: "dimmed" }, "复用舞台 PetBubble 组件。此区域强制可见并保持展示，不请求余额、不订阅任务、不消费提醒，也不会改动气泡总开关。"),
+	);
+}
+
+function BubblePresetRow({ preset, override, editable, onApply, onReset, onPreview, disabled }) {
+	const effectiveText = override?.text ?? preset.text ?? "";
+	const effectiveWeight = override?.weight ?? preset.weight ?? 1;
+	const [text, setText] = React.useState(effectiveText);
+	const [weight, setWeight] = React.useState(effectiveWeight);
+	React.useEffect(() => { setText(effectiveText); setWeight(effectiveWeight); }, [effectiveText, effectiveWeight]);
+	const dirty = text !== effectiveText || weight !== effectiveWeight;
+	const style = preset.style ?? {};
+	return h("article", { className: "pet-settings-preset-row" },
+		h(M.Group, { justify: "space-between", gap: "xs" },
+			h(M.Text, { size: "xs", fw: 600 }, preset.id),
+			h(M.Group, { gap: 5 },
+				!editable ? h(M.Badge, { color: "gray", size: "xs" }, "只读参考") : null,
+				override ? h(M.Badge, { color: "blue", size: "xs" }, "已自定义") : null,
+			),
+		),
+		h(M.Text, { size: "xs", c: "dimmed" }, [
+			style.fontSize == null ? "默认字号" : style.fontUnit === "source-level" ? `原版字号档位 ${style.fontSize}/50` : `字号 ${style.fontSize}`,
+			style.bold ? "粗体" : "常规",
+			style.gradient ? `渐变 ${style.gradient}` : "无渐变",
+		].join(" · ")),
+		editable ? h(M.Textarea, {
+			label: "纯文本文案", value: text, autosize: true, minRows: 2, maxRows: 5, maxLength: 300,
+			onChange: (event) => setText(event.currentTarget.value), description: `${text.length}/300 字符；不执行 HTML 或脚本。`,
+		}) : h(M.Text, { size: "sm", className: "pet-settings-plain-text" }, effectiveText),
+		editable ? h(NumberField, { label: "随机权重", description: "0 不参与自动抽取；越大越容易抽到，同文不同样式分别计权。",
+			value: weight, min: 0, max: 100, onChange: setWeight })
+			: h(M.Text, { size: "xs", c: "dimmed" }, preset.weight == null ? "系统模板，不参与随机抽取" : `来源权重：${preset.weight}（历史参考，不参与当前默认池）`),
+		h(M.Group, { gap: "xs", wrap: "wrap" },
+			h(M.Button, { size: "compact-xs", variant: "light", onClick: () => onPreview({ ...preset, text, weight: typeof weight === "number" ? weight : effectiveWeight }) }, "模拟预览"),
+			editable ? h(M.Button, { size: "compact-xs", disabled: disabled || !dirty || !text.trim() || typeof weight !== "number",
+				onClick: () => onApply({ id: preset.id, text: text.trim(), weight }) }, "应用这条文案") : null,
+			editable ? h(M.Button, { size: "compact-xs", variant: "subtle", disabled: !override && !dirty,
+				onClick: () => { setText(preset.text ?? ""); setWeight(preset.weight ?? 1); onReset(preset.id); } }, "恢复这条默认") : null,
+		),
+		editable && disabled && !override ? h(M.Text, { size: "xs", c: "yellow" }, "已达到 120 条自定义记录上限，请先恢复部分默认文案。") : null,
+	);
+}
+
+function BubbleSettings({ value, onChange }) {
+	const settings = { ...SETTINGS_BUBBLE_DEFAULTS, ...value };
+	const groups = React.useMemo(bubblePresetGroups, []);
+	const [preview, setPreview] = React.useState(() => groups[0].entries[0] ?? { id: "unavailable", text: "尚未载入文案数据", style: {} });
+	const [resetOpen, setResetOpen] = React.useState(false);
+	const previewContainer = React.useRef(null);
+	const choosePreview = (entry) => {
+		setPreview(entry);
+		previewContainer.current?.scrollIntoView?.({ block: "nearest", behavior: "auto" });
+	};
+	const overrides = Array.isArray(settings.overrides) ? settings.overrides : [];
+	const knownIds = new Set(groups.flatMap((group) => group.entries.map((entry) => entry.id)));
+	const unmatchedCount = overrides.filter((entry) => !knownIds.has(entry.id)).length;
+	const updateOverride = (entry) => {
+		const exists = overrides.some((item) => item.id === entry.id);
+		if (!exists && overrides.length >= 120) return;
+		const next = exists ? overrides.map((item) => item.id === entry.id ? entry : item) : [...overrides, entry];
+		onChange({ overrides: next });
+		setPreview((current) => current?.id === entry.id ? { ...current, ...entry } : current);
+	};
+	const resetOverride = (id) => {
+		onChange({ overrides: overrides.filter((entry) => entry.id !== id) });
+		const original = groups.flatMap((group) => group.entries).find((entry) => entry.id === id);
+		if (original) setPreview((current) => current?.id === id ? original : current);
+	};
+	return h(M.Stack, { gap: "sm" },
+		h(Section, { title: "气泡显示与交互", description: "气泡设置独立于宠物体型。总开关关闭时不显示气泡；自动闲聊只控制随机文案，不代表接入 LLM。" },
+			h(Toggle, { label: "显示气泡", checked: settings.enabled, onChange: (enabled) => onChange({ enabled }) }),
+			h(SliderRow, { label: "气泡相对缩放", value: settings.scale, min: 0.75, max: 1.4, step: 0.05,
+				onChange: (scale) => onChange({ scale }), format: (scale) => `${Math.round(scale * 100)}%` }),
+			h("div", { className: "pet-settings-columns" },
+				h(NumberField, { label: "普通气泡停留", description: "0 = 保持显示，直到手动切换或关闭。", unit: "秒",
+					value: settings.durationMs / 1000, min: 0, max: 120,
+					onChange: (next) => onChange({ durationMs: Math.round(next * 1000) }) }),
+				h(NumberField, { label: "提醒气泡停留", description: "0 = 保持显示；真实提醒仍有自己的过期时间。", unit: "秒",
+					value: settings.noticeDurationMs / 1000, min: 0, max: 120,
+					onChange: (next) => onChange({ noticeDurationMs: Math.round(next * 1000) }) }),
+			),
+			h(M.Select, { label: "点击气泡", value: settings.clickMode, data: [
+				{ value: "advance", label: "顺序切换：余额 → 随机文案 → 关闭" }, { value: "home", label: "返回余额主页" },
+			], onChange: (clickMode) => onChange({ clickMode: clickMode || "advance" }) }),
+			h(Toggle, { label: "自动闲聊", description: "从原版随机文案池按权重抽取，不调用模型、不产生逐轮费用。",
+				checked: settings.autoChat, onChange: (autoChat) => onChange({ autoChat }) }),
+		),
+		h("div", { ref: previewContainer },
+			h(BubblePreview, { entry: preview, scale: settings.scale }),
+			h(M.Button, { size: "xs", variant: "subtle", mt: 5, disabled: !preview, onClick: () => setPreview((entry) => entry ? { ...entry } : entry) }, "重新展示当前模拟文案"),
+		),
+		h(Section, { title: "完整文案库", description: "每条文案保留原版样式。编辑后点击“应用这条文案”；预览始终是模拟，不会冒充真实任务、提问或费用。" },
+			h(M.Group, { justify: "space-between" },
+				h(M.Text, { size: "xs", c: "dimmed" }, `自定义 ${overrides.length}/120 条${unmatchedCount > 0 ? `（其中 ${unmatchedCount} 条与当前文案库不匹配，不会生效）` : ""}；默认文案来自固定纯数据资源。`),
+				h(M.Button, { size: "xs", variant: "subtle", color: "red", disabled: overrides.length === 0, onClick: () => setResetOpen(true) }, "恢复全部默认文案…"),
+			),
+			...groups.map((group) => h("details", { key: group.id, className: "pet-settings-details", open: group.id === "random" },
+				h("summary", null, `${group.label}（${group.entries.length} 条）`),
+				h(M.Text, { size: "xs", c: "dimmed", my: "xs" }, group.description),
+				group.entries.length === 0 ? h(M.Text, { size: "xs", c: "dimmed" }, "此分组没有可展示的数据。") : null,
+				...group.entries.map((preset) => h(BubblePresetRow, {
+					key: preset.id, preset, editable: group.editable, override: overrides.find((entry) => entry.id === preset.id),
+					disabled: overrides.length >= 120 && !overrides.some((entry) => entry.id === preset.id),
+					onApply: updateOverride, onReset: resetOverride, onPreview: choosePreview,
+				})),
+			)),
+		),
+		h(M.Modal, { opened: resetOpen, onClose: () => setResetOpen(false), title: "恢复全部默认文案", centered: true },
+			h(M.Stack, { gap: "sm" },
+				h(M.Text, { size: "sm" }, "只清除文案文字与权重覆盖，不修改气泡开关、停留时间或其他设置。"),
+				h(M.Group, { justify: "flex-end" },
+					h(M.Button, { size: "xs", variant: "default", onClick: () => setResetOpen(false) }, "取消"),
+					h(M.Button, { size: "xs", color: "red", onClick: () => { onChange({ overrides: [] }); setResetOpen(false); setPreview(groups[0].entries[0]); } }, "确认恢复"),
+				),
+			),
+		),
+	);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Observation ledger: never mix accounts, currencies or simulated data.       */
+/* -------------------------------------------------------------------------- */
+
+function ledgerAmount(value, currency = "") {
+	if (value === null || value === undefined || value === "") return "未知";
+	const raw = String(value);
+	const readable = /^-?\d+(\.\d+)?$/.test(raw) ? raw.replace(/(\.\d*?[1-9])0+$|\.0+$/, "$1") : "未知";
+	return `${readable}${currency ? currency === "%" ? "%" : ` ${currency}` : ""}`;
+}
+
+function ledgerTime(value, timeZone) {
+	if (!value) return "尚无观测";
+	try {
+		const instant = new Date(value);
+		if (!Number.isFinite(instant.getTime())) return "时间未知";
+		return new Intl.DateTimeFormat("zh-CN", {
+			timeZone: timeZone || "UTC", year: "numeric", month: "2-digit", day: "2-digit",
+			hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false,
+		}).format(instant);
+	} catch {
+		return String(value);
+	}
+}
+
+function validLedgerDecimal(value) {
+	if (typeof value !== "string" || !/^\d{1,20}(?:\.\d{1,8})?$/.test(value.trim())) return false;
+	const [whole, fraction = ""] = value.trim().split(".");
+	// Match the backend's eight-place fixed-point bound without binary rounding.
+	return BigInt(whole) * 100000000n + BigInt(fraction.padEnd(8, "0")) <= BigInt(Number.MAX_SAFE_INTEGER);
+}
+
+function FactGrid({ rows }) {
+	return h("dl", { className: "pet-settings-facts" },
+		...rows.flatMap(([label, value], index) => [
+			h("dt", { key: `label-${index}` }, label),
+			h("dd", { key: `value-${index}` }, value ?? "未知"),
+		]),
+	);
+}
+
+function localSettingsTimeZone() {
+	try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; }
+	catch { return "UTC"; }
+}
+
+function AccountingSettings({ value, onChange }) {
+	const timeZone = value?.timeZone ?? localSettingsTimeZone();
+	const [draftZone, setDraftZone] = React.useState(timeZone);
+	const [zoneError, setZoneError] = React.useState("");
+	React.useEffect(() => setDraftZone(timeZone), [timeZone]);
+	const applyZone = () => {
+		const next = draftZone.trim();
+		try {
+			new Intl.DateTimeFormat("zh-CN", { timeZone: next }).format();
+			if (!next) throw new Error("empty");
+			setZoneError("");
+			onChange({ timeZone: next });
+		} catch {
+			setZoneError("请输入有效的 IANA 时区，例如 Asia/Shanghai、UTC 或 America/New_York。");
+		}
+	};
+	return h(Section, {
+		title: "统计时区与观测间隔",
+		description: "“今日”按以下时区划分。时区变更不保证已有历史样本能重新完整分配；以账本的不完整原因提示为准。",
+	},
+		h(M.Group, { align: "flex-end", wrap: "wrap" },
+			h(M.TextInput, {
+				label: "统计时区（IANA）", placeholder: "Asia/Shanghai", value: draftZone,
+				onChange: (event) => setDraftZone(event.currentTarget.value), error: zoneError || undefined,
+				style: { flex: "1 1 220px" }, maxLength: 80,
+			}),
+			h(M.Button, { size: "xs", onClick: applyZone, disabled: draftZone === timeZone }, "应用时区"),
+		),
+		h(NumberField, {
+			label: "可接受的最大观测间隔", unit: "分钟",
+			description: "超过此间隔仍可看到余额变化，但不能声称是完整的当日费用。",
+			value: value?.maxGapMinutes ?? 180, min: 1, max: 1440,
+			onChange: (next) => onChange({ maxGapMinutes: Math.round(next) }),
+		}),
+	);
+}
+
+function LedgerCorrection({ account, revision, busy, onCorrect }) {
+	const [topUp, setTopUp] = React.useState(account.confirmedTopUp ?? "");
+	const [nonUsage, setNonUsage] = React.useState(account.nonUsageDebit ?? "0");
+	const [note, setNote] = React.useState("");
+	const [noteError, setNoteError] = React.useState("");
+	const [confirmed, setConfirmed] = React.useState(false);
+	const [undoTarget, setUndoTarget] = React.useState(null);
+	const audit = Array.isArray(account.audit) ? account.audit : [];
+	const undone = new Set(audit.flatMap((entry) => [entry.undoOf, entry.undoneBy ? entry.id : null]).filter(Boolean));
+	const latest = [...audit].reverse().find((entry) => entry.action === "set" && !entry.undoneBy && !undone.has(entry.id));
+	const valid = validLedgerDecimal(topUp) && validLedgerDecimal(nonUsage);
+	const edit = (setter, value) => { setter(value); setConfirmed(false); setUndoTarget(null); };
+	// The backend rejects markup and control characters; strip them as typed so a
+	// pasted `<` cannot make the whole correction fail at submit time.
+	const editNote = (raw) => {
+		edit(setNote, raw.replace(/[<>\u0000-\u001f\u007f]/g, ""));
+		setNoteError("");
+	};
+	const requireNote = () => {
+		if (note.trim()) return true;
+		setNoteError("必须填写 1–300 字核对说明（纯文本）。");
+		return false;
+	};
+	return h(Section, {
+		title: "人工核对与校正",
+		description: "填的是该账户整个观测区间的累计到账与非调用扣减，不是本次增量，不会充值、退款或修改服务商余额。",
+	},
+		h(M.Alert, { color: "yellow", title: "请先核对账户、币种和版本", p: "sm" },
+			h(M.Text, { size: "xs" }, `${account.label || account.accountId} · ${account.currency || "未知币种"} · revision ${revision}`),
+			h(M.Text, { size: "xs" }, "修正净额 = 期初余额 + 累计到账 − 当前余额 − 非调用扣减。未确认累计到账时修正净额保持未知；校正不会把跨日变化强行分配到今天。"),
+		),
+		h("div", { className: "pet-settings-columns" },
+			h(M.TextInput, {
+				label: `累计到账（${account.currency || "币种未知"}）`, description: "包含充值、赠额等已核实入账；确认为零也需明确填 0。",
+				value: topUp, inputMode: "decimal", maxLength: 30, disabled: busy,
+				onChange: (event) => edit(setTopUp, event.currentTarget.value),
+				error: topUp && !validLedgerDecimal(topUp) ? "需为非负金额、最多 8 位小数且不超过 90071992.54740991" : undefined,
+			}),
+			h(M.TextInput, {
+				label: `非调用扣减（${account.currency || "币种未知"}）`, description: "例如已核实的过期、退款回收等，不能把 API 用量填在这里。",
+				value: nonUsage, inputMode: "decimal", maxLength: 30, disabled: busy,
+				onChange: (event) => edit(setNonUsage, event.currentTarget.value),
+				error: nonUsage && !validLedgerDecimal(nonUsage) ? "需为非负金额、最多 8 位小数且不超过 90071992.54740991" : undefined,
+			}),
+		),
+		h(M.Textarea, { label: "核对说明", value: note, maxLength: 300, minRows: 2, disabled: busy,
+			description: `${note.length}/300 字，必填；纯文本，不执行 HTML。请勿填写密钥。`,
+			error: noteError || undefined,
+			onChange: (event) => editNote(event.currentTarget.value), placeholder: "记录核对依据，例如哪个服务商账单或入账凭证。" }),
+		h(M.Checkbox, {
+			label: `我已核对上述账户、${account.currency || "币种"}和 revision ${revision}，确认这些是整个观测区间的累计值。`,
+			checked: confirmed, disabled: busy, onChange: (event) => setConfirmed(event.currentTarget.checked),
+		}),
+		h(M.Button, {
+			size: "xs", disabled: busy || !confirmed || !valid || !account.currency,
+			onClick: () => {
+				if (!requireNote()) return;
+				setConfirmed(false);
+				onCorrect({ action: "set", accountId: account.accountId, revision, confirmed: true,
+					confirmedTopUp: topUp.trim(), nonUsageDebit: nonUsage.trim(), note: note.trim() });
+			},
+		}, "确认并记录校正"),
+		h("div", { className: "pet-settings-audit" },
+			h(M.Text, { size: "sm", fw: 600 }, "校正记录"),
+			audit.length === 0 ? h(M.Text, { size: "xs", c: "dimmed" }, "尚无人工校正记录。") : null,
+			...[...audit].reverse().map((entry) => h("article", { key: entry.id, className: "pet-settings-record" },
+				h(M.Group, { justify: "space-between", gap: "xs" },
+					h(M.Text, { size: "xs", fw: 600 }, `${entry.action === "undo" ? "撤销" : "校正"} · ${ledgerTime(entry.at, account.timeZone)}`),
+					h(M.Badge, { size: "xs", color: undone.has(entry.id) ? "gray" : "blue" }, undone.has(entry.id) ? "已撤销" : entry.action === "undo" ? "撤销记录" : "已记录"),
+				),
+				h(M.Text, { size: "xs", c: "dimmed" }, `记录 ID：${entry.id}`),
+				entry.before ? h(M.Text, { size: "xs" }, `之前：累计到账 ${ledgerAmount(entry.before.confirmedTopUp, account.currency)}；非调用扣减 ${ledgerAmount(entry.before.nonUsageDebit, account.currency)}`) : null,
+				entry.after ? h(M.Text, { size: "xs" }, `之后：累计到账 ${ledgerAmount(entry.after.confirmedTopUp, account.currency)}；非调用扣减 ${ledgerAmount(entry.after.nonUsageDebit, account.currency)}`) : null,
+				entry.note ? h(M.Text, { size: "xs", className: "pet-settings-plain-text" }, entry.note) : null,
+				entry.undoOf ? h(M.Text, { size: "xs", c: "dimmed" }, `撤销目标：${entry.undoOf}`) : null,
+				latest?.id === entry.id ? h(M.Button, { size: "compact-xs", variant: "subtle", color: "red", disabled: busy,
+					onClick: () => { setUndoTarget(entry); setConfirmed(false); } }, "撤销这次校正…") : null,
+			)),
+		),
+		h(M.Modal, { opened: Boolean(undoTarget), onClose: () => setUndoTarget(null), title: "确认撤销最近一次校正", centered: true },
+			h(M.Stack, { gap: "sm" },
+				h(M.Text, { size: "sm" }, `仅撤销 ${account.label || account.accountId}（${account.currency}）的记录 ${undoTarget?.id ?? ""}，使用 revision ${revision}。撤销将恢复该记录之前的校正值，并保留审计记录。`),
+				h(M.Textarea, { label: "撤销说明", value: note, maxLength: 300, minRows: 2, error: noteError || undefined,
+					description: `${note.length}/300 字，必填；纯文本，不执行 HTML。`,
+					onChange: (event) => editNote(event.currentTarget.value) }),
+				h(M.Group, { justify: "flex-end" },
+					h(M.Button, { size: "xs", variant: "default", onClick: () => setUndoTarget(null) }, "取消"),
+					h(M.Button, { size: "xs", color: "red", disabled: busy || !undoTarget,
+						onClick: () => {
+							if (!undoTarget || !requireNote()) return;
+							const correctionId = undoTarget.id;
+							setUndoTarget(null);
+							onCorrect({ action: "undo", accountId: account.accountId, revision, confirmed: true, correctionId, note: note.trim() });
+						} }, "确认撤销并记录"),
+				),
+			),
+		),
+	);
+}
+
+function AlertSettings({ value, accounts, loaded, onChange }) {
+	const rules = Array.isArray(value?.rules) ? value.rules : [];
+	const [draft, setDraft] = React.useState(null);
+	const [formError, setFormError] = React.useState("");
+	const selected = accounts.find((account) => account.accountId === draft?.accountId && account.currency === draft?.currency);
+	const percent = draft?.kind === "balance" && draft?.metric === "remainingPercent";
+	const accountOptions = accounts.filter((account) => account.currency).map((account) => ({
+		value: account.accountId, label: `${account.label || account.accountId} · ${account.currency || "币种未知"}`,
+	}));
+	const startRule = (rule) => {
+		setFormError("");
+		setDraft(rule ? { metric: "amount", ...rule } : {
+			id: `rule-${globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`}`,
+			enabled: true, accountId: "", currency: "", kind: "balance", metric: "amount",
+			threshold: "", hysteresis: "0", version: 1,
+		});
+	};
+	const editDraft = (patch) => { setDraft((current) => ({ ...current, ...patch })); setFormError(""); };
+	const saveRule = () => {
+		if (!selected) return setFormError("请选择当前账本中的一个账户，账户 ID 与币种必须精确匹配。");
+		if (!validLedgerDecimal(String(draft.threshold)) || !validLedgerDecimal(String(draft.hysteresis))) {
+			return setFormError("阈值和恢复迟滞必须为非负数字、最多 8 位小数，且不超过 90071992.54740991。");
+		}
+		if (percent && (Number(draft.threshold) > 100 || Number(draft.hysteresis) > 100)) {
+			return setFormError("剩余比例与恢复迟滞的单位为百分比，必须在 0–100 内。");
+		}
+		const previous = rules.find((rule) => rule.id === draft.id);
+		if (!previous && rules.length >= 32) return setFormError("最多保留 32 条规则，请先删除不用的规则。");
+		const next = { ...draft, threshold: String(draft.threshold).trim(), hysteresis: String(draft.hysteresis).trim(),
+			metric: draft.kind === "budget" ? "amount" : draft.metric,
+			version: previous ? (Number(previous.version) || 1) + 1 : 1 };
+		onChange({ rules: previous ? rules.map((rule) => rule.id === next.id ? next : rule) : [...rules, next] });
+		setDraft(null);
+	};
+	return h(Section, {
+		title: "余额预警与今日观测预算",
+		description: "默认关闭；每条规则只匹配一个账户 ID 和币种。预算依据当日实际观测到的余额下降，不等于宿主逐轮计费。",
+	},
+		h(Toggle, { label: "启用预警", checked: value?.enabled === true,
+			description: "规则保留在本插件中。关闭后不生成新的预警；不会替代服务商账单。", onChange: (enabled) => onChange({ enabled }) }),
+		h(M.Text, { size: "xs", c: "dimmed" }, "绝对余额以账户币种计量；真实剩余比例以 % 计量。只有余额 API 同时给出剩余与已用额度时才有剩余比例，不能用参考金额或累计充值凑百分比。POINTS 等未知单位不适用金额预算。"),
+		rules.length === 0 ? h(M.Text, { size: "xs", c: "dimmed" }, "尚未配置预警规则。") : null,
+		...rules.map((rule) => {
+			const account = accounts.find((entry) => entry.accountId === rule.accountId && entry.currency === rule.currency);
+			const usesPercent = rule.kind === "balance" && rule.metric === "remainingPercent";
+			const unavailable = !loaded ? "账本尚未读取，规则状态待确认" : !account ? "账户/币种未匹配，暂不触发" : account.stale ? "观测已过期，等待新样本" :
+				usesPercent && account.remainingPercent == null ? "缺少真实总额度，不触发比例预警" :
+				rule.kind === "budget" && !account.eligible ? "积分/未知单位或没有真实金额观测，不触发预算预警" : "仅在有效观测满足规则时触发";
+			return h("article", { key: rule.id, className: "pet-settings-record" },
+				h(M.Group, { justify: "space-between", gap: "xs" },
+					h(M.Text, { size: "sm", fw: 600 }, `${rule.kind === "budget" ? "今日观测预算达到" : "剩余余额低于"} ${ledgerAmount(rule.threshold, usesPercent ? "%" : rule.currency)}`),
+					h(M.Switch, { size: "xs", "aria-label": `启用规则 ${rule.id}`, checked: rule.enabled !== false,
+						onChange: (event) => onChange({ rules: rules.map((entry) => entry.id === rule.id ? { ...entry, enabled: event.currentTarget.checked } : entry) }) }),
+				),
+				h(M.Text, { size: "xs" }, `${account?.label || rule.accountId} · ${rule.currency} · 恢复迟滞 ${ledgerAmount(rule.hysteresis, usesPercent ? "百分点" : rule.currency)}`),
+				h(M.Text, { size: "xs", c: "dimmed" }, value?.enabled !== true ? `总开关已关闭；${unavailable}` : unavailable),
+				h(M.Group, { gap: "xs" },
+					h(M.Button, { size: "compact-xs", variant: "subtle", onClick: () => startRule(rule) }, "编辑规则"),
+					h(M.Button, { size: "compact-xs", variant: "subtle", color: "red", onClick: () => {
+						onChange({ rules: rules.filter((entry) => entry.id !== rule.id) });
+						if (draft?.id === rule.id) setDraft(null);
+					} }, "删除规则"),
+				),
+			);
+		}),
+		h(M.Button, { size: "xs", variant: "light", disabled: rules.length >= 32 || accountOptions.length === 0,
+			onClick: () => startRule(null) }, `添加规则（${rules.length}/32）`),
+		accountOptions.length === 0 ? h(M.Text, { size: "xs", c: "dimmed" }, "先在「余额 API」页查询余额，再刷新此页账本；没有账户与币种时不能创建规则。") : null,
+		draft ? h("div", { className: "pet-settings-form" },
+			h(M.Stack, { gap: "sm" },
+				h(M.Text, { size: "sm", fw: 600 }, "规则编辑（点击保存规则后生效）"),
+				h(M.Select, { label: "精确匹配的账户与币种", value: draft.accountId || null, data: accountOptions,
+					onChange: (accountId) => {
+						const account = accounts.find((entry) => entry.accountId === accountId);
+						editDraft({ accountId: account?.accountId ?? "", currency: account?.currency ?? "", threshold: "", hysteresis: "0" });
+					} }),
+				h(M.Select, { label: "规则类型", value: draft.kind, data: [
+					{ value: "balance", label: "余额低于阈值" }, { value: "budget", label: "今日观测下降达到预算" },
+				], onChange: (kind) => editDraft({ kind: kind || "balance", metric: "amount", threshold: "", hysteresis: "0" }) }),
+				draft.kind === "balance" ? h(M.Select, { label: "阈值单位", value: draft.metric, data: [
+					{ value: "amount", label: `绝对余额（${draft.currency || "请先选账户"}）` },
+					{ value: "remainingPercent", label: "真实剩余比例（%）" },
+				], onChange: (metric) => editDraft({ metric: metric || "amount", threshold: "", hysteresis: "0" }) }) : null,
+				percent && selected?.remainingPercent == null ? h(M.Alert, { color: "yellow", p: "xs" }, "该账户目前没有真实剩余比例。可以保存规则，但在得到真实总额度前不会触发。") : null,
+				h("div", { className: "pet-settings-columns" },
+					h(M.TextInput, { label: `阈值（${percent ? "%" : draft.currency || "币种未知"}）`, value: String(draft.threshold),
+						inputMode: "decimal", maxLength: 30, onChange: (event) => editDraft({ threshold: event.currentTarget.value }) }),
+					h(M.TextInput, { label: `恢复迟滞（${percent ? "百分点" : draft.currency || "币种未知"}）`, value: String(draft.hysteresis),
+						inputMode: "decimal", maxLength: 30, onChange: (event) => editDraft({ hysteresis: event.currentTarget.value }) }),
+				),
+				h(M.Text, { size: "xs", c: "dimmed" }, "切换账户、规则类型或单位会清空阈值，避免把金额当成百分比。余额恢复超过阈值加迟滞后才重新武装，避免反复提醒。"),
+				formError ? h(M.Alert, { color: "red", p: "xs" }, formError) : null,
+				h(M.Group, { justify: "flex-end" },
+					h(M.Button, { size: "xs", variant: "default", onClick: () => setDraft(null) }, "取消"),
+					h(M.Button, { size: "xs", onClick: saveRule }, "保存规则"),
+				),
+			),
+		) : null,
+	);
+}
+
+function LedgerSettings({ accounting, alerts, onAccountingChange, onAlertsChange, configPending }) {
+	const [ledger, setLedger] = React.useState(null);
+	const [selectedId, setSelectedId] = React.useState("");
+	const [busy, setBusy] = React.useState(false);
+	const [error, setError] = React.useState("");
+	const [message, setMessage] = React.useState("");
+	const mounted = React.useRef(false);
+	const loadLedger = React.useCallback(async (preserveError = false) => {
+		setBusy(true);
+		if (!preserveError) { setError(""); setMessage(""); }
+		const result = await SDK.callSafe("pet-ledger-get", { days: 31, audit: true });
+		if (!mounted.current) return;
+		setBusy(false);
+		if (!result.ok) { setError(result.error.message); return; }
+		if (!result.value?.ledger) { setError("服务端未返回账本，不能推断账户余额或消费。"); return; }
+		setLedger(result.value.ledger);
+	}, []);
+	React.useEffect(() => {
+		mounted.current = true;
+		loadLedger();
+		return () => { mounted.current = false; };
+	}, [loadLedger]);
+	const accounts = Array.isArray(ledger?.accounts) ? ledger.accounts : [];
+	const account = accounts.find((entry) => entry.accountId === selectedId) ?? accounts[0];
+	const correct = async (input) => {
+		setBusy(true); setError(""); setMessage("");
+		const result = await SDK.callSafe("pet-ledger-correct", input);
+		if (!mounted.current) return;
+		setBusy(false);
+		if (!result.ok) {
+			const conflict = result.error?.data?.cause === "REVISION_CONFLICT" || /REVISION_CONFLICT|版本冲突|版本已|账本已变化/.test(result.error.message ?? "");
+			setError(conflict ? "账本版本已变化，正在尝试刷新。请重新核对读取到的 revision 和累计值；不会自动重试校正。" : result.error.message);
+			await loadLedger(true);
+			return;
+		}
+		if (result.value?.ledger) setLedger(result.value.ledger);
+		else await loadLedger(true);
+		setMessage(input.action === "undo" ? "撤销已记录；服务商余额未被修改。" : "校正已记录；未把整体修正净额分配为今日费用。");
+	};
+	const zone = account?.timeZone || accounting?.timeZone || localSettingsTimeZone();
+	const reasons = Array.isArray(account?.incompleteReasons) ? account.incompleteReasons : [];
+	const accountStatus = ledger?.status ?? "unavailable";
+	const observedAmount = (amount) => account?.eligible === true ? ledgerAmount(amount, account.currency) : "不适用（积分/未知单位，或无真实货币观测）";
+	return h(M.Stack, { gap: "sm" },
+		h(Section, { title: "余额观测账本", description: "只记录实际取得的余额样本。余额下降是观测值，不是宿主提供的逐轮费用，也不代表完整账单。" },
+			h(M.Group, { justify: "space-between" },
+				h(M.Badge, { color: accountStatus === "ready" ? "blue" : "yellow", variant: "light" },
+					ledger ? `revision ${ledger.revision ?? "未知"} · ${accountStatus === "ready" ? "可读取" : accountStatus === "corrupt" ? "数据异常" : "暂不可用"}` : "尚未读取"),
+				h(M.Button, { size: "xs", variant: "light", onClick: () => loadLedger(), loading: busy, disabled: configPending }, "刷新账本"),
+			),
+			configPending ? h(M.Text, { size: "xs", c: "dimmed" }, "配置尚在保存，保存完成后刷新账本以应用新设置。") : null,
+			error ? h(M.Alert, { color: "red", title: "未完成操作", p: "sm" }, error) : null,
+			message ? h(M.Alert, { color: "green", p: "sm" }, message) : null,
+			ledger?.error ? h(M.Alert, { color: "yellow", title: "账本不可用", p: "sm" }, typeof ledger.error === "string" ? ledger.error : ledger.error.message || "数据无法读取，请保留现有数据后重试。") : null,
+			accounts.length === 0 ? h(M.Text, { size: "sm", c: "dimmed" }, busy ? "正在读取真实观测…" : "还没有可用账户。到「余额 API」查询一次，再刷新账本；此处不会填入示例余额。") : null,
+			accounts.length > 0 ? h(M.Select, { label: "账户（分别展示，不合并不同币种）", value: account?.accountId ?? null,
+				data: accounts.map((entry) => ({ value: entry.accountId, label: `${entry.label || entry.accountId} · ${entry.currency || "币种未知"}` })),
+				onChange: (value) => { setSelectedId(value || ""); setMessage(""); }, disabled: busy }) : null,
+			account ? h(FactGrid, { rows: [
+				["账户 ID", account.accountId],
+				["币种 / 额度形态", `${account.currency || "未知"} / ${account.shape || "未知"}`],
+				["统计时区", zone], ["首次观测", ledgerTime(account.observedFrom, zone)], ["最近观测", ledgerTime(account.observedTo || account.sampledAt, zone)],
+				["当前余额", ledgerAmount(account.balance, account.currency)],
+				["真实剩余比例", account.remainingPercent == null ? "未知（不以参考金额估算）" : `${Number(account.remainingPercent).toFixed(2)}%`],
+				["期初余额", ledgerAmount(account.openingBalance, account.currency)],
+				["观测下降累计", observedAmount(account.observedSpend)],
+				["观测上涨累计（待核对）", observedAmount(account.observedRise)],
+				["已确认累计到账", !account.eligible ? "不适用" : account.confirmedTopUp == null ? "尚未人工确认" : ledgerAmount(account.confirmedTopUp, account.currency)],
+				["非调用扣减", observedAmount(account.nonUsageDebit)],
+				["整体修正净额", !account.eligible ? "不适用（非真实货币观测）" : account.correctedSpend == null ? "未知（未确认累计到账）" : ledgerAmount(account.correctedSpend, account.currency)],
+				["未分配到具体日期的下降", observedAmount(account.unallocatedSpend)],
+				["未分配到具体日期的上涨", observedAmount(account.unallocatedRise)],
+			] }) : null,
+			account?.stale ? h(M.Alert, { color: "yellow", p: "xs" }, "最近样本已过期。请先刷新余额；不应把旧余额当作实时金额。") : null,
+			account?.correctedSpend && String(account.correctedSpend).startsWith("-") ? h(M.Alert, { color: "yellow", p: "xs" }, "整体修正净额为负，说明累计到账或其他校正仍有待核对；这不表示 API 产生负费用。") : null,
+		),
+		account ? h(Section, { title: "今日观测与完整性", description: "以下仅覆盖实际观测区间。离线、跨日或较长采样间隔不会被伪装为今日的完整消费。" },
+			h(FactGrid, { rows: [
+				["日期", `${account.today?.date || "未知"}（${zone}）`],
+				["今日观测下降", observedAmount(account.today?.spend)],
+				["今日观测上涨（待核对）", observedAmount(account.today?.rise)],
+			] }),
+			h(M.Alert, { color: reasons.length > 0 ? "yellow" : "blue", title: "不完整原因 / 数据边界", p: "sm" },
+				h(M.Stack, { gap: 3 },
+					...(reasons.length > 0 ? reasons : ["未报告额外缺口；仍仅是余额观测，不是逐轮费用或服务商完整账单。"]).map((reason, index) => h(M.Text, { key: index, size: "xs" }, `· ${reason}`)),
+					h(M.Text, { size: "xs" }, "余额上涨不能自动认定为充值；消费与入账若发生在同一采样间隔内，也可能互相抵消。"),
+				),
+			),
+			account.eligible && Array.isArray(account.days) && account.days.length > 0 ? h("details", { className: "pet-settings-details" },
+				h("summary", null, `最近 ${account.days.length} 天的观测记录`),
+				h("div", { className: "pet-settings-table-scroll" }, h("table", { className: "pet-settings-table" },
+					h("thead", null, h("tr", null, h("th", null, "日期"), h("th", null, `观测下降（${account.currency || "未知"}）`), h("th", null, `观测上涨（${account.currency || "未知"}）`))),
+					h("tbody", null, ...account.days.map((day) => h("tr", { key: day.date }, h("td", null, day.date), h("td", null, ledgerAmount(day.spend)), h("td", null, ledgerAmount(day.rise))))),
+				),
+			),
+			) : null,
+		) : null,
+		account && account.eligible === true && account.openingBalance != null && accountStatus === "ready" && ledger.revision != null ? h(LedgerCorrection, {
+			key: `${account.accountId}:${ledger.revision}`, account, revision: ledger.revision, busy: busy || configPending, onCorrect: correct,
+		}) : account ? h(M.Alert, { color: "blue", p: "sm" }, "当前账户缺少可核对的真实金额，或账本不可用；人工金额校正未开放。") : null,
+		h(AlertSettings, { value: alerts, accounts, loaded: Boolean(ledger), onChange: onAlertsChange }),
+		h(AccountingSettings, { value: accounting, onChange: onAccountingChange }),
+	);
+}
+
+/* -------------------------------------------------------------------------- */
+/* This settings view never subscribes or borrows another view's association.   */
+/* -------------------------------------------------------------------------- */
+
+function TaskSettings({ value, onChange }) {
+	const [contextResult, setContextResult] = React.useState(null);
+	const [bridgeAvailable, setBridgeAvailable] = React.useState(false);
+	const [loading, setLoading] = React.useState(false);
+	const mounted = React.useRef(false);
+	const inspectContext = React.useCallback(async () => {
+		setLoading(true);
+		try { setBridgeAvailable(typeof SDK.events === "function" && Boolean(SDK.events())); }
+		catch { setBridgeAvailable(false); }
+		const result = typeof SDK.getContextSafe === "function"
+			? await SDK.getContextSafe()
+			: { ok: false, error: { message: "当前 SDK 未提供上下文读取能力。" } };
+		if (!mounted.current) return;
+		setContextResult(result);
+		setLoading(false);
+	}, []);
+	React.useEffect(() => {
+		mounted.current = true;
+		inspectContext();
+		return () => { mounted.current = false; };
+	}, [inspectContext]);
+	const narratorId = contextResult?.ok && typeof contextResult.value?.narrator?.id === "string"
+		? contextResult.value.narrator.id : "";
+	return h(M.Stack, { gap: "sm" },
+		h(Section, { title: "任务提醒", description: "只处理当前视图上下文或你在舞台明确关联的 narrator，不查询全局列表，不自动发现其他会话。" },
+			h(Toggle, { label: "启用任务提醒", checked: value?.enabled !== false,
+				description: "开关只表示允许舞台尝试订阅；不代表宿主已授权或已有真实事件到达。", onChange: (enabled) => onChange({ enabled }) }),
+			h(M.Alert, { color: "blue", title: "请在桌宠舞台管理关联", p: "sm" },
+				h(M.Text, { size: "xs" }, "设置页和桌宠舞台是不同视图。为避免把本设置页的上下文错误地套到舞台，这里不新增或修改 narrator 关联。"),
+				h(M.Text, { size: "xs" }, "舞台应显示关联的 narrator ID / 别名；手动关联仅保存在该舞台视图的内存或 sessionStorage，绝不写入全局插件配置。"),
+			),
+		),
+		h(Section, { title: "当前设置视图上下文（只读）", description: "这是设置页自己的上下文预览，不是桌宠舞台的关联列表。不会读取、复制或猜测其他视图的绑定。" },
+			h(M.Group, { justify: "space-between", gap: "xs" },
+				h(M.Badge, { variant: "light", color: narratorId ? "blue" : "gray" }, narratorId ? "宿主提供本视图上下文" : "本视图未关联 narrator"),
+				h(M.Button, { size: "xs", variant: "light", loading, onClick: inspectContext }, "重新检查本视图"),
+			),
+			h(FactGrid, { rows: [
+				["narrator ID", narratorId || "未提供"],
+				["别名", "宿主未提供别名；以桌宠舞台内明确设置的关联别名为准"],
+				["关联来源", narratorId ? "宿主 context.narrator.id（仅本视图）" : "无；不会退回全局会话列表"],
+				["上下文读取能力", loading ? "检查中" : contextResult?.ok ? "可读取" : "不可用"],
+				["事件桥方法", bridgeAvailable ? "可用（未订阅，不能等同于已授权）" : "不可用 / 宿主未提供"],
+				["event.subscribe 授权", "设置页不创建订阅，授权状态未在此验证"],
+			] }),
+			contextResult && !contextResult.ok ? h(M.Alert, { color: "yellow", p: "xs" }, contextResult.error?.message || "无法读取当前上下文。") : null,
+		),
+		h(Section, { title: "授权与能力边界" },
+			h(M.Alert, { color: "yellow", title: "升级新增权限需要重新授权", p: "sm" },
+				h(M.Text, { size: "xs" }, "本版使用 event.subscribe。升级后若宿主仍保留旧权限，请在插件权限中重新确认授权，再回到桌宠舞台检查订阅状态。仅能检测到桥方法，不代表订阅权限已获批准。"),
+			),
+			h(FactGrid, { rows: [
+				["逐轮费用", "宿主未提供逐轮费用；账本只有余额观测，不能作为单轮计费。"],
+				["等待回答", "缺少可靠提问信号，无法确认正在等待你回答。"],
+				["真实任务状态", "只以舞台实际授权且收到的、范围匹配的事件为依据。"],
+				["示例模板", "所有模板预览均为模拟，不能当成真实已接线或已发生的事件。"],
+			] }),
+			h(M.Text, { size: "xs", c: "dimmed" }, "本页只读取自身 context 并检测 SDK 方法，不调用 events.subscribe / poll / unsubscribe，也不领取或确认系统提醒。"),
+		),
+	);
+}
+
+// Merge pending sections instead of losing a fast second edit in another tab.
+function mergeSettings(base, patch) {
+	const merged = { ...base };
+	for (const [key, value] of Object.entries(patch ?? {})) {
+		if (["__proto__", "prototype", "constructor"].includes(key)) continue;
+		if (value && typeof value === "object" && !Array.isArray(value)) {
+			merged[key] = mergeSettings(base?.[key] ?? {}, value);
+		} else {
+			merged[key] = value;
+		}
+	}
+	return merged;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Balance API: one HTTPS endpoint, one key, no host cache, no narrator map.    */
+/* -------------------------------------------------------------------------- */
+
+/** The only secret this plugin reads or writes. */
+const BALANCE_SECRET_KEY = "customApiKey";
+
+// The unit is chosen by the user and never inferred from the response: POINTS is a
+// raw count and must not be read as a currency budget.
+const BALANCE_CURRENCIES = ["POINTS", "CNY", "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "HKD", "SGD", "KRW", "INR", "TWD", "NZD", "RUB", "BRL"];
+const BALANCE_CURRENCY_DATA = BALANCE_CURRENCIES.map((code) => ({
+	value: code,
+	label: code === "POINTS" ? "POINTS（积分 / 未知单位）" : code,
+}));
+
+/**
+ * The endpoint is the only network target this plugin calls, so the panel refuses
+ * anything that is not a plain HTTPS URL: no credentials in the URL, no
+ * whitespace/control characters, and never a key smuggled into the query string.
+ */
+function balanceUrlError(value) {
+	const text = String(value ?? "").trim();
+	if (!text) return "";
+	if (text.length > 500) return "URL 过长（最多 500 个字符）。";
+	if (/[\s\u0000-\u001f\u007f]/.test(text)) return "URL 不能包含空白、换行或控制字符。";
+	if (!/^https:\/\//i.test(text)) return "只支持 https:// 开头的地址。";
+	let url;
+	try { url = new URL(text); }
+	catch { return "URL 格式不正确。"; }
+	if (url.protocol !== "https:") return "只支持 HTTPS。";
+	if (url.username || url.password) return "URL 不能包含用户名或密码；API Key 请填在下方输入框。";
+	if (!url.hostname) return "URL 缺少主机名。";
+	if (/(?:^|[?&])(?:api[_-]?key|key|token|secret|access[_-]?token|authorization)=/i.test(url.search)) {
+		return "URL 里不能带密钥参数；API Key 只通过 Authorization: Bearer 发送。";
+	}
+	return "";
+}
+
+/**
+ * Response fields are dot-separated JSON keys, never an expression: the backend
+ * only walks literal keys, so the panel rejects anything else before it is saved.
+ */
+function balancePathError(value, required) {
+	const text = String(value ?? "").trim();
+	if (!text) return required ? "必填：这个路径必须指向响应里的剩余额度。" : "";
+	if (text.length > 160) return "路径过长（最多 160 个字符）。";
+	if (!/^[A-Za-z0-9_$-]+(?:\.[A-Za-z0-9_$-]+)*$/.test(text)) return "只允许用点分隔的字段名（字母、数字、_、-），例如 data.balance。";
+	return "";
+}
+
+/**
+ * Backend failures arrive as `{ kind, message }`. Keep them short and never echo a
+ * provider payload back into the panel; the backend already redacts the key.
+ */
+function balanceFailureText(error) {
+	const kind = String(error?.kind ?? error?.code ?? "").toLowerCase();
+	const message = typeof error?.message === "string" ? error.message.trim().slice(0, 160) : "";
+	if (/shape|field|path|non_?numeric|amount|mismatch/.test(kind)) return "响应字段不匹配：剩余额度字段路径没有指向有效数字（不会当成 0）。";
+	if (/missing_?secret|no_?secret|unconfigured|not_?configured|missing_?url/.test(kind)) return "尚未配置余额 API 或 API Key：先保存 URL 与 Key 再查询。";
+	if (/auth|unauthor|forbidden|credential|401|403/.test(kind)) return "鉴权失败（401/403）：API Key 无效或没有权限。";
+	if (/redirect/.test(kind)) return "余额 API 返回了重定向；插件只接受直连的 HTTPS 响应。";
+	if (/timeout|deadline/.test(kind)) return "余额 API 请求超时。";
+	if (/network|fetch|connect|dns|tls|cert|socket/.test(kind)) return "网络请求失败：无法连接余额 API。";
+	if (/url|https|protocol|insecure/.test(kind)) return "余额 API 地址无效：需要一个 HTTPS 直连地址。";
+	if (/json|parse/.test(kind)) return "余额 API 没有返回合法 JSON。";
+	return message ? `余额查询失败：${message}` : "余额查询失败。";
+}
+
+function BalanceApiSettings({ balance, secret, keyDraft, keyNotice, busy, result, configPending,
+	onPatch, onPatchCustom, onKeyDraft, onSaveKey, onDeleteKey, onQuery }) {
+	const custom = balance?.custom ?? {};
+	const savedUrl = typeof custom.url === "string" ? custom.url : "";
+	const savedTotalPath = typeof custom.totalPath === "string" ? custom.totalPath : "";
+	const savedUsedPath = typeof custom.usedPath === "string" ? custom.usedPath : "";
+	const [draft, setDraft] = React.useState({ url: savedUrl, totalPath: savedTotalPath, usedPath: savedUsedPath });
+	const [touched, setTouched] = React.useState({ url: false, totalPath: false, usedPath: false });
+	// Re-sync only when the *saved* value changed: a save round-trip must not
+	// overwrite text that is still being typed.
+	React.useEffect(() => {
+		setDraft((current) => ({ ...current, url: savedUrl, totalPath: savedTotalPath, usedPath: savedUsedPath }));
+	}, [savedUrl, savedTotalPath, savedUsedPath]);
+
+	const urlError = balanceUrlError(draft.url);
+	const totalPathError = balancePathError(draft.totalPath, true);
+	const usedPathError = balancePathError(draft.usedPath, false);
+	// An untouched empty form is "not configured yet", not an error.
+	const shownUrlError = touched.url || savedUrl ? urlError : "";
+	const shownTotalPathError = touched.totalPath || savedTotalPath ? totalPathError : "";
+	const invalid = Boolean(shownUrlError || shownTotalPathError || usedPathError);
+	const currency = BALANCE_CURRENCIES.includes(custom.currency) ? custom.currency : "POINTS";
+	const refreshMinutes = Number.isFinite(balance?.refreshMinutes) ? balance.refreshMinutes : 30;
+	const configured = secret?.configured === true;
+	const edit = (field, raw) => {
+		setDraft((current) => ({ ...current, [field]: raw }));
+		setTouched((current) => ({ ...current, [field]: true }));
+		const invalidValue = field === "url" ? balanceUrlError(raw) : balancePathError(raw, field === "totalPath");
+		// Only a value the backend can use is written through, so a half-typed URL
+		// never becomes saved config.
+		if (!invalidValue) onPatchCustom({ [field]: raw.trim() });
+	};
+
+	return h(Section, {
+		title: "余额 API",
+		description: "唯一的余额数据源：本插件直接请求你自己配置的第三方 HTTPS 接口；不读取 NarraFork 宿主缓存、日志或任何叙述者上下文。",
+	},
+		h(M.Alert, { color: "blue", p: "sm", title: "固定的请求方式" },
+			h(M.Text, { size: "xs" }, "固定 HTTPS GET；API Key 只放在 Authorization: Bearer 请求头里。没有请求方法、额外请求头或把密钥拼进 URL 的入口。"),
+			h(M.Text, { size: "xs" }, "响应结构因服务而异：「响应字段」里的剩余额度路径必须指向一个数字；路径缺失或不是数字会显示 shape mismatch，不会当成 0。"),
+		),
+		h(M.Stack, { gap: "sm" },
+			h(M.TextInput, {
+				label: "API URL",
+				placeholder: "https://example.com/api/balance",
+				description: "必须是 HTTPS 直连地址；不要写用户名/密码，也不要把密钥放进查询参数。",
+				value: draft.url,
+				error: shownUrlError || undefined,
+				maxLength: 500,
+				autoComplete: "off",
+				spellCheck: false,
+				onChange: (event) => edit("url", event.currentTarget.value),
+			}),
+			h("div", { className: "pet-settings-key-row" },
+				h(M.PasswordInput, {
+					label: "API Key",
+					description: configured ? "已保存在宿主 secret vault（customApiKey）；输入新值可覆盖。" : "尚未配置。只写不读，任何界面都不会回显明文。",
+					placeholder: configured ? "已配置（输入新值可覆盖）" : "粘贴该余额 API 的 API Key",
+					value: keyDraft ?? "",
+					maxLength: 512,
+					autoComplete: "off",
+					spellCheck: false,
+					style: { flex: "1 1 auto" },
+					onChange: (event) => onKeyDraft(event.currentTarget.value),
+				}),
+				h(M.Button, { size: "xs", onClick: onSaveKey, disabled: !String(keyDraft ?? "").trim() }, configured ? "更换 Key" : "保存 Key"),
+				configured ? h(M.Button, { size: "xs", variant: "subtle", color: "red", onClick: onDeleteKey }, "删除 Key") : null,
+			),
+			h(M.Group, { gap: "xs", align: "flex-start", wrap: "wrap" },
+				h(M.Badge, { color: configured ? "green" : "gray", variant: "light" },
+					configured ? "customApiKey 已配置" : "customApiKey 未配置"),
+				h(M.Text, { size: "xs", c: "dimmed" },
+					"旧版内置服务商的密钥不会自动转移到这里：需要时请把目标服务的 Key 重新录入上方 API Key（旧密钥仍留在宿主中，插件不回显、不删除，也不会再使用）。"),
+			),
+			keyNotice ? h(M.Alert, { color: keyNotice.tone === "ok" ? "green" : "red", p: "xs" }, keyNotice.text) : null,
+			h(SliderRow, {
+				label: "查询周期",
+				value: refreshMinutes,
+				min: 1,
+				max: 240,
+				step: 1,
+				onChange: (value) => onPatch({ refreshMinutes: value }),
+				format: (value) => `${value} 分钟`,
+			}),
+			h(M.Group, { gap: "xs", align: "center", wrap: "wrap" },
+				h(M.Button, {
+					size: "xs",
+					onClick: onQuery,
+					loading: busy,
+					disabled: busy || configPending || invalid,
+				}, "立即查询"),
+				configPending
+					? h(M.Text, { size: "xs", c: "dimmed" }, "有改动正在保存；保存完成后才能立即查询。")
+					: invalid
+						? h(M.Text, { size: "xs", c: "yellow" }, "请先修正上方标红的地址或字段路径；无效内容不会被保存。")
+						: h(M.Text, { size: "xs", c: "dimmed" }, "查询使用已保存的 URL、字段路径、单位与 customApiKey。"),
+			),
+			result ? h(M.Alert, { color: result.tone === "ok" ? "green" : result.tone === "warn" ? "yellow" : "red", p: "sm" }, result.text) : null,
+			h("details", { className: "pet-settings-details" },
+				h("summary", null, "响应字段与单位（高级）"),
+				h(M.Stack, { gap: "sm" },
+					h(M.TextInput, {
+						label: "剩余额度字段路径（totalPath，必填）",
+						description: "点号分隔的 JSON 字段，必须指向剩余金额，例如 data.balance 或 balance.remaining。",
+						placeholder: "data.balance",
+						value: draft.totalPath,
+						error: shownTotalPathError || undefined,
+						maxLength: 160,
+						autoComplete: "off",
+						spellCheck: false,
+						onChange: (event) => edit("totalPath", event.currentTarget.value),
+					}),
+					h(M.TextInput, {
+						label: "已用额度字段路径（usedPath，可选）",
+						description: "填了才会显示额度比例（已用 ÷(已用+剩余)）；留空只显示剩余值，不伪造已用百分比。",
+						placeholder: "data.used",
+						value: draft.usedPath,
+						error: usedPathError || undefined,
+						maxLength: 160,
+						autoComplete: "off",
+						spellCheck: false,
+						onChange: (event) => edit("usedPath", event.currentTarget.value),
+					}),
+					h(M.Select, {
+						label: "余额单位（currency）",
+						description: "接口通常不返回单位，所以由你明确指定；不做自动猜测。",
+						data: BALANCE_CURRENCY_DATA,
+						value: currency,
+						allowDeselect: false,
+						onChange: (value) => onPatchCustom({ currency: value ?? "POINTS" }),
+					}),
+					h(M.Text, { size: "xs", c: "dimmed" },
+						currency === "POINTS"
+							? "当前为 POINTS（积分 / 未知单位）：数值照实显示，但不计算货币消费、不启用金额预算与金额预警。"
+							: `当前单位 ${currency}：账本按该币种记录观测金额，才启用货币消费与金额预算；不同单位/URL/字段路径的账户基线互不相通。`),
+				),
+			),
+		),
+	);
+}
+
 function App() {
 	const [config, setConfig] = React.useState(undefined);
 	const [warnings, setWarnings] = React.useState([]);
 	const [status, setStatus] = React.useState("loading");
-	const [providers, setProviders] = React.useState([]);
+	// Only `customApiKey` is ever loaded, shown or managed here.
 	const [secrets, setSecrets] = React.useState([]);
 	const [balanceBusy, setBalanceBusy] = React.useState(false);
 	const [balanceResult, setBalanceResult] = React.useState(undefined);
+	const [keyNotice, setKeyNotice] = React.useState(undefined);
 	const [draftSecret, setDraftSecret] = React.useState({});
 	const [tab, setTab] = React.useState("pet");
+	const [resetConfirm, setResetConfirm] = React.useState(false);
 	const saveTimer = React.useRef(0);
 	const pendingSave = React.useRef(undefined);
+	const saveInFlight = React.useRef(false);
+	const flushSaveRef = React.useRef(() => {});
 	// `commit` needs the newest config synchronously. Reading it from a ref rather
 	// than from the state updater keeps the debounce scheduling out of render-phase
 	// code, where a double-invoked updater would arm the timer twice.
@@ -380,7 +2328,10 @@ function App() {
 
 	const loadSecrets = React.useCallback(async () => {
 		const result = await SDK.callSafe("pet-secrets-list");
-		if (result.ok) setSecrets(result.value?.keys ?? []);
+		if (!result.ok) return;
+		const keys = Array.isArray(result.value?.keys) ? result.value.keys : [];
+		// Old built-in provider keys are deliberately invisible and untouched.
+		setSecrets(keys.filter((entry) => entry && entry.key === BALANCE_SECRET_KEY));
 	}, []);
 
 	React.useEffect(() => {
@@ -392,94 +2343,146 @@ function App() {
 				setStatus(`error: ${configResult.error.message}`);
 				return;
 			}
+			configRef.current = configResult.value.config;
 			setConfig(configResult.value.config);
 			setWarnings(configResult.value.warnings ?? []);
-			const providerResult = await SDK.callSafe("pet-balance-providers");
-			if (!cancelled && providerResult.ok) setProviders(providerResult.value?.providers ?? []);
 			await loadSecrets();
-			if (!cancelled) setStatus("ready");
+			if (!cancelled) setStatus((current) => current === "loading" ? "ready" : current);
 		})();
 		return () => {
 			cancelled = true;
 		};
 	}, [loadSecrets]);
 
-	/**
-	 * Debounced write-through.
-	 *
-	 * Every control knows the whole config, so the patch is always the full object;
-	 * the backend deep-merges and clamps. Debouncing keeps dragging a slider from
-	 * generating one storage write per pixel.
-	 */
+	// Serialize writes and retain edits made while a previous response is in flight.
+	// A rejected save keeps its patch for an explicit retry instead of hiding the UI.
+	const flushSave = React.useCallback(async () => {
+		if (saveInFlight.current) {
+			// A write is already on the wire; do not drop the newer patch on the floor.
+			if (pendingSave.current) {
+				clearTimeout(saveTimer.current);
+				saveTimer.current = setTimeout(() => flushSaveRef.current(), 120);
+			}
+			return;
+		}
+		if (!pendingSave.current) return;
+		const toSave = pendingSave.current;
+		pendingSave.current = undefined;
+		saveInFlight.current = true;
+		setStatus("saving");
+		const result = await SDK.callSafe("pet-config-set", { patch: toSave });
+		saveInFlight.current = false;
+		if (!result.ok) {
+			clearTimeout(saveTimer.current);
+			pendingSave.current = mergeSettings(toSave, pendingSave.current);
+			setStatus(`save-error: ${result.error.message}`);
+			return;
+		}
+		const next = mergeSettings(result.value.config, pendingSave.current);
+		configRef.current = next;
+		setConfig(next);
+		setWarnings(result.value.warnings ?? []);
+		setStatus(pendingSave.current ? "pending" : "saved");
+		if (pendingSave.current) {
+			clearTimeout(saveTimer.current);
+			saveTimer.current = setTimeout(() => flushSaveRef.current(), 0);
+		}
+	}, []);
+	flushSaveRef.current = flushSave;
+
 	const commit = React.useCallback((patch) => {
 		const previous = configRef.current;
 		if (!previous) return;
-		const next = { ...previous, ...patch };
+		const value = typeof patch === "function" ? patch(previous) : patch;
+		const next = mergeSettings(previous, value);
 		configRef.current = next;
 		setConfig(next);
-		pendingSave.current = patch;
+		pendingSave.current = mergeSettings(pendingSave.current ?? {}, value);
+		setStatus("pending");
 		clearTimeout(saveTimer.current);
-		saveTimer.current = setTimeout(async () => {
-			const toSave = pendingSave.current;
-			pendingSave.current = undefined;
-			setStatus("saving");
-			const result = await SDK.callSafe("pet-config-set", { patch: toSave });
-			if (!result.ok) {
-				setStatus(`error: ${result.error.message}`);
-				return;
-			}
-			setConfig(result.value.config);
-			configRef.current = result.value.config;
-			setWarnings(result.value.warnings ?? []);
-			setStatus("saved");
-			setTimeout(() => setStatus((current) => (current === "saved" ? "ready" : current)), 1400);
-		}, 420);
+		saveTimer.current = setTimeout(() => flushSaveRef.current(), 420);
 	}, []);
 
+	React.useEffect(() => () => clearTimeout(saveTimer.current), []);
+
+	const replaceConfiguration = async (reset = false) => {
+		if (saveInFlight.current || pendingSave.current) return;
+		saveInFlight.current = true;
+		setStatus("saving");
+		const result = await SDK.callSafe(reset ? "pet-config-set" : "pet-config-get", reset ? { reset: true } : {});
+		saveInFlight.current = false;
+		if (!result.ok) {
+			clearTimeout(saveTimer.current);
+			setStatus(`save-error: ${result.error.message}`);
+			return;
+		}
+		// Edits made while this read/reset was in flight still belong to the user.
+		const next = mergeSettings(result.value.config, pendingSave.current);
+		configRef.current = next;
+		setConfig(next);
+		setWarnings(result.value.warnings ?? []);
+		setStatus(pendingSave.current ? "pending" : reset ? "saved" : "ready");
+		if (pendingSave.current) {
+			clearTimeout(saveTimer.current);
+			saveTimer.current = setTimeout(() => flushSaveRef.current(), 0);
+		}
+	};
+	const reloadConfig = () => replaceConfiguration(false);
+	const resetConfig = () => { setResetConfirm(false); return replaceConfiguration(true); };
+
 	const saveSecret = async (secretKey) => {
+		if (secretKey !== BALANCE_SECRET_KEY) return;
 		const value = (draftSecret[secretKey] ?? "").trim();
 		if (!value) return;
 		try {
 			await SDK.bridge().secrets.set(secretKey, value);
 			setDraftSecret((previous) => ({ ...previous, [secretKey]: "" }));
 			await loadSecrets();
-			setBalanceResult({ tone: "ok", text: "密钥已保存（不会回显）" });
+			setKeyNotice({ tone: "ok", text: "API Key 已保存（不会回显）；下一次查询或刷新即使用新密钥。" });
 		} catch (error) {
-			setBalanceResult({ tone: "error", text: `保存失败：${error?.message ?? error}` });
+			setKeyNotice({ tone: "error", text: `保存失败：${error?.message ?? error}` });
 		}
 	};
 
 	const clearSecret = async (secretKey) => {
+		if (secretKey !== BALANCE_SECRET_KEY) return;
 		try {
 			await SDK.bridge().secrets.delete(secretKey);
 			await loadSecrets();
-			setBalanceResult({ tone: "ok", text: "密钥已删除" });
+			setKeyNotice({ tone: "ok", text: "API Key 已删除；在重新录入前余额查询会提示未配置。" });
 		} catch (error) {
-			setBalanceResult({ tone: "error", text: `删除失败：${error?.message ?? error}` });
+			setKeyNotice({ tone: "error", text: `删除失败：${error?.message ?? error}` });
 		}
 	};
 
 	const testBalance = async () => {
 		setBalanceBusy(true);
 		setBalanceResult(undefined);
+		// The single fixed endpoint: no provider, no source, no narrator.
 		const result = await SDK.callSafe("pet-balance-refresh", { force: true });
 		setBalanceBusy(false);
 		if (!result.ok) {
-			setBalanceResult({ tone: "error", text: result.error.message });
+			setBalanceResult({ tone: "error", text: balanceFailureText(result.error) });
 			return;
 		}
 		const snapshot = result.value?.snapshot;
+		const ledger = result.value?.ledger;
 		if (!snapshot) {
-			setBalanceResult({ tone: "warn", text: "没有启用的余额服务商" });
+			setBalanceResult({ tone: "warn", text: "请先保存余额 API 的 URL 与 API Key，再立即查询。" });
 			return;
 		}
 		if (!snapshot.ok) {
-			setBalanceResult({ tone: "error", text: `${snapshot.error?.message ?? "查询失败"}` });
+			setBalanceResult({
+				tone: snapshot.stale ? "warn" : "error",
+				text: `${balanceFailureText(snapshot.error)}${snapshot.stale ? " 现在显示的仍是上一次成功查询的旧值。" : ""}`,
+			});
 			return;
 		}
+		const summary = typeof snapshot.summary === "string" && snapshot.summary.trim() ? snapshot.summary.trim() : "已取得余额";
+		const accounts = Array.isArray(ledger?.accounts) ? ledger.accounts.length : 0;
 		setBalanceResult({
 			tone: "ok",
-			text: `${snapshot.summary} · 已用 ${Math.round(snapshot.percent ?? 0)}% · 档位 ${snapshot.tier}`,
+			text: `${summary}${snapshot.stale ? "（旧值，尚未取得新样本）" : ""} · 账本账户 ${accounts} 个；完整观测见「账本与预警」`,
 		});
 	};
 
@@ -503,14 +2506,14 @@ function App() {
 		);
 	}
 
-	const patchBalance = (patch) => commit({ balance: { ...config.balance, ...patch } });
-	const patchBalanceCustom = (patch) =>
-		commit({ balance: { ...config.balance, custom: { ...config.balance.custom, ...patch } } });
+	const patchBalance = (patch) => commit({ balance: patch });
+	const patchBalanceCustom = (patch) => commit({ balance: { custom: patch } });
+	const configPending = status === "pending" || status === "saving" || Boolean(pendingSave.current);
 	const animationGroups = config.animationGroups ?? {};
-	const providerOptions = providers.map((provider) => ({
-		value: provider.id,
-		label: provider.label,
-	}));
+	// Older stored configs predate `sound`; the backend fills the default in, but the
+	// panel may render one frame before the first save round-trip.
+	const sound = config.sound ?? { enabled: true, volume: 0.6 };
+	const patchSound = (patch) => commit({ sound: { ...sound, ...patch } });
 
 	return h(
 		M.Container,
@@ -528,7 +2531,7 @@ function App() {
 					h(
 						M.Text,
 						{ size: "xs", c: "dimmed" },
-						status === "saving" ? "保存中…" : status === "saved" ? "已保存" : "改动会自动保存",
+						status === "saving" ? "保存中，请勿关闭设置页…" : status === "pending" ? "有改动待保存，请勿关闭…" : status === "saved" ? "已保存" : status.startsWith("save-error:") ? "保存失败，改动尚未确认" : "改动会自动保存；文案与规则需点应用",
 					),
 				),
 				h(
@@ -539,9 +2542,8 @@ function App() {
 						{
 							variant: "subtle",
 							size: "xs",
-							onClick: () => {
-								commit({});
-							},
+							onClick: reloadConfig,
+							disabled: configPending,
 						},
 						"重新读取",
 					),
@@ -551,19 +2553,30 @@ function App() {
 							variant: "subtle",
 							color: "red",
 							size: "xs",
-							onClick: async () => {
-								const result = await SDK.callSafe("pet-config-set", { reset: true });
-								if (result.ok) {
-									setConfig(result.value.config);
-									setWarnings(result.value.warnings ?? []);
-								}
-							},
+							onClick: () => setResetConfirm(true),
+							disabled: configPending,
 						},
 						"恢复默认",
 					),
 				),
 			),
 
+			h(M.Modal, { opened: resetConfirm, onClose: () => setResetConfirm(false), title: "恢复全部设置默认值", centered: true },
+				h(M.Stack, { gap: "sm" },
+					h(M.Text, { size: "sm" }, "将恢复宠物、气泡、任务、余额 API、时区与预警设置，并清除自定义文案；不会清除已保存的 API Key、宿主密钥或账本观测与校正记录。"),
+					h(M.Group, { justify: "flex-end" },
+						h(M.Button, { size: "xs", variant: "default", onClick: () => setResetConfirm(false) }, "取消"),
+						h(M.Button, { size: "xs", color: "red", onClick: resetConfig, disabled: configPending }, "确认恢复设置"),
+					),
+				),
+			),
+			status.startsWith("save-error:") ? h(M.Alert, { color: "red", title: "保存或读取未完成", p: "sm" },
+				h(M.Stack, { gap: "xs" },
+					h(M.Text, { size: "xs" }, status.slice("save-error:".length).trim()),
+					h(M.Text, { size: "xs" }, "本页改动仍保留，请勿关闭。只有服务端确认返回后才视为已保存。"),
+					h(M.Button, { size: "xs", variant: "light", onClick: () => pendingSave.current ? flushSave() : reloadConfig() }, pendingSave.current ? "重试保存" : "重试读取"),
+				),
+			) : null,
 			warnings.length > 0
 				? h(
 						M.Alert,
@@ -585,7 +2598,10 @@ function App() {
 					h(M.Tabs.Tab, { value: "pet" }, "宠物"),
 					h(M.Tabs.Tab, { value: "anim" }, "动画"),
 					h(M.Tabs.Tab, { value: "physics" }, "物理"),
-					h(M.Tabs.Tab, { value: "balance" }, "余额"),
+					h(M.Tabs.Tab, { value: "bubbles" }, "气泡与文案"),
+					h(M.Tabs.Tab, { value: "balance" }, "余额 API"),
+					h(M.Tabs.Tab, { value: "ledger" }, "账本与预警"),
+					h(M.Tabs.Tab, { value: "tasks" }, "任务提醒"),
 					h(M.Tabs.Tab, { value: "about" }, "关于"),
 				),
 
@@ -634,6 +2650,30 @@ function App() {
 								checked: config.collisions,
 								onChange: (value) => commit({ collisions: value }),
 							}),
+						),
+						h(
+							Section,
+							{ title: "点击音效", description: "面板内点击播放原版橡皮鸭叫；关闭后停止播放。" },
+							h(Toggle, {
+								label: "开启点击音效",
+								description: "默认开启，音量 60%",
+								checked: sound.enabled !== false,
+								onChange: (value) => patchSound({ enabled: value }),
+							}),
+							h(SliderRow, {
+								label: "音量",
+								value: sound.volume,
+								min: 0,
+								max: 1,
+								step: 0.05,
+								onChange: (value) => patchSound({ volume: value }),
+								format: (value) => `${Math.round(value * 100)}%`,
+							}),
+							h(
+								M.Text,
+								{ size: "xs", c: "dimmed" },
+								"当前宿主的浮层仅支持指针中继，无法可靠解锁音频，插件在浮层不播放或积压点击声。面板内真实点击可解锁原版鸭叫；此开关和音量只影响声音，不影响动画。",
+							),
 						),
 						h(
 							Section,
@@ -745,169 +2785,46 @@ function App() {
 					),
 				),
 
-				/* ---------------------------------------------------- 余额 */
+				/* ---------------------------------------------------- 气泡与文案 */
+				h(M.Tabs.Panel, { value: "bubbles", pt: "sm" },
+					h(BubbleSettings, { value: config.bubbles, onChange: (patch) => commit({ bubbles: patch }) }),
+				),
+
+				/* ---------------------------------------------------- 账本与预警 */
+				h(M.Tabs.Panel, { value: "ledger", pt: "sm" },
+					h(LedgerSettings, { accounting: config.accounting, alerts: config.alerts, configPending,
+						onAccountingChange: (patch) => commit({ accounting: patch }),
+						onAlertsChange: (patch) => commit({ alerts: patch }),
+					}),
+				),
+
+				/* ---------------------------------------------------- 任务提醒 */
+				h(M.Tabs.Panel, { value: "tasks", pt: "sm" },
+					h(TaskSettings, { value: config.tasks, onChange: (patch) => commit({ tasks: patch }) }),
+				),
+
+				/* ---------------------------------------------------- 余额 API */
 				h(
 					M.Tabs.Panel,
 					{ value: "balance", pt: "sm" },
-					h(
-						M.Stack,
-						{ gap: "sm" },
-						h(
-							Section,
-							{
-								title: "余额来源",
-								description:
-									"按已用百分比分成六档，每档对应一段动画。默认直接使用 NarraFork 已经查到的中转站余额，不需要在这里再填一次密钥。",
-							},
-							h(M.SegmentedControl, {
-								fullWidth: true,
-								data: [
-									{ value: "host", label: "跟随 NarraFork 中转站" },
-									{ value: "manual", label: "手动配置服务商" },
-								],
-								value: config.balance.source ?? "host",
-								onChange: (value) => patchBalance({ source: value }),
-							}),
-							h(
-								M.Text,
-								{ size: "xs", c: "dimmed" },
-								(config.balance.source ?? "host") === "host"
-									? "读取宿主缓存的 sub2api / new-api 中转站余额。数字与供应商设置页看到的一致；宿主那边点过「查询余额」后这里才有数据。"
-									: "由本插件自己请求服务商的余额接口，需要单独填 API Key。适合宿主不跟踪的服务（例如 DeepSeek 官方 API Key）。",
-							),
-							h(SliderRow, {
-								label: "查询周期",
-								value: config.balance.refreshMinutes,
-								min: 1,
-								max: 240,
-								step: 1,
-								onChange: (value) => patchBalance({ refreshMinutes: value }),
-								format: (value) => `${value} 分钟`,
-							}),
-							h(
-								M.Group,
-								{ gap: "xs" },
-								h(
-									M.Button,
-									{
-										size: "xs",
-										onClick: testBalance,
-										loading: balanceBusy,
-										disabled: (config.balance.source ?? "host") === "manual" && !config.balance.providerId,
-									},
-									"立即查询",
-								),
-								balanceResult
-									? h(
-											M.Badge,
-											{
-												color:
-													balanceResult.tone === "ok" ? "green" : balanceResult.tone === "warn" ? "yellow" : "red",
-												variant: "light",
-												style: { textTransform: "none", fontWeight: 400 },
-											},
-											balanceResult.text,
-										)
-									: null,
-							),
-						),
-
-						(config.balance.source ?? "host") === "manual"
-							? h(
-									Section,
-									{
-										title: "手动服务商",
-										description: "密钥保存在宿主 secret vault 里，插件只能读自己命名空间下的那些。",
-									},
-									h(M.Select, {
-										label: "服务商",
-										placeholder: "不启用",
-										clearable: true,
-										data: providerOptions,
-										value: config.balance.providerId,
-										onChange: (value) => patchBalance({ providerId: value ?? null }),
-									}),
-								)
-							: null,
-
-						config.balance.providerId === "custom"
-							? h(
-									Section,
-									{
-										title: "自定义接口",
-										description:
-											"适合任何返回 JSON 的余额接口。URL 必须是 http(s)，采用 GET/POST；插件直接发起请求，不经过宿主代理。",
-									},
-									h(M.TextInput, {
-										label: "名称",
-										value: config.balance.custom.label,
-										onChange: (event) => patchBalanceCustom({ label: event.currentTarget.value }),
-									}),
-									h(M.TextInput, {
-										label: "URL",
-										placeholder: "https://example.com/api/balance",
-										value: config.balance.custom.url,
-										onChange: (event) => patchBalanceCustom({ url: event.currentTarget.value }),
-									}),
-									h(M.SegmentedControl, {
-										data: ["GET", "POST"],
-										value: config.balance.custom.method,
-										onChange: (value) => patchBalanceCustom({ method: value }),
-									}),
-									h(M.TextInput, {
-										label: "剩余额度字段路径",
-										description: "点号分隔，例如 data.balance 或 balance.total",
-										value: config.balance.custom.totalPath,
-										onChange: (event) => patchBalanceCustom({ totalPath: event.currentTarget.value }),
-									}),
-									h(M.TextInput, {
-										label: "已用额度字段路径（可选）",
-										description: "填了就用「已用 ÷(已用+剩余)」算百分比；不填则只显示剩余值，不播档位动画",
-										value: config.balance.custom.usedPath,
-										onChange: (event) => patchBalanceCustom({ usedPath: event.currentTarget.value }),
-									}),
-								)
-							: null,
-
-						(config.balance.source ?? "host") === "manual"
-							? h(
-							Section,
-							{
-								title: "密钥",
-								description:
-									"写入后只显示「已配置」，任何界面都不会回显明文——宿主对 iframe 的 secrets.get 要求管理员会话，所以这里只写不读。",
-							},
-							...secrets.map((entry) => {
-								const label = entry.key;
-								return h(
-									M.Group,
-									{ key: entry.key, align: "flex-end", wrap: "nowrap" },
-									h(M.PasswordInput, {
-										label,
-										placeholder: entry.configured ? "已配置（输入新值可覆盖）" : "未配置",
-										value: draftSecret[entry.key] ?? "",
-										onChange: (event) =>
-											setDraftSecret((previous) => ({ ...previous, [entry.key]: event.currentTarget.value })),
-										style: { flex: "1 1 auto" },
-									}),
-									h(M.Button, { size: "xs", onClick: () => saveSecret(entry.key) }, "保存"),
-									entry.configured
-										? h(
-												M.Button,
-												{ size: "xs", variant: "subtle", color: "red", onClick: () => clearSecret(entry.key) },
-												"清除",
-											)
-										: null,
-									h(
-										M.Badge,
-										{ color: entry.configured ? "green" : "gray", variant: "light" },
-										entry.configured ? "已配置" : "未配置",
-									),
-								);
-							}),
-						)
-							: null,
-					),
+					h(BalanceApiSettings, {
+						balance: config.balance,
+						secret: secrets.find((entry) => entry?.key === BALANCE_SECRET_KEY),
+						keyDraft: draftSecret[BALANCE_SECRET_KEY] ?? "",
+						keyNotice,
+						busy: balanceBusy,
+						result: balanceResult,
+						configPending,
+						onPatch: patchBalance,
+						onPatchCustom: patchBalanceCustom,
+						onKeyDraft: (value) => {
+							setDraftSecret((previous) => ({ ...previous, [BALANCE_SECRET_KEY]: value }));
+							setKeyNotice(undefined);
+						},
+						onSaveKey: () => saveSecret(BALANCE_SECRET_KEY),
+						onDeleteKey: () => clearSecret(BALANCE_SECRET_KEY),
+						onQuery: testBalance,
+					}),
 				),
 
 				/* ---------------------------------------------------- 关于 */
@@ -932,13 +2849,15 @@ function App() {
 								title: "相比原版少了什么",
 								description: "每条都是宿主边界造成的，不是没做完：",
 							},
-							...[ 
-								"全屏置顶浮层：宿主只提供 Dockview 面板与设置页，桌宠只能在面板矩形内活动。",
-								"系统托盘、多显示器漫游、DPI 适配：没有 Electron。",
+							...[
+								"桌面级置顶浮层：插件浮层只能在宿主提供的面板或浮层矩形内活动，不是独立桌面窗口。",
+								"多显示器漫游与 DPI 适配：由宿主面板决定，插件不自行接管。",
 								"<video>/<audio> 播放：iframe 的 media-src 为 'none'，所有表现只能走 <img> 与 WebAudio。",
 								"语音合成与识别：宿主没有对应 API。",
-								"LLM 闲聊与记忆：本次版本不实现，动画与余额是本版的全部内容。",
-								"DSH 账号登录方式的余额：没有可借用的凭据服务，只能用 API Key。",
+								"LLM 闲聊与长期记忆：本版只使用固定文案，不调用模型。",
+								"逐轮费用与等待回答状态：宿主未提供足够信号，不会把余额变化或普通消息推断为逐轮费用、等待你回答。",
+								"宿主余额缓存与叙述者余额匹配：本版不读取 NarraFork 的 provider-balances 缓存、日志或叙述者上下文，余额只来自你自己配置的那一个 HTTPS 余额 API；也没有多供应商轮播。",
+								"DSH 账号登录方式的余额：没有可借用的凭据服务，只能由你填 API Key。",
 							].map((item, index) => h(M.Text, { key: index, size: "xs", c: "dimmed" }, `· ${item}`)),
 						),
 						h(
@@ -947,7 +2866,7 @@ function App() {
 							h(
 								M.Text,
 								{ size: "xs", c: "dimmed" },
-								"配置与余额快照存在插件自己的 storage（按插件 id 隔离）。卸载插件默认保留这些数据，删除 ~/.narrafork/plugins/data/cn.mcd7.neglectdream.dsh-pet 即可彻底清除。",
+								"配置、余额观测账本与预警规则存在插件自己的 storage（按插件 id 隔离）；API Key 由宿主 secret vault 保管（customApiKey，插件只写不读，任何界面都不回显）；人工校正记录随账本保存，不写入宿主账单。卸载插件默认保留这些数据，删除 ~/.narrafork/plugins/data/cn.mcd7.neglectdream.dsh-pet 即可彻底清除。",
 							),
 						),
 					),

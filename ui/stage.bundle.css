@@ -1,0 +1,351 @@
+/*
+ * Stage presentation.
+ *
+ * The shell already injects the host's Mantine token values into this document's
+ * `:root` (`--mantine-color-body`, `--mantine-color-text`, `--mantine-radius-md`,
+ * `--mantine-font-family`, …), so everything here references those with a
+ * fallback instead of hard-coding a palette. That is what makes the pet follow a
+ * light/dark switch without the plugin shipping two stylesheets — or, in the
+ * theme case, without it shipping any colours at all.
+ */
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+	/* A transparent stage is the point: the pet is drawn on the host's own panel
+	   surface, so painting an opaque backdrop here would look like a hole in the
+	   app's theme. */
+	background: transparent;
+	color: var(--mantine-color-text, #e6e6e6);
+	font-family: var(--mantine-font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
+	/* Dragging a pet must not scroll the panel or select the fish. */
+	overscroll-behavior: none;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: none;
+}
+
+.pet-stage {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	isolation: isolate;
+	pointer-events: none;
+}
+
+.pet-background {
+	position: absolute;
+	inset: 0;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	pointer-events: none;
+}
+
+.pet-layer {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.pet {
+	position: absolute;
+	top: 0;
+	left: 0;
+	will-change: transform;
+	pointer-events: none;
+}
+
+/* Separate compact target: the full image canvas never swallows blank clicks. */
+.pet-hit {
+	position: absolute;
+	pointer-events: auto;
+	cursor: grab;
+	touch-action: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.pet-hit.is-dragging { cursor: grabbing; }
+.pet.is-dragging { filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)); }
+
+.pet-frame {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	opacity: 0;
+	pointer-events: none;
+	/* An animated WebP is drawn one frame at a time; the browser already
+	   composites it, so no extra `image-rendering` hint is wanted. */
+}
+
+.pet-frame.is-front {
+	opacity: 1;
+}
+
+/* Shared SVG bubbles are composed by build-ui from bubbles.css. */
+.pet-task-bindings {
+	position: absolute; inset: 8px; margin: auto; max-width: 540px; max-height: 420px;
+	overflow: auto; pointer-events: auto; z-index: 8; padding: 14px;
+	background: var(--mantine-color-body, #202124); color: var(--mantine-color-text, #eee);
+	border: 1px solid #7388ba; border-radius: 10px; font: 13px/1.5 sans-serif;
+	user-select: text;
+}
+.pet-task-status { white-space: pre-wrap; overflow-wrap: anywhere; }
+.pet-task-binding-row { display: flex; gap: 6px; margin: 8px 0; }
+.pet-task-binding-row input { min-width: 0; width: 50%; padding: 5px; }
+.pet-task-bindings button { margin: 4px; padding: 5px 8px; }
+
+/*
+ * The menu is drawn inside the iframe rather than using a host context menu:
+ * the sandbox exposes no menu API, and an in-iframe menu keeps click handling,
+ * positioning and dismissal in one place.
+ */
+.pet-menu {
+	pointer-events: auto;
+	position: absolute;
+	z-index: 5;
+	min-width: 132px;
+	padding: 4px;
+	border-radius: var(--mantine-radius-md, 8px);
+	background: var(--mantine-color-body, #1a1b1e);
+	border: 1px solid var(--mantine-color-default-border, rgba(255, 255, 255, 0.16));
+	box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32);
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+}
+
+.pet-menu-item {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	font-size: 12px;
+	text-align: left;
+	padding: 7px 9px;
+	border-radius: calc(var(--mantine-radius-md, 8px) - 3px);
+	cursor: pointer;
+}
+
+.pet-menu-item:hover {
+	background: var(--mantine-color-default-hover, rgba(255, 255, 255, 0.08));
+}
+
+.pet-menu-separator {
+	height: 1px;
+	margin: 3px 4px;
+	background: var(--mantine-color-default-border, rgba(255, 255, 255, 0.14));
+}
+
+/* ------------------------------------------------------------------ HUD -- */
+
+.pet-hud {
+	pointer-events: auto;
+	position: absolute;
+	inset: 6px auto auto 6px;
+	z-index: 6;
+	max-width: min(440px, calc(100% - 12px));
+	max-height: calc(100% - 12px);
+	overflow: auto;
+	padding: 8px 10px;
+	border-radius: var(--mantine-radius-md, 8px);
+	background: color-mix(in srgb, var(--mantine-color-body, #1a1b1e) 92%, transparent);
+	border: 1px solid var(--mantine-color-default-border, rgba(255, 255, 255, 0.16));
+	font-family: var(--mantine-font-family-monospace, ui-monospace, "Cascadia Mono", monospace);
+	font-size: 11px;
+	line-height: 1.5;
+	color: var(--mantine-color-dimmed, #909296);
+}
+
+.pet-hud[hidden] {
+	display: none;
+}
+
+.pet-hud-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	font-weight: 600;
+	color: var(--mantine-color-text, #e6e6e6);
+	margin-bottom: 4px;
+}
+
+.pet-hud-close {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 15px;
+	line-height: 1;
+	cursor: pointer;
+	padding: 0 2px;
+}
+
+.pet-hud-row {
+	display: grid;
+	grid-template-columns: 96px 1fr;
+	gap: 6px;
+	padding: 1px 0;
+}
+
+.pet-hud-row.is-ok .pet-hud-label::before {
+	content: "✓ ";
+	color: var(--mantine-color-green-6, #40c057);
+}
+
+.pet-hud-row.is-warn .pet-hud-label::before {
+	content: "! ";
+	color: var(--mantine-color-yellow-6, #f0b429);
+}
+
+.pet-hud-row.is-fail .pet-hud-label::before {
+	content: "✕ ";
+	color: var(--mantine-color-red-6, #fa5252);
+}
+
+.pet-hud-label {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.pet-hud-detail {
+	overflow-wrap: anywhere;
+	opacity: 0.85;
+}
+
+.pet-hud-stats {
+	margin-top: 6px;
+	padding-top: 6px;
+	border-top: 1px solid var(--mantine-color-default-border, rgba(255, 255, 255, 0.14));
+}
+
+/* Shared by the stage and the explicitly simulated settings preview. */
+.pet-thought {
+	position: absolute;
+	inset: 0 auto auto 0;
+	box-sizing: border-box;
+	z-index: 4;
+	pointer-events: none;
+	color: #203170;
+	font-family: var(--mantine-font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
+	line-height: 1.25;
+	text-align: center;
+	isolation: isolate;
+	contain: layout style;
+	user-select: none;
+}
+.pet-thought[hidden] { display: none !important; }
+.pet-thought-shape {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+	pointer-events: none;
+	filter: drop-shadow(0 3px 2px rgb(32 49 112 / 13%));
+}
+.pet-thought-part {
+	pointer-events: none;
+	transform-box: fill-box;
+	transform-origin: center;
+	opacity: 0;
+	transform: scale(0.2);
+	transition: opacity 100ms ease, transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1.15);
+}
+.pet-thought-small { transition-delay: 0ms; }
+.pet-thought-medium { transition-delay: 130ms; }
+.pet-thought-main { transition-delay: 260ms; }
+.pet-thought[data-open="true"] .pet-thought-part { opacity: 1; transform: scale(1); }
+/* Painted paths alone intercept clicks: no rectangular invisible hit target. */
+.pet-thought[data-surface="panel"][data-open="true"] .pet-thought-part { pointer-events: visiblePainted; cursor: pointer; }
+.pet-thought[data-surface="overlay"] .pet-thought-part { pointer-events: none; }
+.pet-thought-content {
+	position: absolute;
+	left: 13.25%;
+	top: 12%;
+	width: 62%;
+	height: 48%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1px;
+	padding: 0;
+	box-sizing: border-box;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 160ms ease;
+	color: #203170;
+}
+.pet-thought[data-open="true"] .pet-thought-content { opacity: 1; transition-delay: 360ms; }
+.pet-thought[data-open="true"][data-switch="out"] .pet-thought-content { opacity: 0; transition: opacity 120ms ease; }
+.pet-thought[data-open="true"][data-switch="in"] .pet-thought-content { opacity: 1; transition: opacity 160ms ease; }
+.pet-thought[data-below="true"] .pet-thought-content { top: 40%; }
+.pet-thought[data-mirrored="true"] .pet-thought-content { left: 24.75%; }
+.pet-thought-line { white-space: pre; max-width: 100%; }
+.pet-thought-title { flex: 0 0 auto; font-size: 12px; line-height: 16px; font-weight: 700; color: #203170; }
+.pet-thought-row {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+	flex-wrap: wrap;
+	column-gap: 3px;
+	width: 100%;
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 400;
+	color: #203170;
+}
+.pet-thought-label { max-width: 100%; overflow-wrap: anywhere; }
+.pet-thought-number { white-space: nowrap; display: inline-flex; flex-wrap: nowrap; align-items: baseline; }
+.pet-thought-value { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pet-thought-unit { white-space: nowrap; font-size: 12px; }
+.pet-thought-row.is-main .pet-thought-label { flex-basis: 100%; font-size: 12px; line-height: 16px; }
+.pet-thought-row.is-main .pet-thought-value { font-size: clamp(18px, 1.9em, 30px); font-weight: 800; line-height: 1.08; }
+.pet-thought-row.is-detail { font-size: 12px; line-height: 15px; }
+.pet-thought-row.is-detail .pet-thought-value { white-space: pre-wrap; overflow-wrap: anywhere; }
+.pet-thought-page { position: absolute; bottom: 36%; left: 29.25%; width: 30%; font-size: 10px; line-height: 12px; color: #203170; pointer-events: none; }
+.pet-thought[data-below="true"] .pet-thought-page { bottom: 8%; }
+.pet-thought[data-mirrored="true"] .pet-thought-page { left: 40.75%; }
+.pet-thought-content[data-gradient]:not([data-gradient="none"]) .pet-thought-line,
+.pet-thought-content[data-gradient]:not([data-gradient="none"]) .is-main .pet-thought-value {
+	background: var(--pet-thought-gradient, linear-gradient(135deg, #203170, #4c8eff));
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	-webkit-text-fill-color: transparent;
+	background-size: 200% auto;
+	animation: pet-thought-rainbow 2.6s linear infinite;
+}
+@keyframes pet-thought-rainbow { from { background-position: 0% center; } to { background-position: 200% center; } }
+/* Exact upstream RGB stops; only these named presets can select a gradient. */
+.pet-thought-content[data-gradient="macaron"] { --pet-thought-gradient: linear-gradient(90deg,rgb(255,180,200),rgb(255,205,170),rgb(255,225,165),rgb(245,240,180),rgb(190,240,210),rgb(180,230,245),rgb(190,215,250),rgb(220,200,245),rgb(240,200,230),rgb(255,180,200)); }
+.pet-thought-content[data-gradient="candy"] { --pet-thought-gradient: linear-gradient(90deg,rgb(255,145,170),rgb(255,170,130),rgb(255,195,110),rgb(240,220,115),rgb(140,220,175),rgb(115,210,205),rgb(130,195,240),rgb(160,170,235),rgb(210,155,230),rgb(235,135,190),rgb(255,145,170)); }
+.pet-thought-content[data-gradient="rouge"] { --pet-thought-gradient: linear-gradient(90deg,rgb(140,25,45),rgb(175,35,60),rgb(120,20,55),rgb(160,40,75),rgb(190,55,80),rgb(130,30,65),rgb(140,25,45)); }
+.pet-thought-content[data-gradient="bamboo"] { --pet-thought-gradient: linear-gradient(90deg,rgb(70,180,85),rgb(95,200,105),rgb(55,165,70),rgb(110,215,120),rgb(80,190,95),rgb(60,172,78),rgb(70,180,85)); }
+.pet-thought-content[data-gradient="galaxy"] { --pet-thought-gradient: linear-gradient(90deg,rgb(40,30,90),rgb(70,50,130),rgb(110,70,170),rgb(160,90,190),rgb(220,120,180),rgb(40,30,90)); }
+.pet-thought-content[data-gradient="indigo"] { --pet-thought-gradient: linear-gradient(90deg,rgb(32,49,112),rgb(52,76,146),rgb(74,102,180),rgb(100,126,210),rgb(130,132,224),rgb(130,132,224),rgb(100,126,210),rgb(74,102,180),rgb(52,76,146),rgb(32,49,112)); }
+.pet-thought-content[data-gradient="champagne"] { --pet-thought-gradient: linear-gradient(90deg,rgb(220,180,100),rgb(240,205,130),rgb(255,225,160),rgb(230,190,110),rgb(245,210,140),rgb(220,180,100)); }
+.pet-thought[data-compact="true"] .pet-thought-title { display: none; }
+.pet-thought[data-compact="true"] .pet-thought-row.is-main .pet-thought-value { font-size: 16px; }
+.pet-thought[data-reduced-motion="true"] .pet-thought-part,
+.pet-thought[data-reduced-motion="true"] .pet-thought-content { transition: none !important; transition-delay: 0ms !important; }
+.pet-thought[data-reduced-motion="true"] .pet-thought-line,
+.pet-thought[data-reduced-motion="true"] .pet-thought-value { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+	.pet-thought-part, .pet-thought-content { transition: none !important; transition-delay: 0ms !important; }
+	.pet-thought-line, .pet-thought-value { animation: none !important; }
+}
+@media (forced-colors: active) {
+	.pet-thought-content[data-gradient] .pet-thought-line,
+	.pet-thought-content[data-gradient] .is-main .pet-thought-value { background: none; color: CanvasText; -webkit-text-fill-color: CanvasText; }
+}

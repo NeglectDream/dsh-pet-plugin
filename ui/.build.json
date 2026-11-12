@@ -1,8 +1,70 @@
 {
-	"generatedAt": "2026-11-09T02:51:31.621Z",
+	"generatedAt": "2026-11-12T08:58:39.693Z",
+	"inputs": {
+		"ui/sdk.js": "a2a028a31831bf4fe95f5086b7b99beed2c5d49158ea275f344632f4f41df4e2",
+		"ui/bubbles.js": "75c34e7755768d2f4d453e67ceecd3757a26f00d34513c87fa73e5abd117b989",
+		"ui/task-events.js": "2d3604f5ced1b836f44658a43e05181aba98c80a64f76c125f2dc97af2df76fc",
+		"ui/bubble-presets.json": "7fac33e2f9ff6e789672adaa739bb00345930ab6b1c244d73059005660460c44",
+		"ui/bubbles.css": "a63ff327e70ec0533f3196cad7161ef8b65183010a6de68881117f9a2e876d0b",
+		"ui/stage.js": "10fd2c80e348e6a10ac8d576fa1d0422618eabb2c543f249d732ddc1989f64d3",
+		"ui/settings.js": "69b06d263f716bd3abdff2ea22ba1d027b7380e3a810ce9ead3ab35b8141c936",
+		"ui/stage.css": "aba008214eaca2ecdc03d728285bec605d239d2f6f4a4c3a1bb97c4b73f19b76",
+		"ui/settings.css": "f2e1f91ce314c5b5962dff544df038abdc098019a4990824a67fb1e1fde74bcf"
+	},
+	"bubblePresets": {
+		"sha256": "7fac33e2f9ff6e789672adaa739bb00345930ab6b1c244d73059005660460c44",
+		"source": {
+			"repo": "MeteorNOX/DeepSeek-Balance-Whale-Widget",
+			"commit": "5247dd6813d6e4430728f39ccc63d43cda046022",
+			"file": "assets/whale-widget.js",
+			"license": "MIT",
+			"copyright": "Copyright (c) 2026 MeteorNOX",
+			"licenseText": "MIT License\n\nCopyright (c) 2026 MeteorNOX\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+			"provenance": "代码为MIT；assets图片、动图、音效不在MIT覆盖范围内。本迁移只提取代码绘制的SVG、文字和CSS，不下载或再分发上游美术素材。",
+			"defaultModuleSize": 8,
+			"defaultChoiceWeights": {
+				"text": 10,
+				"image": 1
+			},
+			"randomNormalization": "排除不受许可覆盖的图片分支后，在50条文本记录内按原w条件归一；不按文本去重，不生成空白替代。",
+			"fontFormula": "round(40 + (clamp(round(level), 1, 50) - 1) * 200 / 49) * svgWidth / 1026；最低12px，不够空间则分页"
+		},
+		"counts": {
+			"defaultRecords": 50,
+			"uniqueDefaultTexts": 49,
+			"defaultWeightSum": 167,
+			"historySupplement": 5,
+			"systemTemplates": 21,
+			"excluded": 6
+		}
+	},
+	"modules": [
+		"bubbles.js",
+		"task-events.js"
+	],
 	"indexGeneratedAt": "2026-11-06T09:12:20.819Z",
 	"profile": "r3a",
 	"clipCount": 114,
+	"bounds": {
+		"file": "anim/bounds.json",
+		"sha256": "e307c6ed34085114a3e1544ac5e694712de88ef1efda0efb1b34207f25cae5ad",
+		"alphaThreshold": 32,
+		"paddingPx": 2,
+		"bodyClip": "待机呼吸休闲",
+		"bodyBounds": {
+			"left": 0.299479,
+			"top": 0.152778,
+			"right": 0.6875,
+			"bottom": 0.925926
+		},
+		"clipCount": 114
+	},
+	"clickSound": {
+		"file": "assets/sound/click-duck.wav",
+		"bytes": 30514,
+		"sha256": "f1dafe05dfaa696b190e127800c48513e192d3efb521c246d1eaf86a4589b617",
+		"base64Length": 40688
+	},
 	"entries": [
 		{
 			"output": "ui/stage.iife.js",

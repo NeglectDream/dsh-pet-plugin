@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"pluginId": "cn.mcd7.neglectdream.dsh-pet",
-	"version": "2.0.0",
+	"version": "2.2.0",
 	"displayName": "DSH Pet",
 	"description": "一只住在 NarraFork 面板里的蓝色大肥鱼：114 段全透明动画、拖拽甩抛、点击 Q 弹、多只同屏互撞，还会按余额档位演戏。",
 	"publisher": {
@@ -35,15 +35,17 @@
 		"onCommand:pet-config-get",
 		"onCommand:pet-config-set",
 		"onCommand:pet-balance-refresh",
-		"onCommand:pet-balance-providers",
 		"onCommand:pet-clip",
 		"onCommand:pet-secrets-list",
-		"onCommand:pet-log"
+		"onCommand:pet-log",
+		"onCommand:pet-ledger-get",
+		"onCommand:pet-ledger-correct",
+		"onCommand:pet-notices"
 	],
 	"ui": {
 		"entry": "ui/stage.iife.js",
 		"format": "iife",
-		"style": "ui/stage.css",
+		"style": "ui/stage.bundle.css",
 		"shell": "host-controlled"
 	},
 	"contributes": {
@@ -53,6 +55,35 @@
 		"events": [],
 		"themes": [],
 		"commands": [
+			{
+				"id": "pet-ledger-get", "title": "读取观测账本", "handler": "server",
+				"description": "按账户和币种返回真实观测区间；不消耗提醒。",
+				"inputSchema": { "type": "object", "additionalProperties": false, "properties": {
+					"accountId": { "type": "string", "maxLength": 160 },
+					"days": { "type": "integer", "minimum": 1, "maximum": 31 }, "audit": { "type": "boolean" }
+				} }
+			},
+			{
+				"id": "pet-ledger-correct", "title": "确认或撤销账本校正", "handler": "server",
+				"description": "要求明确确认与当前 revision，冲突时拒绝覆盖新观测。",
+				"inputSchema": { "type": "object", "additionalProperties": false, "required": ["action", "accountId", "revision", "confirmed"], "properties": {
+					"action": { "type": "string", "enum": ["set", "undo"] },
+					"accountId": { "type": "string", "maxLength": 160 }, "revision": { "type": "integer", "minimum": 0 },
+					"confirmed": { "type": "boolean", "const": true }, "confirmedTopUp": { "type": ["string", "number"] },
+					"nonUsageDebit": { "type": ["string", "number"] }, "correctionId": { "type": "string", "maxLength": 100 },
+					"note": { "type": "string", "maxLength": 300 }
+				} }
+			},
+			{
+				"id": "pet-notices", "title": "领取或确认提醒", "handler": "server",
+				"description": "有界租约领取，仅实际可见展示后确认，多视图共用持久闩锁。",
+				"inputSchema": { "type": "object", "additionalProperties": false, "required": ["action", "consumerId"], "properties": {
+					"action": { "type": "string", "enum": ["claim", "ack"] }, "consumerId": { "type": "string", "maxLength": 100 },
+					"limit": { "type": "integer", "minimum": 1, "maximum": 5 }, "id": { "type": "string", "maxLength": 100 },
+					"leaseToken": { "type": "string", "maxLength": 100 },
+					"accountIds": { "type": "array", "maxItems": 32, "uniqueItems": true, "items": { "type": "string", "pattern": "^acct_[a-f0-9]{40}$" } }
+				} }
+			},
 			{
 				"id": "pet-state",
 				"title": "读取桌宠状态",
@@ -91,11 +122,6 @@
 						"force": { "type": "boolean" }
 					}
 				}
-			},
-			{
-				"id": "pet-balance-providers",
-				"title": "余额服务商清单",
-				"handler": "server"
 			},
 			{
 				"id": "pet-clip",
@@ -141,7 +167,7 @@
 				"id": "pet-stage",
 				"title": "桌宠",
 				"entry": "ui/stage.iife.js",
-				"style": "ui/stage.css",
+				"style": "ui/stage.bundle.css",
 				"surfaces": ["workspace", "focus", "director", "overlay"],
 				"scope": "global",
 				"instance": "singleton",
@@ -151,7 +177,7 @@
 				"id": "pet-settings",
 				"title": "桌宠设置",
 				"entry": "ui/settings.iife.js",
-				"style": "ui/settings.css",
+				"style": "ui/settings.bundle.css",
 				"surfaces": ["settings", "workspace", "focus", "director"],
 				"scope": "global",
 				"instance": "singleton",
@@ -165,15 +191,12 @@
 			"storage.read_self",
 			"storage.write_self",
 			"secret.use_self",
-			"diagnostics.readOwnLogs"
+			"diagnostics.readOwnLogs",
+			"event.subscribe"
 		],
 		"network": {
 			"mode": "allowlist",
-			"allow": [
-				"https://opencode.ai",
-				"https://api.deepseek.com",
-				"https://api.commandcode.ai"
-			]
+			"allow": []
 		},
 		"filesystem": {
 			"package": "readOnly",
@@ -186,32 +209,8 @@
 	},
 	"secrets": [
 		{
-			"id": "deepseekApiKey",
-			"label": "DeepSeek API Key",
-			"required": false,
-			"scope": ["user"],
-			"usage": "outbound-network",
-			"inject": "ephemeral-reference"
-		},
-		{
-			"id": "opencodeZenApiKey",
-			"label": "OpenCode Zen API Key",
-			"required": false,
-			"scope": ["user"],
-			"usage": "outbound-network",
-			"inject": "ephemeral-reference"
-		},
-		{
-			"id": "commandCodeApiKey",
-			"label": "Command Code API Key",
-			"required": false,
-			"scope": ["user"],
-			"usage": "outbound-network",
-			"inject": "ephemeral-reference"
-		},
-		{
 			"id": "customApiKey",
-			"label": "自定义服务商 API Key",
+			"label": "第三方余额 API Key",
 			"required": false,
 			"scope": ["user"],
 			"usage": "outbound-network",

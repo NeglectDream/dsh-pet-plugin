@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "repo": "MeteorNOX/DeepSeek-Balance-Whale-Widget",
+  "commit": "5247dd6813d6e4430728f39ccc63d43cda046022",
+  "retrieval": "gh api with fixed raw.githubusercontent.com URL, HTTP_PROXY/HTTPS_PROXY=http://127.0.0.1:7890; upstream JavaScript was read as text, never executed",
+  "sourceFile": "assets/whale-widget.js",
+  "sourceSha256": "7b9ac4808896b68f835d2924217193ecf57f840f872fb4ea84ca028ae7172deb",
+  "randomSha256": "6cc686f5cc087519fb43fcd184347c71e96330174f12153723507c10e8e6c9ba",
+  "geometrySha256": "302786be63373fc8049a57a3986d1ae4ae624d78ff08f96518e82e1fb9934520",
+  "sourceRandomSha256": "330d93874fd8d93dd628034bc92f6bf5aa6d707bd835d6808ca686f8007f6dae",
+  "counts": { "defaultRecords": 50, "uniqueDefaultTexts": 49, "defaultWeightSum": 167, "historySupplement": 5, "systemTemplates": 21, "excluded": 6 },
+  "coverage": [
+    { "source": "FRAME_CLASSIC_BIG_D, FRAME_CLASSIC_SMALL, FRAME_CLASSIC_MARKUP", "lines": [371, 382], "destination": "geometry", "status": "exact", "note": "one path and two ellipses, viewBox 0 0 1026 700, stroke 18" },
+    { "source": "BUBBLE_DEFAULT_ITEMS[1].options[0].item.modules[0].lines", "lines": [8530, 8811], "destination": "random-001..random-050", "status": "exact", "note": "50 sourceOriginal records compared with JSON.parse of frozen upstream JSON literal: byte-equivalent JSON structure; text, weight, font levels, bold, gradients and duplicate text variants retained" },
+    { "source": "BUBBLE_DEFAULT_ITEMS[0]", "lines": [8455, 8519], "destination": "BubbleContent.balance / templates balance, used, observed-spend", "status": "adapted", "note": "Structured accounts/currencies, stale/error/loading and unknown gift; no invented DS account or peak schedule; today is observed expenditure rather than complete bill" },
+    { "source": "bubbleDefaultRandomLines, bubbleDefaultSecondModules, legacy bubbleDefaultQueue", "lines": [8005, 9094], "destination": "random and history-005", "status": "covered", "note": "Uncovered distinct historical text retained once in supplement; inherited default size retained by source-level" },
+    { "source": "RANDOM_GROUPS", "lines": [14157, 14163], "destination": "random and history-001..history-004", "status": "covered", "note": "Exact distinct text including trailing space; supplement weights preserve groupWeight/alternatives; historical pool is separate from frozen default distribution" },
+    { "source": "applyBubbleLines gifFailed fallback", "lines": [14174, 14180], "destination": "templates image-unavailable, image-failed, image-missing", "status": "retained-disabled", "note": "Historical text is available for simulation only, no missing-image error is fabricated in live UI" },
+    { "source": "usageRemindDefaultLines", "lines": [6698, 6714], "destination": "templates balance-low, budget-warning", "status": "adapted", "note": "Original text recorded; provider/currency and observed-scope parameterized; no image nor DeepSeek top-up link" },
+    { "source": "usageTurnCostDefaultLines", "lines": [6717, 6723], "destination": "templates turn-cost, turn-cost-unavailable", "status": "capability-gated", "note": "No trustworthy host per-turn cost field; unsupported message for live UI, simulated template only" },
+    { "source": "usageWaitDefaultLines", "lines": [6754, 6760], "destination": "templates permission-wait, question-wait", "status": "adapted", "note": "Original text plus both module styles retained; permission event can be live, question pending requires unavailable distinct host event" },
+    { "source": "bonus/recharge labels and missing-number handling", "lines": [17437, 17460], "destination": "templates gift, topup; balance modules", "status": "adapted", "note": "Unknown is em-dash and never zero" },
+    { "source": "gradient CSS", "lines": [1092, 1107], "destination": "bubbles.css named gradients", "status": "exact-colors", "note": "macaron, candy, rouge, bamboo, galaxy, indigo, champagne RGB stops copied exactly; 2.6-second animation disabled for reduced motion" },
+    { "source": "local integration messages", "destination": "templates task-running, task-done, task-error, no-data, loading, stale, error", "status": "new-local", "note": "These messages are identified as local, not misrepresented as upstream originals" }
+  ],
+  "license": {
+    "id": "MIT",
+    "copyright": "Copyright (c) 2026 MeteorNOX",
+    "licenseFile": "LICENSE",
+    "provenanceFile": "PROVENANCE.md",
+    "permitted": "代码按 MIT 许可；PROVENANCE explicitly describes the bubble as code-drawn",
+    "required": "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.",
+    "preservedIn": "ui/bubble-presets.json source.licenseText (inlined into both bundles)",
+    "excludedAssets": "Images, GIFs and audio under assets are outside the MIT license and are not downloaded or redistributed."
+  },
+  "unsupported": ["上游图片/GIF/音效和图标", "供应商峰谷时段及倒计时", "任意SVG/HTML/CSS/URL导入", "没有真实宿主字段的逐轮费用和用户提问等待", "来源项目完整账户管理和模型价格库", "历史池默认抽选（仅补充展示，保留冻结50条默认分布）"]
+}
